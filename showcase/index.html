@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lustre_ui showcase</title>
+
+    <script type="module">
+      import { to_string } from "hex:lustre/lustre/element.mjs";
+      import { reset, base } from "hex:lustre_ui/lustre/ui.mjs";
+      import { main } from "./src/showcase.gleam";
+
+      document.head.innerHTML += to_string(reset()) + "\n" + to_string(base());
+
+      document.addEventListener("DOMContentLoaded", () => {
+        main();
+      });
+    </script>
+  </head>
+  <body>
+    <div data-lustre-app></div>
+  </body>
+</html>
