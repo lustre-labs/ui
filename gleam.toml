@@ -1,0 +1,22 @@
+name = "lustre_ui"
+version = "0.1.0"
+description = "A collection of components and design tokens for building Lustre apps."
+
+# Fill out these fields if you intend to generate HTML documentation or publish
+# your project to the Hex package manager.
+#
+# licences = ["Apache-2.0"]
+# repository = { type = "github", user = "username", repo = "project" }
+# links = [{ title = "Website", href = "https://gleam.run" }]
+
+internal_modules = [
+  "lustre/ui/internal"
+]
+
+[dependencies]
+gleam_community_colour = "~> 1.1"
+gleam_stdlib = "~> 0.30"
+lustre = "~> 3.0"
+
+[dev-dependencies]
+gleeunit = "~> 0.10"
