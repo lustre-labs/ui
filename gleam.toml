@@ -10,13 +10,15 @@ description = "A collection of components and design tokens for building Lustre 
 # links = [{ title = "Website", href = "https://gleam.run" }]
 
 internal_modules = [
-  "lustre/ui/internal"
+  "internals/*",
+  "lustre/ui/internals"
 ]
 
 [dependencies]
 gleam_community_colour = "~> 1.1"
-gleam_stdlib = "~> 0.30"
+gleam_stdlib = "~> 0.31"
 lustre = "~> 3.0"
 
 [dev-dependencies]
 gleeunit = "~> 0.10"
+simplifile = "~> 0.1"

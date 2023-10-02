@@ -20,9 +20,8 @@ jobs:
           fi
           echo "tag does not match version in gleam.toml, refusing to publish"
           exit 1
+      - run: gleam run -m build
       - run: gleam format --check src test
-      - run: gleam test --target erlang
-      - run: gleam test --target javascript
       - run: gleam publish -y
         env:
           HEXPM_USER: ${{ secrets.HEX_USERNAME }}

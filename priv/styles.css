@@ -1,0 +1,330 @@
+:root {
+  --app-background: $(primary.app_background);
+  --app-background-subtle: $(primary.app_background_subtle);
+  --app-border: $(primary.app_border);
+
+  --element-background: $(primary.element_background);
+  --element-background-hover: $(primary.element_background_hover);
+  --element-background-strong: $(primary.element_background_strong);
+
+  --element-border-subtle: $(primary.element_border_subtle);
+  --element-border-strong: $(primary.element_border_strong);
+
+  --solid-background: $(primary.solid_background);
+  --solid-background-hover: $(primary.solid_background_hover);
+
+  --text-high-contrast: $(primary.text_high_contrast);
+  --text-low-contrast: $(primary.text_low_contrast);
+
+  --text-xs: calc(1em / pow(1.2, 2));
+  --text-sm: calc(1em / 1.2);
+  --text-md: $(base_text) px;
+  --text-lg: calc(1em * 1.2);
+  --text-xl: calc(1em * pow(1.2, 2));
+  --text-2xl: calc(1em * pow(1.2, 3));
+  --text-3xl: calc(1em * pow(1.2, 4));
+  --text-4xl: calc(1em * pow(1.2, 5));
+  --text-5xl: calc(1em * pow(1.2, 6));
+
+  --space-xs: calc(0.5 * 1em);
+  --space-sm: calc(0.75 * 1em);
+  --space-md: 1em;
+  --space-lg: calc(1.25 * 1em);
+  --space-xl: calc(2 * 1em);
+  --space-2xl: calc(3.25 * 1em);
+  --space-3xl: calc(5.25 * 1em);
+  --space-4xl: calc(8.5 * 1em);
+  --space-5xl: calc(13.75 * 1em);
+
+  --font-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-alt: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  --border-radius: $(border_radius) px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+[data-variant="primary"] {
+  --app-background: $(primary.app_background);
+  --app-background-subtle: $(primary.app_background_subtle);
+  --app-border: $(primary.app_border);
+
+  --element-background: $(primary.element_background);
+  --element-background-hover: $(primary.element_background_hover);
+  --element-background-strong: $(primary.element_background_strong);
+
+  --element-border-subtle: $(primary.element_border_subtle);
+  --element-border-strong: $(primary.element_border_strong);
+
+  --solid-background: $(primary.solid_background);
+  --solid-background-hover: $(primary.solid_background_hover);
+
+  --text-high-contrast: $(primary.text_high_contrast);
+  --text-low-contrast: $(primary.text_low_contrast);
+}
+
+[data-variant="greyscale"] {
+  --app-background: $(greyscale.app_background);
+  --app-background-subtle: $(greyscale.app_background_subtle);
+  --app-border: $(greyscale.app_border);
+
+  --element-background: $(greyscale.element_background);
+  --element-background-hover: $(greyscale.element_background_hover);
+  --element-background-strong: $(greyscale.element_background_strong);
+
+  --element-border-subtle: $(greyscale.element_border_subtle);
+  --element-border-strong: $(greyscale.element_border_strong);
+
+  --solid-background: $(greyscale.solid_background);
+  --solid-background-hover: $(greyscale.solid_background_hover);
+
+  --text-high-contrast: $(greyscale.text_high_contrast);
+  --text-low-contrast: $(greyscale.text_low_contrast);
+}
+
+[data-variant="error"] {
+  --app-background: $(error.app_background);
+  --app-background-subtle: $(error.app_background_subtle);
+  --app-border: $(error.app_border);
+
+  --element-background: $(error.element_background);
+  --element-background-hover: $(error.element_background_hover);
+  --element-background-strong: $(error.element_background_strong);
+
+  --element-border-subtle: $(error.element_border_subtle);
+  --element-border-strong: $(error.element_border_strong);
+
+  --solid-background: $(error.solid_background);
+  --solid-background-hover: $(error.solid_background_hover);
+
+  --text-high-contrast: $(error.text_high_contrast);
+  --text-low-contrast: $(error.text_low_contrast);
+}
+
+[data-variant="success"] {
+  --app-background: $(success.app_background);
+  --app-background-subtle: $(success.app_background_subtle);
+  --app-border: $(success.app_border);
+
+  --element-background: $(success.element_background);
+  --element-background-hover: $(success.element_background_hover);
+  --element-background-strong: $(success.element_background_strong);
+
+  --element-border-subtle: $(success.element_border_subtle);
+  --element-border-strong: $(success.element_border_strong);
+
+  --solid-background: $(success.solid_background);
+  --solid-background-hover: $(success.solid_background_hover);
+
+  --text-high-contrast: $(success.text_high_contrast);
+  --text-low-contrast: $(success.text_low_contrast);
+}
+
+[data-variant="warning"] {
+  --app-background: $(warning.app_background);
+  --app-background-subtle: $(warning.app_background_subtle);
+  --app-border: $(warning.app_border);
+
+  --element-background: $(warning.element_background);
+  --element-background-hover: $(warning.element_background_hover);
+  --element-background-strong: $(warning.element_background_strong);
+
+  --element-border-subtle: $(warning.element_border_subtle);
+  --element-border-strong: $(warning.element_border_strong);
+
+  --solid-background: $(warning.solid_background);
+  --solid-background-hover: $(warning.solid_background_hover);
+
+  --text-high-contrast: $(warning.text_high_contrast);
+  --text-low-contrast: $(warning.text_low_contrast);
+}
+
+[data-variant="info"] {
+  --app-background: $(info.app_background);
+  --app-background-subtle: $(info.app_background_subtle);
+  --app-border: $(info.app_border);
+
+  --element-background: $(info.element_background);
+  --element-background-hover: $(info.element_background_hover);
+  --element-background-strong: $(info.element_background_strong);
+
+  --element-border-subtle: $(info.element_border_subtle);
+  --element-border-strong: $(info.element_border_strong);
+
+  --solid-background: $(info.solid_background);
+  --solid-background-hover: $(info.solid_background_hover);
+
+  --text-high-contrast: $(info.text_high_contrast);
+  --text-low-contrast: $(info.text_low_contrast);
+}
+
+body {
+  background: var(--app-background);
+  color: var(--text-high-contrast);
+  font-family: var(--font-base);
+  font-size: var(--text-md);
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-alt);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+/* LUSTRE UI LAYOUT: STACK -------------------------------------------------- */
+
+.lustre-ui-stack {
+  --gap: var(--space-md);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.lustre-ui-stack > * {
+  margin-block: 0;
+}
+
+.lustre-ui-stack > * + * {
+  margin-block-start: var(--gap);
+}
+
+.lustre-ui-stack.split {
+  justify-content: space-between;
+}
+
+.lustre-ui-stack.split:only-child {
+  block-size: 100%;
+}
+
+/* LUSTRE UI LAYOUT: CLUSTER ------------------------------------------------ */
+
+.lustre-ui-cluster {
+  --gap: var(--space-md);
+  --dir: flex-start;
+
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  justify-content: var(--dir);
+}
+
+/* LUSTRE UI LAYOUT: ASIDE -------------------------------------------------- */
+
+.lustre-ui-aside {
+  --gap: var(--space-md);
+  --dir: row;
+  --min: 60%;
+
+  display: flex;
+  flex-direction: --dir;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+
+.lustre-ui-aside > :first-child {
+  flex-grow: 1;
+}
+
+.lustre-ui-aside > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--min);
+}
+
+/* LUSTRE UI LAYOUT: SEQUENCE ----------------------------------------------- */
+
+.lustre-ui-sequence {
+  --gap: var(--space-md);
+  --break: 30rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+
+.lustre-ui-sequence > * {
+  flex-basis: calc((var(--break) - 100%) * 999);
+  flex-grow: 1;
+}
+
+.lustre-ui-sequence[data-split-at="3"] > :nth-last-child(n + 3),
+.lustre-ui-sequence[data-split-at="3"] > :nth-last-child(n + 3) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="4"] > :nth-last-child(n + 4),
+.lustre-ui-sequence[data-split-at="4"] > :nth-last-child(n + 4) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="5"] > :nth-last-child(n + 5),
+.lustre-ui-sequence[data-split-at="5"] > :nth-last-child(n + 5) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="6"] > :nth-last-child(n + 6),
+.lustre-ui-sequence[data-split-at="6"] > :nth-last-child(n + 6) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="7"] > :nth-last-child(n + 7),
+.lustre-ui-sequence[data-split-at="7"] > :nth-last-child(n + 7) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="8"] > :nth-last-child(n + 8),
+.lustre-ui-sequence[data-split-at="8"] > :nth-last-child(n + 8) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="8"] > :nth-last-child(n + 8),
+.lustre-ui-sequence[data-split-at="8"] > :nth-last-child(n + 8) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="9"] > :nth-last-child(n + 9),
+.lustre-ui-sequence[data-split-at="9"] > :nth-last-child(n + 9) ~ * {
+  flex-basis: 100%;
+}
+
+.lustre-ui-sequence[data-split-at="10"] > :nth-last-child(n + 10),
+.lustre-ui-sequence[data-split-at="10"] > :nth-last-child(n + 10) ~ * {
+  flex-basis: 100%;
+}
