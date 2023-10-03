@@ -240,6 +240,7 @@ textarea {
   color: inherit; /* 1 */
   margin: 0; /* 2 */
   padding: 0; /* 3 */
+  border: none;
 }
 
 /*  Remove the inheritance of text transform in Edge and Firefox. */
@@ -455,15 +456,15 @@ pub fn custom(theme: Theme) -> Element(a) {
   --text-high-contrast: $(primary.text_high_contrast);
   --text-low-contrast: $(primary.text_low_contrast);
 
-  --text-xs: calc(1em / pow(1.2, 2));
-  --text-sm: calc(1em / 1.2);
+  --text-xs: calc(var(--text-sm) / 1.25);
+  --text-sm: calc(var(--text-md) / 1.25);
   --text-md: $(base_text) px;
-  --text-lg: calc(1em * 1.2);
-  --text-xl: calc(1em * pow(1.2, 2));
-  --text-2xl: calc(1em * pow(1.2, 3));
-  --text-3xl: calc(1em * pow(1.2, 4));
-  --text-4xl: calc(1em * pow(1.2, 5));
-  --text-5xl: calc(1em * pow(1.2, 6));
+  --text-lg: calc(var(--text-md) * 1.25);
+  --text-xl: calc(var(--text-lg) * 1.25);
+  --text-2xl: calc(var(--text-xl) * 1.25);
+  --text-3xl: calc(var(--text-2xl) * 1.25);
+  --text-4xl: calc(var(--text-3xl) * 1.25);
+  --text-5xl: calc(var(--text-4xl) * 1.25);
 
   --space-xs: calc(0.5 * 1em);
   --space-sm: calc(0.75 * 1em);
@@ -604,6 +605,20 @@ pub fn custom(theme: Theme) -> Element(a) {
   --text-low-contrast: $(info.text_low_contrast);
 }
 
+* {
+  max-inline-size: 60ch;
+}
+
+html,
+body,
+div,
+header,
+nav,
+main,
+footer {
+  max-inline-size: none;
+}
+
 body {
   background: var(--app-background);
   color: var(--text-high-contrast);
@@ -623,18 +638,26 @@ h6 {
 }
 
 h1 {
-  font-size: var(--text-3xl);
+  font-size: var(--text-5xl);
 }
 
 h2 {
-  font-size: var(--text-2xl);
+  font-size: var(--text-4xl);
 }
 
 h3 {
-  font-size: var(--text-xl);
+  font-size: var(--text-3xl);
 }
 
 h4 {
+  font-size: var(--text-2xl);
+}
+
+h5 {
+  font-size: var(--text-xl);
+}
+
+h6 {
   font-size: var(--text-lg);
 }
 
@@ -643,6 +666,17 @@ code,
 kbd,
 samp {
   font-family: var(--font-mono);
+}
+
+input:not([type='checkbox']):not([type='radio']),
+textarea {
+  border: 1px solid var(--element-border-subtle);
+  border-radius: var(--border-radius);
+}
+
+input:not([type='checkbox']):not([type='radio']):focus,
+textarea:focus {
+  border-color: var(--element-border-strong);
 }
 
 /* LUSTRE UI LAYOUT: STACK -------------------------------------------------- */
@@ -687,24 +721,28 @@ samp {
 /* LUSTRE UI LAYOUT: ASIDE -------------------------------------------------- */
 
 .lustre-ui-aside {
+  --align: start;
   --gap: var(--space-md);
   --dir: row;
+  --wrap: wrap;
   --min: 60%;
 
+  align-items: var(--align);
   display: flex;
-  flex-direction: --dir;
-  flex-wrap: wrap;
+  flex-direction: var(--dir);
+  flex-wrap: var(--wrap);
   gap: var(--gap);
 }
 
 .lustre-ui-aside > :first-child {
-  flex-grow: 1;
-}
-
-.lustre-ui-aside > :last-child {
   flex-basis: 0;
   flex-grow: 999;
   min-inline-size: var(--min);
+}
+
+.lustre-ui-aside > :last-child {
+  flex-grow: 1;
+  max-height: max-content;
 }
 
 /* LUSTRE UI LAYOUT: SEQUENCE ----------------------------------------------- */
@@ -768,6 +806,71 @@ samp {
   flex-basis: 100%;
 }
 
+/* LUSTRE UI LAYOUT: BOX ---------------------------------------------------- */
+
+.lustre-ui-box {
+  --gap: var(--space-sm);
+
+  padding: var(--gap);
+}
+
+/* LUSTRE UI COMPONENTS: BUTTON --------------------------------------------- */
+
+.lustre-ui-button {
+  --bg-active: var(--element-background-strong);
+  --bg-hover: var(--element-background-hover);
+  --bg: var(--element-background);
+  --border-active: var(--bg-active);
+  --border: var(--bg);
+  --text: var(--text-high-contrast);
+
+  background-color: var(--bg);
+  border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
+  border-radius: var(--border-radius);
+  color: var(--text);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.lustre-ui-button:hover,
+.lustre-ui-button:focus-within {
+  background-color: var(--bg-hover);
+}
+
+.lustre-ui-button:hover:active,
+.lustre-ui-button:focus-within:active {
+  background-color: var(--bg-active);
+  border-color: var(--border-active);
+}
+
+.lustre-ui-button.solid {
+  --bg-active: var(--solid-background-hover);
+  --bg-hover: var(--solid-background-hover);
+  --bg: var(--solid-background);
+  --border-active: var(--solid-background-hover);
+  --border: var(--solid-background);
+  --text: white;
+}
+
+.lustre-ui-button.solid:hover:active,
+.lustre-ui-button.solid:focus-within:active {
+  --bg-active: color-mix(in srgb, var(--solid-background-hover) 90%, black);
+  --border-active: color-mix(in srgb, var(--solid-background-hover) 90%, black);
+}
+
+.lustre-ui-button.soft {
+  --bg-active: var(--element-background-strong);
+  --bg-hover: var(--element-background-hover);
+  --bg: var(--element-background);
+  --border-active: var(--bg-active);
+  --border: var(--bg);
+  --text: var(--text-high-contrast);
+}
+
+.lustre-ui-button.outline {
+  --bg: unset;
+  --border: var(--element-border-subtle);
+}
+
   "
   |> map.fold(theme_to_map(theme), _, string.replace)
   |> html.style([], _)
@@ -800,8 +903,14 @@ pub fn var(name: String) -> String {
 
 fn theme_to_map(theme: Theme) -> Map(String, String) {
   map.from_list([
-    #("$(base_text)", int.to_string(theme.base_text)),
-    #("$(border_radius)", int.to_string(theme.border_radius)),
+    // Note the extra space here. Because we're writing the stylesheet externally
+    // but leaving in these hooks for string replacement, it can confuse the code
+    // formatter. 
+    //
+    // Specific to thes two is that a formatter will insert a space between $(base_text)
+    // and px, which will break the stylesheet if we don't remove it.
+    #("$(base_text) ", int.to_string(theme.base_text)),
+    #("$(border_radius) ", int.to_string(theme.border_radius)),
   ])
   |> map.merge(scale_to_map(theme.primary, "primary"))
   |> map.merge(scale_to_map(theme.greyscale, "greyscale"))

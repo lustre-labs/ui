@@ -121,6 +121,7 @@ textarea {
   color: inherit; /* 1 */
   margin: 0; /* 2 */
   padding: 0; /* 3 */
+  border: none;
 }
 
 /*  Remove the inheritance of text transform in Edge and Firefox. */
