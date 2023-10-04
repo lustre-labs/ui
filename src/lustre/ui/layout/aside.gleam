@@ -33,13 +33,37 @@ pub fn aside(
 /// 
 /// 
 pub fn content_first() -> Attribute(msg) {
-  attribute.style([#("--dir", "row-reverse")])
+  attribute.style([#("--dir", "row"), #("--wrap", "wrap")])
 }
 
 ///
 /// 
 pub fn content_last() -> Attribute(msg) {
-  attribute.style([#("--dir", "row")])
+  attribute.style([#("--dir", "row-reverse"), #("--wrap", "wrap-reverse")])
+}
+
+///
+/// 
+pub fn anchor_start() -> Attribute(msg) {
+  attribute.style([#("--align", "start")])
+}
+
+///
+/// 
+pub fn anchor_center() -> Attribute(msg) {
+  attribute.style([#("--align", "center")])
+}
+
+///
+/// 
+pub fn anchor_end() -> Attribute(msg) {
+  attribute.style([#("--align", "end")])
+}
+
+///
+///
+pub fn stretch() -> Attribute(msg) {
+  attribute.style([#("--align", "stretch")])
 }
 
 /// Packed spacing has no gap between each child element.
@@ -89,7 +113,7 @@ pub fn space(gap: String) -> Attribute(msg) {
 /// are clamped between 1% and 99%.
 /// 
 pub fn min_width(width: Int) -> Attribute(msg) {
-  case 0 < width, width < 100 {
+  case width < 1, width > 99 {
     True, _ -> attribute.style([#("--min", "1%")])
     False, False -> attribute.style([#("--min", int.to_string(width) <> "%")])
     _, True -> attribute.style([#("--min", "99%")])
