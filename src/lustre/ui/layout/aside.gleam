@@ -25,7 +25,16 @@ pub fn aside(
   side: Element(msg),
   main: Element(msg),
 ) -> Element(msg) {
-  html.div([attribute.class("lustre-ui-aside"), ..attributes], [side, main])
+  of(html.div, attributes, side, main)
+}
+
+pub fn of(
+  element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
+  attributes: List(Attribute(msg)),
+  side: Element(msg),
+  main: Element(msg),
+) -> Element(msg) {
+  element([attribute.class("lustre-ui-aside"), ..attributes], [side, main])
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
@@ -75,7 +84,7 @@ pub fn packed() -> Attribute(msg) {
 /// Tight spacing has a small gap between each child element.
 /// 
 pub fn tight() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_sm <> ")")])
+  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
 }
 
 /// Relaxed spacing has a medium-sized gap between each child element. This is

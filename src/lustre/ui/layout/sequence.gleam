@@ -37,7 +37,15 @@ pub fn sequence(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.div([attribute.class("lustre-ui-sequence"), ..attributes], children)
+  of(html.div, attributes, children)
+}
+
+pub fn of(
+  element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
+  attributes: List(Attribute(msg)),
+  children: List(Element(msg)),
+) -> Element(msg) {
+  element([attribute.class("lustre-ui-sequence"), ..attributes], children)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
@@ -83,7 +91,7 @@ pub fn packed() -> Attribute(msg) {
 /// A tight sequence has a small gap between each child element.
 /// 
 pub fn tight() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_sm <> ")")])
+  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
 }
 
 /// A relaxed sequence has a medium-sized gap between each child element. This is

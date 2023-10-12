@@ -13,7 +13,15 @@ pub fn box(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.div([attribute.class("lustre-ui-box"), ..attributes], children)
+  of(html.div, attributes, children)
+}
+
+pub fn of(
+  element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
+  attributes: List(Attribute(msg)),
+  children: List(Element(msg)),
+) -> Element(msg) {
+  element([attribute.class("lustre-ui-box"), ..attributes], children)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
@@ -35,7 +43,7 @@ pub fn tight() -> Attribute(msg) {
 /// between different spaces.
 /// 
 pub fn relaxed() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_sm <> ")")])
+  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
 }
 
 /// Loose spacing has a large gap between each child element.
