@@ -1,6 +1,6 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import gleam_community/colour.{Colour}
+import gleam_community/colour.{type Colour}
 
 // TYPES -----------------------------------------------------------------------
 

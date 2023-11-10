@@ -1,13 +1,13 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam_community/colour as gleam_community_colour
-import gleam/map.{Map}
+import gleam/map.{type Map}
 import gleam/string
 import gleam/int
-import lustre/attribute.{Attribute, attribute}
-import lustre/element.{Element}
+import lustre/attribute.{type Attribute, attribute}
+import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui/colour.{Scale}
+import lustre/ui/colour.{type Scale}
 
 // CONSTANTS -------------------------------------------------------------------
 

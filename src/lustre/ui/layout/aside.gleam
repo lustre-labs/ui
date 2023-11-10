@@ -1,8 +1,8 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam/int
-import lustre/attribute.{Attribute, attribute}
-import lustre/element.{Element}
+import lustre/attribute.{type Attribute, attribute}
+import lustre/element.{type Element}
 import lustre/element/html
 import lustre/ui
 

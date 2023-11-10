@@ -1,4 +1,4 @@
-import lustre/effect.{Effect}
+import lustre/effect.{type Effect}
 
 pub fn focus(selector: String) -> Effect(msg) {
   use _ <- effect.from

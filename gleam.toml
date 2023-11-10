@@ -13,6 +13,7 @@ internal_modules = [
   "internals/*",
   "lustre/ui/internals"
 ]
+gleam = ">= 0.32.0"
 
 [dependencies]
 gleam_community_colour = "~> 1.1"

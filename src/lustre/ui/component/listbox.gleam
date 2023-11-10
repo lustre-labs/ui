@@ -1,19 +1,19 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam/bool
-import gleam/dynamic.{Decoder}
+import gleam/dynamic.{type Decoder}
 import gleam/function
 import gleam/int
 import gleam/list
-import gleam/map.{Map}
+import gleam/map.{type Map}
 import gleam/result
 import gleam/string
 import internals/options
 import internals/dom
 import lustre
-import lustre/attribute.{Attribute, attribute}
-import lustre/effect.{Effect}
-import lustre/element.{Element, element}
+import lustre/attribute.{type Attribute, attribute}
+import lustre/effect.{type Effect}
+import lustre/element.{type Element, element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/icon
