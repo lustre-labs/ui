@@ -1,0 +1,21 @@
+.lustre-ui-box {
+  --gap: var(--space-sm);
+
+  padding: var(--gap);
+
+  &.packed {
+    --gap: 0;
+  }
+
+  &.tight {
+    --gap: var(--space-xs);
+  }
+
+  &.relaxed {
+    --gap: var(--space-md);
+  }
+
+  &.loose {
+    --gap: var(--space-lg);
+  }
+}

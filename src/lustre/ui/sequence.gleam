@@ -4,7 +4,6 @@ import gleam/int
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui
 
 // ELEMENTS --------------------------------------------------------------------
 
@@ -82,30 +81,30 @@ pub fn split(n: Int) -> Attribute(msg) {
   }
 }
 
-/// A packed sequence has no gap between each child element.
+/// Packed spacing has no gap between each child element.
 /// 
 pub fn packed() -> Attribute(msg) {
-  attribute.style([#("--gap", "0")])
+  attribute.class("packed")
 }
 
-/// A tight sequence has a small gap between each child element.
+/// Tight spacing has a small gap between each child element.
 /// 
 pub fn tight() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
+  attribute.class("tight")
 }
 
-/// A relaxed sequence has a medium-sized gap between each child element. This is
+/// Relaxed spacing has a medium-sized gap between each child element. This is
 /// the default gap but is provided as an attribute in case you want to toggle
 /// between different spaces.
 /// 
 pub fn relaxed() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_md <> ")")])
+  attribute.class("relaxed")
 }
 
-/// A loose sequence has a large gap between each child element.
+/// Loose spacing has a large gap between each child element.
 /// 
 pub fn loose() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_lg <> ")")])
+  attribute.class("loose")
 }
 
 /// Use this function to set a custom gap between each child element. You'll need
@@ -113,12 +112,8 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using one of the `ui.space_*` variables to maintain
-/// consistency with the rest of your UI.
-/// 
-/// 🚨 When using one of the space constants, it's important you wrap them to be
-///    CSS `var` function calls. For example, `ui.space_md` should be passed as
-///   `"var(" <> ui.space_md <> ")"`.
+/// `10px`, but we recommend using the `ui.space` function for consistent spacing
+/// across your application.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])

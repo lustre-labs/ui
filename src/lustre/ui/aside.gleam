@@ -4,7 +4,6 @@ import gleam/int
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui
 
 // ELEMENTS --------------------------------------------------------------------
 
@@ -18,8 +17,6 @@ import lustre/ui
 /// by using the `content_first` attribute. You can switch back to the default
 /// behaviour with the `content_last` attribute.
 /// 
-/// 
-/// 
 pub fn aside(
   attributes: List(Attribute(msg)),
   side: Element(msg),
@@ -28,6 +25,10 @@ pub fn aside(
   of(html.div, attributes, side, main)
 }
 
+/// The default `aside` element uses a `<div />` as the underling container. You
+/// can use this function if you want to use a different container such as a
+/// `<section />` or `<article />`.
+/// 
 pub fn of(
   element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
   attributes: List(Attribute(msg)),
@@ -39,52 +40,63 @@ pub fn of(
 
 // ATTRIBUTES ------------------------------------------------------------------
 
-/// 
+/// Visually places the main content first in the layout. Note that this doesn't
+/// change the markup: the side content is always the first child of the aside
+/// container.
 /// 
 pub fn content_first() -> Attribute(msg) {
-  attribute.style([#("--dir", "row"), #("--wrap", "wrap")])
+  attribute.class("content-first")
 }
 
-///
+/// Visually places the main content last in the layout. Note that this doesn't
+/// change the markup: the side content is always the first child of the aside
+/// container.
 /// 
 pub fn content_last() -> Attribute(msg) {
-  attribute.style([#("--dir", "row-reverse"), #("--wrap", "wrap-reverse")])
+  attribute.class("content-last")
 }
 
-///
+/// When the main content is taller than the side content, the align_start
+/// attribute tells the side content to align itself to the top of the container.
 /// 
-pub fn anchor_start() -> Attribute(msg) {
-  attribute.style([#("--align", "start")])
+pub fn align_start() -> Attribute(msg) {
+  attribute.class("align-start")
 }
 
-///
+/// When the main content is taller than the side content, the align_centre
+/// attribute tells the side content to align itself to the middle of the
+/// container.
 /// 
-pub fn anchor_center() -> Attribute(msg) {
-  attribute.style([#("--align", "center")])
+pub fn align_centre() -> Attribute(msg) {
+  attribute.class("align-centre")
 }
 
-///
+/// When the main content is taller than the side content, the align_end attribute
+/// tells the side content to align itself to the bottom of the container.
 /// 
-pub fn anchor_end() -> Attribute(msg) {
-  attribute.style([#("--align", "end")])
+pub fn align_end() -> Attribute(msg) {
+  attribute.class("align-end")
 }
 
-///
+/// The stretch attribute tells the side content to grow to match the height of
+/// the main content. This is useful if you have a side column with a background
+/// you want to fill or an image you want to stretch to the full height of the
+/// container.
 ///
 pub fn stretch() -> Attribute(msg) {
-  attribute.style([#("--align", "stretch")])
+  attribute.class("stretch")
 }
 
 /// Packed spacing has no gap between each child element.
 /// 
 pub fn packed() -> Attribute(msg) {
-  attribute.style([#("--gap", "0")])
+  attribute.class("packed")
 }
 
 /// Tight spacing has a small gap between each child element.
 /// 
 pub fn tight() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
+  attribute.class("tight")
 }
 
 /// Relaxed spacing has a medium-sized gap between each child element. This is
@@ -92,13 +104,13 @@ pub fn tight() -> Attribute(msg) {
 /// between different spaces.
 /// 
 pub fn relaxed() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_md <> ")")])
+  attribute.class("relaxed")
 }
 
 /// Loose spacing has a large gap between each child element.
 /// 
 pub fn loose() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_lg <> ")")])
+  attribute.class("loose")
 }
 
 /// Use this function to set a custom gap between each child element. You'll need
@@ -106,12 +118,8 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using one of the `ui.space_*` variables to maintain
-/// consistency with the rest of your UI.
-/// 
-/// 🚨 When using one of the space constants, it's important you wrap them to be
-///    CSS `var` function calls. For example, `ui.space_md` should be passed as
-///   `"var(" <> ui.space_md <> ")"`.
+/// `10px`, but we recommend using the `ui.space` function for consistent spacing
+/// across your application.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])
@@ -119,12 +127,12 @@ pub fn space(gap: String) -> Attribute(msg) {
 
 /// This attribute specifies the minimum width of the main content before forcing
 /// the layout to stack. Values represent a percentage of the container width, and
-/// are clamped between 1% and 99%.
+/// are clamped between 10% and 90%.
 /// 
 pub fn min_width(width: Int) -> Attribute(msg) {
-  case width < 1, width > 99 {
-    True, _ -> attribute.style([#("--min", "1%")])
+  case width < 10, width > 90 {
+    True, _ -> attribute.style([#("--min", "10%")])
     False, False -> attribute.style([#("--min", int.to_string(width) <> "%")])
-    _, True -> attribute.style([#("--min", "99%")])
+    _, True -> attribute.style([#("--min", "90%")])
   }
 }

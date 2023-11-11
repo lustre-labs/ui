@@ -1,0 +1,34 @@
+.lustre-ui-cluster {
+  --gap: var(--space-md);
+  --dir: flex-start;
+
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  justify-content: var(--dir);
+
+  &.packed {
+    --gap: 0;
+  }
+
+  &.tight {
+    --gap: var(--space-xs);
+  }
+
+  &.relaxed {
+    --gap: var(--space-md);
+  }
+
+  &.loose {
+    --gap: var(--space-lg);
+  }
+
+  &.from-start {
+    --dir: flex-start;
+  }
+
+  &.from-end {
+    --dir: flex-end;
+  }
+}

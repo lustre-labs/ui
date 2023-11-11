@@ -3,13 +3,10 @@
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui
 
 // ELEMENTS --------------------------------------------------------------------
 
-/// 
-/// 
-pub fn box(
+pub fn cluster(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
@@ -21,35 +18,35 @@ pub fn of(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  element([attribute.class("lustre-ui-box"), ..attributes], children)
+  element([attribute.class("lustre-ui-cluster"), ..attributes], children)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
 
-/// Packed spacing has no gap between each child element.
+/// A packed cluster has no gap between each child element.
 /// 
 pub fn packed() -> Attribute(msg) {
-  attribute.style([#("--gap", "0")])
+  attribute.class("packed")
 }
 
-/// Tight spacing has a small gap between each child element.
+/// A tight cluster has a small gap between each child element.
 /// 
 pub fn tight() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
+  attribute.class("tight")
 }
 
-/// Relaxed spacing has a medium-sized gap between each child element. This is
-/// the default gap but is provided as an attribute in case you want to toggle
-/// between different spaces.
+/// A relaxed cluster has a medium-sized gap between each child element. This is
+/// the default gap but is provided as an attribute because nested clusters will
+/// inherit the gap from their parent cluster unless explicitly told otherwise.
 /// 
 pub fn relaxed() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_xs <> ")")])
+  attribute.class("relaxed")
 }
 
-/// Loose spacing has a large gap between each child element.
+/// A loose cluster has a large gap between each child element.
 /// 
 pub fn loose() -> Attribute(msg) {
-  attribute.style([#("--gap", "var(" <> ui.space_md <> ")")])
+  attribute.class("loose")
 }
 
 /// Use this function to set a custom gap between each child element. You'll need
@@ -57,13 +54,21 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using one of the `ui.space_*` variables to maintain
-/// consistency with the rest of your UI.
-/// 
-/// 🚨 When using one of the space constants, it's important you wrap them to be
-///    CSS `var` function calls. For example, `ui.space_md` should be passed as
-///   `"var(" <> ui.space_md <> ")"`.
+/// `10px`, but we recommend using the `ui.space` function for consistent spacing
+/// across your application.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])
+}
+
+///
+/// 
+pub fn from_start() -> Attribute(msg) {
+  attribute.class("from-start")
+}
+
+///
+/// 
+pub fn from_end() -> Attribute(msg) {
+  attribute.class("from-end")
 }

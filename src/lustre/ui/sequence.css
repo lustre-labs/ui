@@ -1,0 +1,74 @@
+.lustre-ui-sequence {
+  --gap: var(--space-md);
+  --break: 30rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  &.packed {
+    --gap: 0;
+  }
+
+  &.tight {
+    --gap: var(--space-xs);
+  }
+
+  &.relaxed {
+    --gap: var(--space-md);
+  }
+
+  &.loose {
+    --gap: var(--space-lg);
+  }
+
+  &[data-split-at="3"] > :nth-last-child(n + 3),
+  &[data-split-at="3"] > :nth-last-child(n + 3) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="4"] > :nth-last-child(n + 4),
+  &[data-split-at="4"] > :nth-last-child(n + 4) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="5"] > :nth-last-child(n + 5),
+  &[data-split-at="5"] > :nth-last-child(n + 5) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="6"] > :nth-last-child(n + 6),
+  &[data-split-at="6"] > :nth-last-child(n + 6) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="7"] > :nth-last-child(n + 7),
+  &[data-split-at="7"] > :nth-last-child(n + 7) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="8"] > :nth-last-child(n + 8),
+  &[data-split-at="8"] > :nth-last-child(n + 8) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="8"] > :nth-last-child(n + 8),
+  &[data-split-at="8"] > :nth-last-child(n + 8) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="9"] > :nth-last-child(n + 9),
+  &[data-split-at="9"] > :nth-last-child(n + 9) ~ * {
+    flex-basis: 100%;
+  }
+
+  &[data-split-at="10"] > :nth-last-child(n + 10),
+  &[data-split-at="10"] > :nth-last-child(n + 10) ~ * {
+    flex-basis: 100%;
+  }
+
+  > * {
+    flex-basis: calc((var(--break) - 100%) * 999);
+    flex-grow: 1;
+  }
+}

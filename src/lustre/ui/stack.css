@@ -1,0 +1,24 @@
+.lustre-ui-stack {
+  --gap: var(--space-md);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap);
+
+  &.packed {
+    --gap: 0;
+  }
+
+  &.tight {
+    --gap: var(--space-xs);
+  }
+
+  &.relaxed {
+    --gap: var(--space-md);
+  }
+
+  &.loose {
+    --gap: var(--space-lg);
+  }
+}
