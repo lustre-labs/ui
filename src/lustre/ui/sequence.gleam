@@ -39,6 +39,9 @@ pub fn sequence(
   of(html.div, attributes, children)
 }
 
+/// By default, a sequence uses a `<div />` as the container element. If you want
+/// to use a different element, you can use this function 
+/// 
 pub fn of(
   element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
   attributes: List(Attribute(msg)),
@@ -112,8 +115,8 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using the `ui.space` function for consistent spacing
-/// across your application.
+/// `10px`, or you can use CSS variables such as `var(--space-xs)` to use the
+/// space scale from the theme.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])

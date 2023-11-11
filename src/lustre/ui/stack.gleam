@@ -20,31 +20,15 @@ pub fn stack(
   of(html.div, attributes, children)
 }
 
+/// By default the stack element uses a `<div />` as its container. You can use
+/// this function to use a different element such as a `<nav />` or `<ul />`.
+/// 
 pub fn of(
   element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
   element([attribute.class("lustre-ui-stack"), ..attributes], children)
-}
-
-/// A split is a special kind of stack that divides itself into two parts. The
-/// first child is anchored to the top of the split and the second child is
-/// anchored to the bottom of the split. 
-/// 
-/// If one (or both) of the children are too large, or if the height of the split
-/// is too small, the children will still be separated by a gap as in the normal
-/// `stack`.
-/// 
-pub fn split(
-  attributes: List(Attribute(msg)),
-  top: Element(msg),
-  bottom: Element(msg),
-) -> Element(msg) {
-  html.div(
-    [attribute.class("lustre-ui-stack split"), ..attributes],
-    [top, bottom],
-  )
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
@@ -80,8 +64,8 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using the `ui.space` function for consistent spacing
-/// across your application.
+/// `10px`, or you can use CSS variables such as `var(--space-xs)` to use the
+/// space scale from the theme.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])

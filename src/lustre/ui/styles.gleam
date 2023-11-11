@@ -10,12 +10,20 @@ import gleam/string
 
 // ELEMENTS --------------------------------------------------------------------
 
+/// Render a `<style />` element that sets up all the CSS variables derived from
+/// a theme. You *need* to include this element in your app for any of the elements
+/// to work and look correct.
+/// 
 pub fn theme(theme: Theme) -> Element(msg) {
   theme_to_map(theme)
   |> map.fold(theme_css, string.replace)
   |> html.style([], _)
 }
 
+/// Render a `<style />` element that sets up the styles for all the elements
+/// provided by this library. If you prefer, this stylesheet is also provided
+/// as a static CSS file in the `priv` directory of this package.
+/// 
 pub fn elements() -> Element(msg) {
   html.style([], element_css)
 }
@@ -116,15 +124,17 @@ const theme_css: String = "
   --text-4xl: calc(var(--text-3xl) * 1.25);
   --text-5xl: calc(var(--text-4xl) * 1.25);
 
-  --space-xs: calc(0.5 * 1em);
-  --space-sm: calc(0.75 * 1em);
-  --space-md: 1em;
-  --space-lg: calc(1.25 * 1em);
-  --space-xl: calc(2 * 1em);
-  --space-2xl: calc(3.25 * 1em);
-  --space-3xl: calc(5.25 * 1em);
-  --space-4xl: calc(8.5 * 1em);
-  --space-5xl: calc(13.75 * 1em);
+  font-size: var(--text-md);
+
+  --space-xs: calc(0.5 * 1rem);
+  --space-sm: calc(0.75 * 1rem);
+  --space-md: 1rem;
+  --space-lg: calc(1.25 * 1rem);
+  --space-xl: calc(2 * 1rem);
+  --space-2xl: calc(3.25 * 1rem);
+  --space-3xl: calc(5.25 * 1rem);
+  --space-4xl: calc(8.5 * 1rem);
+  --space-5xl: calc(13.75 * 1rem);
 
   --font-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif,
@@ -139,6 +149,8 @@ const theme_css: String = "
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  color: var(--text-high-contrast);
 }
 
 [data-variant=\"primary\"] {
@@ -200,6 +212,8 @@ const theme_css: String = "
 
   --text-high-contrast: $(error.text_high_contrast);
   --text-low-contrast: $(error.text_low_contrast);
+
+  color: var(--text-high-contrast);
 }
 
 [data-variant=\"success\"] {

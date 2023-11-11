@@ -6,6 +6,12 @@ import lustre/element/html
 
 // ELEMENTS --------------------------------------------------------------------
 
+/// A cluster is a group of non-uniformly sized elements arranged along the
+/// inline axis. Where a cluster's children are too wide or too many, the elements
+/// overflow in the same way that text typically does.
+/// 
+/// Clusters are useful for grouping things like tags or controls.
+/// 
 pub fn cluster(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
@@ -13,6 +19,9 @@ pub fn cluster(
   of(html.div, attributes, children)
 }
 
+/// By default the cluster uses a `<div />` as the underlying container. You can
+/// use this function to use a different element, like a `<ul />` instead.
+/// 
 pub fn of(
   element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
   attributes: List(Attribute(msg)),
@@ -22,6 +31,18 @@ pub fn of(
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
+
+///
+/// 
+pub fn from_start() -> Attribute(msg) {
+  attribute.class("from-start")
+}
+
+///
+/// 
+pub fn from_end() -> Attribute(msg) {
+  attribute.class("from-end")
+}
 
 /// A packed cluster has no gap between each child element.
 /// 
@@ -54,21 +75,9 @@ pub fn loose() -> Attribute(msg) {
 /// than `tight`.
 /// 
 /// You can pass any valid CSS length value to this function such as `1rem` or
-/// `10px`, but we recommend using the `ui.space` function for consistent spacing
-/// across your application.
+/// `10px`, or you can use CSS variables such as `var(--space-xs)` to use the
+/// space scale from the theme.
 /// 
 pub fn space(gap: String) -> Attribute(msg) {
   attribute.style([#("--gap", gap)])
-}
-
-///
-/// 
-pub fn from_start() -> Attribute(msg) {
-  attribute.class("from-start")
-}
-
-///
-/// 
-pub fn from_end() -> Attribute(msg) {
-  attribute.class("from-end")
 }

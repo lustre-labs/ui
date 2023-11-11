@@ -39,6 +39,28 @@ fn icon(attrs: List(Attribute(msg)), path: String) -> Element(msg) {
   )
 }
 
+// ATTRIBUTES ------------------------------------------------------------------
+
+pub fn xs() -> Attribute(msg) {
+  attribute.class("xs")
+}
+
+pub fn sm() -> Attribute(msg) {
+  attribute.class("sm")
+}
+
+pub fn md() -> Attribute(msg) {
+  attribute.class("md")
+}
+
+pub fn lg() -> Attribute(msg) {
+  attribute.class("lg")
+}
+
+pub fn xl() -> Attribute(msg) {
+  attribute.class("xl")
+}
+
 // TYPOGRAPHY ------------------------------------------------------------------
 
 pub fn font_style(attrs: List(Attribute(msg))) -> Element(msg) {
