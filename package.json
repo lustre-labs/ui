@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
+    "postcss": "^8.4.31",
+    "postcss-nesting": "^12.0.1"
+  }
+}
