@@ -20,7 +20,6 @@ jobs:
           fi
           echo "tag does not match version in gleam.toml, refusing to publish"
           exit 1
-      - run: gleam run -m build
       - run: gleam format --check src test
       - run: gleam publish -y
         env:
