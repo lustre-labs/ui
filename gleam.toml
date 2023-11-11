@@ -2,12 +2,12 @@ name = "lustre_ui"
 version = "0.1.0"
 description = "A collection of components and design tokens for building Lustre apps."
 
-# Fill out these fields if you intend to generate HTML documentation or publish
-# your project to the Hex package manager.
-#
-# licences = ["Apache-2.0"]
-# repository = { type = "github", user = "username", repo = "project" }
-# links = [{ title = "Website", href = "https://gleam.run" }]
+licences = ["MIT"]
+repository = { type = "github", user = "lustre-labs", repo = "lustre_ui" }
+links = [
+  { title = "Website", href = "https://lustre.build" },
+  { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
+]
 
 internal_modules = [
   "internals/*",
