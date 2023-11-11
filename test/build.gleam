@@ -1,9 +1,8 @@
 // IMPORTS ---------------------------------------------------------------------
 
+import gleam/bool
 import gleam/list
-import gleam/option.{Some}
 import gleam/regex.{Match, Options}
-import gleam/result
 import gleam/string
 import simplifile
 
@@ -11,26 +10,32 @@ import simplifile
 
 pub fn main() {
   let options = Options(case_insensitive: False, multi_line: True)
+  let assert Ok(src) = simplifile.read("./src/lustre/ui/styles.gleam")
+  let assert Ok(entries) = simplifile.list_contents("./src/lustre/ui")
+  let css = {
+    use css, path <- list.fold(entries, "")
+    use <- bool.guard(!string.ends_with(path, ".css"), css)
+    let assert Ok(styles) = simplifile.read("./src/lustre/ui/" <> path)
 
-  let assert Ok(src) = simplifile.read("./src/lustre/ui.gleam")
-  let assert Ok(regex) = regex.compile("// @embed (.+)", options)
-
-  let matches = regex.scan(regex, src)
-  let out = {
-    use src, Match(submatches: [Some(path)], ..) <- list.fold(matches, src)
-    let assert Ok(css) = simplifile.read("./priv/" <> path)
-    let assert Ok([Match(content: chunk, ..)]) =
-      { "// @embed " <> path <> "\n  \"(.|\n)+?  \"" }
-      |> regex.compile(options)
-      |> result.map(regex.scan(_, src))
-
+    css <> styles <> "\n"
+  }
+  let assert Ok(regex) =
+    regex.compile("const element_css: String = \"(.|\n)+\"", options)
+  let assert [Match(content, ..)] = regex.scan(regex, src)
+  use css <- compile_css(css)
+  let css = string.replace(css, "\"", "\\\"")
+  let out =
     string.replace(
       src,
-      chunk,
-      ["// @embed " <> path, "  \"", string.replace(css, "\"", "'"), "  \""]
-      |> string.join("\n"),
+      content,
+      "const element_css: String = \"\n" <> css <> "\n\"",
     )
-  }
+  let assert Ok(_) = simplifile.write(out, "./src/lustre/ui/styles.gleam")
+}
 
-  let assert Ok(_) = simplifile.write(out, "./src/lustre/ui.gleam")
+// EXTERNALS -------------------------------------------------------------------
+
+@external(javascript, "./build.ffi.mjs", "compile_css")
+fn compile_css(_: String, _: fn(String) -> a) -> a {
+  panic as "This build script should be run using the JavaScript target as it depends on PostCSS."
 }
