@@ -1,0 +1,12 @@
+name = "demo"
+version = "0.1.0"
+target = "javascript"
+
+
+[dependencies]
+gleam_stdlib = "~> 0.32"
+lustre = "~> 3.0"
+lustre_ui = { path = "../" }
+
+[dev-dependencies]
+gleeunit = "~> 1.0"
