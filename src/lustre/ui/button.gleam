@@ -34,7 +34,7 @@ pub fn of(
 ) -> Element(msg) {
   element(
     [
-      attribute.class("lustre-ui-aside"),
+      attribute.class("lustre-ui-button"),
       attribute("role", "button"),
       attribute("tabindex", "0"),
       ..attributes
