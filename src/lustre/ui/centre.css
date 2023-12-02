@@ -1,0 +1,11 @@
+.lustre-ui-centre {
+  --display: flex;
+
+  display: var(--display);
+  justify-content: center;
+  align-items: center;
+
+  &.inline {
+    --display: inline-flex;
+  }
+}
