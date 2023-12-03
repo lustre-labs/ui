@@ -1,0 +1,57 @@
+.lustre-ui-field {
+  --label: var(--text-high-contrast);
+  --label-align: start;
+  --message: var(--text-low-contrast);
+  --message-align: end;
+  --text-size: var(--text-md);
+
+  &.small {
+    --text-size: var(--text-sm);
+  }
+
+  &.label-start {
+    --label-align: start;
+  }
+
+  &.label-center,
+  &.label-centre {
+    --label-align: center;
+  }
+
+  &.label-end {
+    --label-align: end;
+  }
+
+  &.message-start {
+    --message-align: start;
+  }
+
+  &.message-center,
+  &.message-centre {
+    --message-align: center;
+  }
+
+  &.message-end {
+    --message-align: end;
+  }
+
+  &:has(input:disabled) > :is(.label, .message) {
+    opacity: 0.5;
+  }
+
+  & > :not(input) {
+    color: var(--label);
+    font-size: var(--text-size);
+  }
+
+  & > .label {
+    display: inline-flex;
+    justify-content: var(--label-align);
+  }
+
+  & > .message {
+    display: inline-flex;
+    justify-content: var(--message-align);
+    color: var(--message);
+  }
+}
