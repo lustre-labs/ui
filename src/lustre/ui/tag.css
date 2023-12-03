@@ -1,19 +1,22 @@
 .lustre-ui-tag {
   --bg-active: var(--element-background-strong);
   --bg-hover: var(--element-background-hover);
-  --bg: unset;
-  --border: var(--element-border-subtle);
+  --bg: var(--element-background);
   --border-active: var(--bg-active);
+  --border: var(--bg);
   --text: var(--text-high-contrast);
 
   background-color: var(--bg);
-  border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
   border-radius: var(--border-radius);
+  border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
   color: var(--text);
-  padding: var(--space-2xs) var(--space-xs);
   font-size: var(--text-sm);
-  block-size: min-content;
-  inline-size: min-content;
+  padding: 0 var(--space-xs);
+
+  &:is(button, a, [tabindex]) {
+    cursor: pointer;
+    user-select: none;
+  }
 
   &:is(button, a, [tabindex]):hover,
   &:is(button, a, [tabindex]):focus-within {
