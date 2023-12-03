@@ -1,8 +1,9 @@
 .lustre-ui-cluster {
   --gap: var(--space-md);
   --dir: flex-start;
+  --align: center;
 
-  align-items: center;
+  align-items: var(--align);
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap);
@@ -30,5 +31,22 @@
 
   &.from-end {
     --dir: flex-end;
+  }
+
+  &.align-start {
+    --align: start;
+  }
+
+  &.align-center,
+  &.align-centre {
+    --align: center;
+  }
+
+  &.align-end {
+    --align: end;
+  }
+
+  &.stretch {
+    --align: stretch;
   }
 }

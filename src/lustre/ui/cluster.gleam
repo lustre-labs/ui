@@ -44,6 +44,26 @@ pub fn from_end() -> Attribute(msg) {
   attribute.class("from-end")
 }
 
+/// 
+pub fn align_start() -> Attribute(msg) {
+  attribute.class("align-start")
+}
+
+/// 
+pub fn align_centre() -> Attribute(msg) {
+  attribute.class("align-centre")
+}
+
+/// 
+pub fn align_end() -> Attribute(msg) {
+  attribute.class("align-end")
+}
+
+///
+pub fn stretch() -> Attribute(msg) {
+  attribute.class("stretch")
+}
+
 /// A packed cluster has no gap between each child element.
 /// 
 pub fn packed() -> Attribute(msg) {
