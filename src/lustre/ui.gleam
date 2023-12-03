@@ -1,7 +1,20 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import lustre/attribute.{type Attribute, attribute}
+import lustre/element.{type Element}
+import lustre/ui/aside
+import lustre/ui/box
+import lustre/ui/breadcrumbs
+import lustre/ui/button
+import lustre/ui/centre
+import lustre/ui/cluster
 import lustre/ui/colour.{type Scale}
+import lustre/ui/field
+import lustre/ui/group
+import lustre/ui/input
+import lustre/ui/sequence
+import lustre/ui/stack
+import lustre/ui/tag
 
 // TYPES -----------------------------------------------------------------------
 
@@ -38,19 +51,41 @@ pub type Variant {
 
 // ELEMENTS --------------------------------------------------------------------
 
-/// Lustre_ui's base theme. If you just need something that looks good and don't
-/// have any strict requirements, you can use this theme to get going quickly.
-/// 
-pub fn base() -> Theme {
-  Theme(
-    primary: colour.iris(),
-    greyscale: colour.slate(),
-    error: colour.red(),
-    success: colour.green(),
-    warning: colour.yellow(),
-    info: colour.blue(),
-  )
-}
+pub const aside: fn(List(Attribute(msg)), Element(msg), Element(msg)) ->
+  Element(msg) = aside.aside
+
+pub const box: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = box.box
+
+pub const breadcrumbs: fn(
+  List(Attribute(msg)),
+  Element(msg),
+  List(Element(msg)),
+) ->
+  Element(msg) = breadcrumbs.breadcrumbs
+
+pub const button: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = button.button
+
+pub const centre: fn(List(Attribute(msg)), Element(msg)) -> Element(msg) = centre.centre
+
+pub const cluster: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = cluster.cluster
+
+pub const field: fn(
+  List(Attribute(msg)),
+  List(Element(msg)),
+  Element(msg),
+  List(Element(msg)),
+) ->
+  Element(msg) = field.field
+
+pub const group: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = group.group
+
+pub const input: fn(List(Attribute(msg))) -> Element(msg) = input.input
+
+pub const sequence: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = sequence.sequence
+
+pub const stack: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = stack.stack
+
+pub const tag: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = tag.tag
 
 // ATTRIBUTES ------------------------------------------------------------------
 
