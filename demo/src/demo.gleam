@@ -2,14 +2,12 @@ import lustre
 import lustre/attribute.{attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui
-import lustre/ui/cluster.{cluster}
-import lustre/ui/icon
-import lustre/ui/sequence.{sequence}
-import lustre/ui/stack.{stack}
-import lustre/ui/styles
 import lustre/ui/button.{button}
 import lustre/ui/centre.{centre}
+import lustre/ui/cluster.{cluster}
+import lustre/ui/group.{group}
+import lustre/ui/icon
+import lustre/ui/stack.{stack}
 import lustre/ui/tag.{tag}
 
 // MAIN ------------------------------------------------------------------------
@@ -49,7 +47,6 @@ fn view(model: Model) -> Element(Msg) {
   stack(
     [],
     [
-      styles.theme(ui.base()),
       stack(
         [],
         [
@@ -65,7 +62,7 @@ fn view(model: Model) -> Element(Msg) {
               icon.chevron_up([]),
               icon.width([]),
               icon.stack([]),
-              icon.shadow([]),
+              icon.circle([]),
               icon.zoom_in([]),
               icon.cursor_text([]),
               icon.play([]),
@@ -83,10 +80,10 @@ fn view(model: Model) -> Element(Msg) {
         [],
         [
           html.p([], [element.text("Buttons:")]),
-          sequence(
-            [],
+          cluster(
+            [cluster.stretch()],
             [
-              button([button.outline()], [element.text("these")]),
+              button([button.clear()], [element.text("these")]),
               button([button.soft()], [element.text("are")]),
               button([button.solid()], [element.text("some")]),
               button([button.error()], [element.text("buttons")]),
@@ -98,13 +95,31 @@ fn view(model: Model) -> Element(Msg) {
       stack(
         [],
         [
-          html.p([], [element.text("Buttons:")]),
+          html.p([], [element.text("Button groups:")]),
+          group(
+            [],
+            [
+              button([], [element.text("these")]),
+              button([], [element.text("are")]),
+              button([], [element.text("some")]),
+              button([], [element.text("buttons")]),
+            ],
+          ),
+        ],
+      ),
+      stack(
+        [],
+        [
+          html.p([], [element.text("Tags:")]),
           cluster(
             [],
             [
               tag([], [element.text("erlang")]),
               tag([], [element.text("elixir")]),
-              tag([attribute("tabindex", "0")], [element.text("gleam")]),
+              tag(
+                [attribute("tabindex", "0")],
+                [element.text("gleam"), icon.cross([])],
+              ),
               tag([], [element.text("javascript")]),
             ],
           ),
