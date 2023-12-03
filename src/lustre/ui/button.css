@@ -5,12 +5,14 @@
   --border-active: var(--bg-active);
   --border: var(--bg);
   --text: var(--text-high-contrast);
+  --padding-y: var(--space-xs);
+  --padding-x: var(--space-sm);
 
   background-color: var(--bg);
   border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
   border-radius: var(--border-radius);
   color: var(--text);
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--padding-y) var(--padding-x);
 
   &:hover,
   &:focus-within {
@@ -21,6 +23,11 @@
   &:focus-within:active {
     background-color: var(--bg-active);
     border-color: var(--border-active);
+  }
+
+  &.small {
+    --padding-y: var(--space-2xs);
+    --padding-x: var(--space-xs);
   }
 
   &.solid {
@@ -54,5 +61,10 @@
   &.outline {
     --bg: unset;
     --border: var(--element-border-subtle);
+  }
+
+  &.clear {
+    --bg: unset;
+    --border: unset;
   }
 }

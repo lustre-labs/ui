@@ -57,6 +57,14 @@ pub fn outline() -> Attribute(msg) {
   attribute.class("outline")
 }
 
+pub fn clear() -> Attribute(msg) {
+  attribute.class("clear")
+}
+
+pub fn small() -> Attribute(msg) {
+  attribute.class("small")
+}
+
 pub fn primary() -> Attribute(msg) {
   attribute("data-variant", "primary")
 }
