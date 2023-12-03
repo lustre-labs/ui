@@ -1,6 +1,7 @@
 .lustre-ui-icon {
   --size: 1em;
 
+  display: inline;
   width: var(--size);
   height: var(--size);
 
