@@ -1,0 +1,257 @@
+:root {
+  --primary-app-background: rgba(99.22%, 99.22%, 100%, 1);
+  --primary-app-background-subtle: rgba(98.04%, 98.04%, 100%, 1);
+  --primary-app-border: rgba(81.57%, 81.57%, 98.04%, 1);
+  --primary-element-background: rgba(95.29%, 95.29%, 100%, 1);
+  --primary-element-background-hover: rgba(92.16%, 92.16%, 99.61%, 1);
+  --primary-element-background-strong: rgba(87.84%, 87.84%, 99.22%, 1);
+  --primary-element-border-subtle: rgba(72.94%, 73.33%, 96.08%, 1);
+  --primary-element-border-strong: rgba(60.78%, 61.96%, 94.12%, 1);
+  --primary-solid-background: rgba(35.69%, 35.69%, 83.92%, 1);
+  --primary-solid-background-hover: rgba(32.55%, 32.55%, 80.78%, 1);
+  --primary-text-high-contrast: rgba(15.29%, 16.08%, 38.43%, 1);
+  --primary-text-low-contrast: rgba(27.84%, 27.84%, 76.08%, 1);
+
+  --greyscale-app-background: rgba(98.82%, 98.82%, 99.22%, 1);
+  --greyscale-app-background-subtle: rgba(97.65%, 97.65%, 98.43%, 1);
+  --greyscale-app-border: rgba(86.67%, 86.67%, 89.02%, 1);
+  --greyscale-element-background: rgba(94.9%, 94.9%, 96.08%, 1);
+  --greyscale-element-background-hover: rgba(92.16%, 92.16%, 93.73%, 1);
+  --greyscale-element-background-strong: rgba(89.41%, 89.41%, 91.37%, 1);
+  --greyscale-element-border-subtle: rgba(82.75%, 83.14%, 85.88%, 1);
+  --greyscale-element-border-strong: rgba(72.55%, 73.33%, 77.65%, 1);
+  --greyscale-solid-background: rgba(54.51%, 55.29%, 59.61%, 1);
+  --greyscale-solid-background-hover: rgba(49.41%, 50.2%, 54.12%, 1);
+  --greyscale-text-high-contrast: rgba(10.98%, 12.55%, 14.12%, 1);
+  --greyscale-text-low-contrast: rgba(37.65%, 39.22%, 42.35%, 1);
+
+  --error-app-background: rgba(100%, 98.82%, 98.82%, 1);
+  --error-app-background-subtle: rgba(100%, 96.86%, 96.86%, 1);
+  --error-app-border: rgba(97.65%, 77.65%, 77.65%, 1);
+  --error-element-background: rgba(100%, 93.73%, 93.73%, 1);
+  --error-element-background-hover: rgba(100%, 89.8%, 89.8%, 1);
+  --error-element-background-strong: rgba(99.22%, 84.71%, 84.71%, 1);
+  --error-element-border-subtle: rgba(95.29%, 68.24%, 68.63%, 1);
+  --error-element-border-strong: rgba(92.16%, 56.47%, 56.86%, 1);
+  --error-solid-background: rgba(89.8%, 28.24%, 30.2%, 1);
+  --error-solid-background-hover: rgba(85.1%, 23.92%, 25.88%, 1);
+  --error-text-high-contrast: rgba(39.22%, 9.02%, 13.73%, 1);
+  --error-text-low-contrast: rgba(77.65%, 16.47%, 18.43%, 1);
+
+  --success-app-background: rgba(98.43%, 99.61%, 98.82%, 1);
+  --success-app-background-subtle: rgba(94.9%, 98.82%, 96.08%, 1);
+  --success-app-border: rgba(70.59%, 87.45%, 76.86%, 1);
+  --success-element-background: rgba(91.37%, 97.65%, 93.33%, 1);
+  --success-element-background-hover: rgba(86.67%, 95.29%, 89.41%, 1);
+  --success-element-background-strong: rgba(80%, 92.16%, 84.31%, 1);
+  --success-element-border-subtle: rgba(57.25%, 80.78%, 67.45%, 1);
+  --success-element-border-strong: rgba(35.69%, 72.55%, 54.9%, 1);
+  --success-solid-background: rgba(18.82%, 64.31%, 42.35%, 1);
+  --success-solid-background-hover: rgba(16.08%, 59.22%, 39.22%, 1);
+  --success-text-high-contrast: rgba(9.8%, 23.14%, 17.65%, 1);
+  --success-text-low-contrast: rgba(9.41%, 47.45%, 30.59%, 1);
+
+  --warning-app-background: rgba(99.22%, 99.22%, 97.65%, 1);
+  --warning-app-background-subtle: rgba(100%, 98.43%, 87.84%, 1);
+  --warning-app-border: rgba(92.55%, 86.67%, 52.16%, 1);
+  --warning-element-background: rgba(100%, 97.25%, 77.65%, 1);
+  --warning-element-background-hover: rgba(98.82%, 95.29%, 68.63%, 1);
+  --warning-element-background-strong: rgba(96.86%, 91.76%, 60.78%, 1);
+  --warning-element-border-subtle: rgba(85.49%, 77.25%, 43.14%, 1);
+  --warning-element-border-strong: rgba(78.82%, 66.67%, 27.06%, 1);
+  --warning-solid-background: rgba(98.43%, 89.02%, 17.65%, 1);
+  --warning-solid-background-hover: rgba(97.65%, 85.49%, 6.27%, 1);
+  --warning-text-high-contrast: rgba(27.84%, 23.14%, 12.16%, 1);
+  --warning-text-low-contrast: rgba(46.67%, 37.25%, 15.69%, 1);
+
+  --info-app-background: rgba(98.43%, 99.22%, 100%, 1);
+  --info-app-background-subtle: rgba(96.08%, 98.04%, 100%, 1);
+  --info-app-border: rgba(71.76%, 85.1%, 97.25%, 1);
+  --info-element-background: rgba(92.94%, 96.47%, 100%, 1);
+  --info-element-background-hover: rgba(88.24%, 94.12%, 100%, 1);
+  --info-element-background-strong: rgba(80.78%, 90.59%, 99.61%, 1);
+  --info-element-border-subtle: rgba(58.82%, 78.04%, 94.9%, 1);
+  --info-element-border-strong: rgba(36.86%, 69.02%, 93.73%, 1);
+  --info-solid-background: rgba(0%, 56.86%, 100%, 1);
+  --info-solid-background-hover: rgba(3.14%, 50.2%, 91.76%, 1);
+  --info-text-high-contrast: rgba(6.67%, 19.61%, 39.22%, 1);
+  --info-text-low-contrast: rgba(4.31%, 40.78%, 79.61%, 1);
+
+  --app-background: var(--primary-app-background);
+  --app-background-subtle: var(--primary-app-background-subtle);
+  --app-border: var(--primary-app-border);
+
+  --element-background: var(--primary-element-background);
+  --element-background-hover: var(--primary-element-background-hover);
+  --element-background-strong: var(--primary-element-background-strong);
+
+  --element-border-subtle: var(--primary-element-border-subtle);
+  --element-border-strong: var(--primary-element-border-strong);
+
+  --solid-background: var(--primary-solid-background);
+  --solid-background-hover: var(--primary-solid-background-hover);
+
+  --text-high-contrast: var(--primary-text-high-contrast);
+  --text-low-contrast: var(--primary-text-low-contrast);
+
+  --text-xs: calc(var(--text-sm) / 1.25);
+  --text-sm: calc(var(--text-md) / 1.25);
+  --text-md: 14px;
+  --text-lg: calc(var(--text-md) * 1.25);
+  --text-xl: calc(var(--text-lg) * 1.25);
+  --text-2xl: calc(var(--text-xl) * 1.25);
+  --text-3xl: calc(var(--text-2xl) * 1.25);
+  --text-4xl: calc(var(--text-3xl) * 1.25);
+  --text-5xl: calc(var(--text-4xl) * 1.25);
+
+  --space-2xs: calc(0.25 * 1rem);
+  --space-xs: calc(0.5 * 1rem);
+  --space-sm: calc(0.75 * 1rem);
+  --space-md: 1rem;
+  --space-lg: calc(1.25 * 1rem);
+  --space-xl: calc(2 * 1rem);
+  --space-2xl: calc(3.25 * 1rem);
+  --space-3xl: calc(5.25 * 1rem);
+  --space-4xl: calc(8.5 * 1rem);
+  --space-5xl: calc(13.75 * 1rem);
+
+  --font-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-alt: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  --border-radius: 4px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+[data-variant="primary"] {
+  --app-background: var(--primary-app-background);
+  --app-background-subtle: var(--primary-app-background-subtle);
+  --app-border: var(--primary-app-border);
+
+  --element-background: var(--primary-element-background);
+  --element-background-hover: var(--primary-element-background-hover);
+  --element-background-strong: var(--primary-element-background-strong);
+
+  --element-border-subtle: var(--primary-element-border-subtle);
+  --element-border-strong: var(--primary-element-border-strong);
+
+  --solid-background: var(--primary-solid-background);
+  --solid-background-hover: var(--primary-solid-background-hover);
+
+  --text-high-contrast: var(--primary-text-high-contrast);
+  --text-low-contrast: var(--primary-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
+
+[data-variant="greyscale"] {
+  --app-background: var(--greyscale-app-background);
+  --app-background-subtle: var(--greyscale-app-background-subtle);
+  --app-border: var(--greyscale-app-border);
+
+  --element-background: var(--greyscale-element-background);
+  --element-background-hover: var(--greyscale-element-background-hover);
+  --element-background-strong: var(--greyscale-element-background-strong);
+
+  --element-border-subtle: var(--greyscale-element-border-subtle);
+  --element-border-strong: var(--greyscale-element-border-strong);
+
+  --solid-background: var(--greyscale-solid-background);
+  --solid-background-hover: var(--greyscale-solid-background-hover);
+
+  --text-high-contrast: var(--greyscale-text-high-contrast);
+  --text-low-contrast: var(--greyscale-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
+
+[data-variant="error"] {
+  --app-background: var(--error-app-background);
+  --app-background-subtle: var(--error-app-background-subtle);
+  --app-border: var(--error-app-border);
+
+  --element-background: var(--error-element-background);
+  --element-background-hover: var(--error-element-background-hover);
+  --element-background-strong: var(--error-element-background-strong);
+
+  --element-border-subtle: var(--error-element-border-subtle);
+  --element-border-strong: var(--error-element-border-strong);
+
+  --solid-background: var(--error-solid-background);
+  --solid-background-hover: var(--error-solid-background-hover);
+
+  --text-high-contrast: var(--error-text-high-contrast);
+  --text-low-contrast: var(--error-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
+
+[data-variant="success"] {
+  --app-background: var(--success-app-background);
+  --app-background-subtle: var(--success-app-background-subtle);
+  --app-border: var(--success-app-border);
+
+  --element-background: var(--success-element-background);
+  --element-background-hover: var(--success-element-background-hover);
+  --element-background-strong: var(--success-element-background-strong);
+
+  --element-border-subtle: var(--success-element-border-subtle);
+  --element-border-strong: var(--success-element-border-strong);
+
+  --solid-background: var(--success-solid-background);
+  --solid-background-hover: var(--success-solid-background-hover);
+
+  --text-high-contrast: var(--success-text-high-contrast);
+  --text-low-contrast: var(--success-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
+
+[data-variant="warning"] {
+  --app-background: var(--warning-app-background);
+  --app-background-subtle: var(--warning-app-background-subtle);
+  --app-border: var(--warning-app-border);
+
+  --element-background: var(--warning-element-background);
+  --element-background-hover: var(--warning-element-background-hover);
+  --element-background-strong: var(--warning-element-background-strong);
+
+  --element-border-subtle: var(--warning-element-border-subtle);
+  --element-border-strong: var(--warning-element-border-strong);
+
+  --solid-background: var(--warning-solid-background);
+  --solid-background-hover: var(--warning-solid-background-hover);
+
+  --text-high-contrast: var(--warning-text-high-contrast);
+  --text-low-contrast: var(--warning-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
+
+[data-variant="info"] {
+  --app-background: var(--info-app-background);
+  --app-background-subtle: var(--info-app-background-subtle);
+  --app-border: var(--info-app-border);
+
+  --element-background: var(--info-element-background);
+  --element-background-hover: var(--info-element-background-hover);
+  --element-background-strong: var(--info-element-background-strong);
+
+  --element-border-subtle: var(--info-element-border-subtle);
+  --element-border-strong: var(--info-element-border-strong);
+
+  --solid-background: var(--info-solid-background);
+  --solid-background-hover: var(--info-solid-background-hover);
+
+  --text-high-contrast: var(--info-text-high-contrast);
+  --text-low-contrast: var(--info-text-low-contrast);
+
+  color: var(--text-high-contrast);
+}
