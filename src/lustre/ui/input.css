@@ -1,0 +1,36 @@
+.lustre-ui-input {
+  --border-active: var(--element-border-strong);
+  --border: var(--element-border-subtle);
+  --outline: var(--element-border-subtle);
+  --text: var(--text-high-contrast);
+  --text-placeholder: var(--text-low-contrast);
+  --padding-y: var(--space-xs);
+  --padding-x: var(--space-sm);
+
+  border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
+  border-radius: var(--border-radius);
+  color: var(--text);
+  padding: var(--padding-y) var(--padding-x);
+
+  &:hover {
+    border-color: var(--border-active);
+  }
+
+  &:focus-within {
+    border-color: var(--border-active);
+    outline: 1px solid var(--outline);
+    outline-offset: 2px;
+  }
+
+  &::placeholder {
+    color: var(--text-placeholder);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.clear {
+    --border: unset;
+  }
+}
