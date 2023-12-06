@@ -101,6 +101,23 @@ pub fn grey() -> Scale {
   )
 }
 
+pub fn grey_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x111111,
+    app_background_subtle: 0x191919,
+    app_border: 0x3A3A3A,
+    element_background: 0x222222,
+    element_background_hover: 0x2A2A2A,
+    element_background_strong: 0x313131,
+    element_border_subtle: 0x484848,
+    element_border_strong: 0x606060,
+    solid_background: 0x6E6E6E,
+    solid_background_hover: 0x7B7B7B,
+    text_high_contrast: 0xEEEEEE,
+    text_low_contrast: 0xB4B4B4,
+  )
+}
+
 pub fn mauve() -> Scale {
   from_radix_scale(
     app_background: 0xFDFCFD,
@@ -115,6 +132,23 @@ pub fn mauve() -> Scale {
     solid_background_hover: 0x817F8B,
     text_high_contrast: 0x211F26,
     text_low_contrast: 0x65636D,
+  )
+}
+
+pub fn mauve_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x121113,
+    app_background_subtle: 0x1A191B,
+    app_border: 0x3C393F,
+    element_background: 0x232225,
+    element_background_hover: 0x2B292D,
+    element_background_strong: 0x323035,
+    element_border_subtle: 0x49474E,
+    element_border_strong: 0x625F69,
+    solid_background: 0x6F6D78,
+    solid_background_hover: 0x7C7A85,
+    text_high_contrast: 0xEEEEF0,
+    text_low_contrast: 0xB5B2BC,
   )
 }
 
@@ -135,6 +169,23 @@ pub fn slate() -> Scale {
   )
 }
 
+pub fn slate_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x111113,
+    app_background_subtle: 0x18191B,
+    app_border: 0x363A3F,
+    element_background: 0x212225,
+    element_background_hover: 0x272A2D,
+    element_background_strong: 0x2E3135,
+    element_border_subtle: 0x43484E,
+    element_border_strong: 0x5A6169,
+    solid_background: 0x696E77,
+    solid_background_hover: 0x777B84,
+    text_high_contrast: 0xEDEEF0,
+    text_low_contrast: 0xB0B4BA,
+  )
+}
+
 pub fn sage() -> Scale {
   from_radix_scale(
     app_background: 0xFBFDFC,
@@ -149,6 +200,23 @@ pub fn sage() -> Scale {
     solid_background_hover: 0x7A817F,
     text_high_contrast: 0x1A211E,
     text_low_contrast: 0x5F6563,
+  )
+}
+
+pub fn sage_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x101211,
+    app_background_subtle: 0x171918,
+    app_border: 0x373B39,
+    element_background: 0x202221,
+    element_background_hover: 0x272A29,
+    element_background_strong: 0x2E3130,
+    element_border_subtle: 0x444947,
+    element_border_strong: 0x5B625F,
+    solid_background: 0x63706B,
+    solid_background_hover: 0x717D79,
+    text_high_contrast: 0xECEEED,
+    text_low_contrast: 0xADB5B2,
   )
 }
 
@@ -169,6 +237,23 @@ pub fn olive() -> Scale {
   )
 }
 
+pub fn olive_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x111210,
+    app_background_subtle: 0x181917,
+    app_border: 0x383A36,
+    element_background: 0x212220,
+    element_background_hover: 0x282A27,
+    element_background_strong: 0x2F312E,
+    element_border_subtle: 0x454843,
+    element_border_strong: 0x5C625B,
+    solid_background: 0x687066,
+    solid_background_hover: 0x767D74,
+    text_high_contrast: 0xECEEEC,
+    text_low_contrast: 0xAFB5AD,
+  )
+}
+
 pub fn sand() -> Scale {
   from_radix_scale(
     app_background: 0xFDFDFC,
@@ -183,6 +268,23 @@ pub fn sand() -> Scale {
     solid_background_hover: 0x80807A,
     text_high_contrast: 0x21201C,
     text_low_contrast: 0x63635E,
+  )
+}
+
+pub fn sand_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x111110,
+    app_background_subtle: 0x191918,
+    app_border: 0x3B3A37,
+    element_background: 0x222221,
+    element_background_hover: 0x2A2A28,
+    element_background_strong: 0x31312E,
+    element_border_subtle: 0x494844,
+    element_border_strong: 0x62605B,
+    solid_background: 0x6F6D66,
+    solid_background_hover: 0x7C7B74,
+    text_high_contrast: 0xEEEEEC,
+    text_low_contrast: 0xB5B3AD,
   )
 }
 
@@ -203,6 +305,23 @@ pub fn gold() -> Scale {
   )
 }
 
+pub fn gold_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x121211,
+    app_background_subtle: 0x1B1A17,
+    app_border: 0x444039,
+    element_background: 0x24231F,
+    element_background_hover: 0x2D2B26,
+    element_background_strong: 0x38352E,
+    element_border_subtle: 0x544F46,
+    element_border_strong: 0x696256,
+    solid_background: 0x978365,
+    solid_background_hover: 0xA39073,
+    text_high_contrast: 0xE8E2D9,
+    text_low_contrast: 0xCBB99F,
+  )
+}
+
 pub fn bronze() -> Scale {
   from_radix_scale(
     app_background: 0xFDFCFC,
@@ -217,6 +336,23 @@ pub fn bronze() -> Scale {
     solid_background_hover: 0x947467,
     text_high_contrast: 0x43302B,
     text_low_contrast: 0x7D5E54,
+  )
+}
+
+pub fn bronze_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x141110,
+    app_background_subtle: 0x1C1917,
+    app_border: 0x493E3A,
+    element_background: 0x262220,
+    element_background_hover: 0x302A27,
+    element_background_strong: 0x3B3330,
+    element_border_subtle: 0x5A4C47,
+    element_border_strong: 0x6F5F58,
+    solid_background: 0xA18072,
+    solid_background_hover: 0xAE8C7E,
+    text_high_contrast: 0xEDE0D9,
+    text_low_contrast: 0xD4B3A5,
   )
 }
 
@@ -237,6 +373,23 @@ pub fn brown() -> Scale {
   )
 }
 
+pub fn brown_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x12110F,
+    app_background_subtle: 0x1C1816,
+    app_border: 0x4D3C2F,
+    element_background: 0x28211D,
+    element_background_hover: 0x322922,
+    element_background_strong: 0x3E3128,
+    element_border_subtle: 0x614A39,
+    element_border_strong: 0x7C5F46,
+    solid_background: 0xAD7F58,
+    solid_background_hover: 0xB88C67,
+    text_high_contrast: 0xF2E1CA,
+    text_low_contrast: 0xDBB594,
+  )
+}
+
 pub fn yellow() -> Scale {
   from_radix_scale(
     app_background: 0xFDFDF9,
@@ -251,6 +404,23 @@ pub fn yellow() -> Scale {
     solid_background_hover: 0xF9DA10,
     text_high_contrast: 0x473B1F,
     text_low_contrast: 0x775F28,
+  )
+}
+
+pub fn yellow_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x14120B,
+    app_background_subtle: 0x1B180F,
+    app_border: 0x524202,
+    element_background: 0x2D2305,
+    element_background_hover: 0x362B00,
+    element_background_strong: 0x433500,
+    element_border_subtle: 0x665417,
+    element_border_strong: 0x836A21,
+    solid_background: 0xFFE629,
+    solid_background_hover: 0xFFFF57,
+    text_high_contrast: 0xF6EEB4,
+    text_low_contrast: 0xF5E147,
   )
 }
 
@@ -271,6 +441,23 @@ pub fn amber() -> Scale {
   )
 }
 
+pub fn amber_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x16120C,
+    app_background_subtle: 0x1D180F,
+    app_border: 0x5C3D05,
+    element_background: 0x302008,
+    element_background_hover: 0x3F2700,
+    element_background_strong: 0x4D3000,
+    element_border_subtle: 0x714F19,
+    element_border_strong: 0x8F6424,
+    solid_background: 0xFFC53D,
+    solid_background_hover: 0xFFD60A,
+    text_high_contrast: 0xFFE7B3,
+    text_low_contrast: 0xFFCA16,
+  )
+}
+
 pub fn orange() -> Scale {
   from_radix_scale(
     app_background: 0xFEFCFB,
@@ -285,6 +472,23 @@ pub fn orange() -> Scale {
     solid_background_hover: 0xED5F00,
     text_high_contrast: 0x582D1D,
     text_low_contrast: 0x99543A,
+  )
+}
+
+pub fn orange_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x17120E,
+    app_background_subtle: 0x1E160F,
+    app_border: 0x66350C,
+    element_background: 0x331E0B,
+    element_background_hover: 0x462100,
+    element_background_strong: 0x562800,
+    element_border_subtle: 0x7E451D,
+    element_border_strong: 0xA35829,
+    solid_background: 0xF76B15,
+    solid_background_hover: 0xFF801F,
+    text_high_contrast: 0xFFE0C2,
+    text_low_contrast: 0xFFA057,
   )
 }
 
@@ -305,6 +509,23 @@ pub fn tomato() -> Scale {
   )
 }
 
+pub fn tomato_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x181111,
+    app_background_subtle: 0x1F1513,
+    app_border: 0x6E2920,
+    element_background: 0x391714,
+    element_background_hover: 0x4E1511,
+    element_background_strong: 0x5E1C16,
+    element_border_subtle: 0x853A2D,
+    element_border_strong: 0xAC4D39,
+    solid_background: 0xE54D2E,
+    solid_background_hover: 0xEC6142,
+    text_high_contrast: 0xFBD3CB,
+    text_low_contrast: 0xFF977D,
+  )
+}
+
 pub fn red() -> Scale {
   from_radix_scale(
     app_background: 0xFFFCFC,
@@ -319,6 +540,23 @@ pub fn red() -> Scale {
     solid_background_hover: 0xD93D42,
     text_high_contrast: 0x641723,
     text_low_contrast: 0xC62A2F,
+  )
+}
+
+pub fn red_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x191111,
+    app_background_subtle: 0x201314,
+    app_border: 0x72232D,
+    element_background: 0x3B1219,
+    element_background_hover: 0x500F1C,
+    element_background_strong: 0x611623,
+    element_border_subtle: 0x8C333A,
+    element_border_strong: 0xB54548,
+    solid_background: 0xE5484D,
+    solid_background_hover: 0xEC5D5E,
+    text_high_contrast: 0xFFD1D9,
+    text_low_contrast: 0xFF9592,
   )
 }
 
@@ -339,6 +577,23 @@ pub fn ruby() -> Scale {
   )
 }
 
+pub fn ruby_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x191113,
+    app_background_subtle: 0x1E1517,
+    app_border: 0x6F2539,
+    element_background: 0x3A141E,
+    element_background_hover: 0x4E1325,
+    element_background_strong: 0x5E1A2E,
+    element_border_subtle: 0x883447,
+    element_border_strong: 0xB3445A,
+    solid_background: 0xE54666,
+    solid_background_hover: 0xEC5A72,
+    text_high_contrast: 0xFED2E1,
+    text_low_contrast: 0xFF949D,
+  )
+}
+
 pub fn crimson() -> Scale {
   from_radix_scale(
     app_background: 0xFFFCFD,
@@ -353,6 +608,23 @@ pub fn crimson() -> Scale {
     solid_background_hover: 0xDC3175,
     text_high_contrast: 0x621639,
     text_low_contrast: 0xCB1D63,
+  )
+}
+
+pub fn crimson_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x191114,
+    app_background_subtle: 0x201318,
+    app_border: 0x6D2545,
+    element_background: 0x381525,
+    element_background_hover: 0x4D122F,
+    element_background_strong: 0x5C1839,
+    element_border_subtle: 0x873356,
+    element_border_strong: 0xB0436E,
+    solid_background: 0xE93D82,
+    solid_background_hover: 0xEE518A,
+    text_high_contrast: 0xFDD3E8,
+    text_low_contrast: 0xFF92AD,
   )
 }
 
@@ -373,6 +645,23 @@ pub fn pink() -> Scale {
   )
 }
 
+pub fn pink_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x191117,
+    app_background_subtle: 0x21121D,
+    app_border: 0x692955,
+    element_background: 0x37172F,
+    element_background_hover: 0x4B143D,
+    element_background_strong: 0x591C47,
+    element_border_subtle: 0x833869,
+    element_border_strong: 0xA84885,
+    solid_background: 0xD6409F,
+    solid_background_hover: 0xDE51A8,
+    text_high_contrast: 0xFDD1EA,
+    text_low_contrast: 0xFF8DCC,
+  )
+}
+
 pub fn plum() -> Scale {
   from_radix_scale(
     app_background: 0xFEFCFF,
@@ -387,6 +676,23 @@ pub fn plum() -> Scale {
     solid_background_hover: 0xA43CB4,
     text_high_contrast: 0x53195D,
     text_low_contrast: 0x9C2BAD,
+  )
+}
+
+pub fn plum_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x181118,
+    app_background_subtle: 0x201320,
+    app_border: 0x5E3061,
+    element_background: 0x351A35,
+    element_background_hover: 0x451D47,
+    element_background_strong: 0x512454,
+    element_border_subtle: 0x734079,
+    element_border_strong: 0x92549C,
+    solid_background: 0xAB4ABA,
+    solid_background_hover: 0xB658C4,
+    text_high_contrast: 0xF4D4F4,
+    text_low_contrast: 0xE796F3,
   )
 }
 
@@ -407,6 +713,23 @@ pub fn purple() -> Scale {
   )
 }
 
+pub fn purple_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x18111B,
+    app_background_subtle: 0x1E1523,
+    app_border: 0x54346B,
+    element_background: 0x301C3B,
+    element_background_hover: 0x3D224E,
+    element_background_strong: 0x48295C,
+    element_border_subtle: 0x664282,
+    element_border_strong: 0x8457AA,
+    solid_background: 0x8E4EC6,
+    solid_background_hover: 0x9A5CD0,
+    text_high_contrast: 0xECD9FA,
+    text_low_contrast: 0xD19DFF,
+  )
+}
+
 pub fn violet() -> Scale {
   from_radix_scale(
     app_background: 0xFDFCFE,
@@ -421,6 +744,23 @@ pub fn violet() -> Scale {
     solid_background_hover: 0x644FC1,
     text_high_contrast: 0x2F265F,
     text_low_contrast: 0x5746AF,
+  )
+}
+
+pub fn violet_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x14121F,
+    app_background_subtle: 0x1B1525,
+    app_border: 0x473876,
+    element_background: 0x291F43,
+    element_background_hover: 0x33255B,
+    element_background_strong: 0x3C2E69,
+    element_border_subtle: 0x56468B,
+    element_border_strong: 0x6958AD,
+    solid_background: 0x6E56CF,
+    solid_background_hover: 0x7D66D9,
+    text_high_contrast: 0xE2DDFE,
+    text_low_contrast: 0xBAA7FF,
   )
 }
 
@@ -441,6 +781,23 @@ pub fn iris() -> Scale {
   )
 }
 
+pub fn iris_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x13131E,
+    app_background_subtle: 0x171625,
+    app_border: 0x3D3E82,
+    element_background: 0x202248,
+    element_background_hover: 0x262A65,
+    element_background_strong: 0x303374,
+    element_border_subtle: 0x4A4A95,
+    element_border_strong: 0x5958B1,
+    solid_background: 0x5B5BD6,
+    solid_background_hover: 0x6E6ADE,
+    text_high_contrast: 0xE0DFFE,
+    text_low_contrast: 0xB1A9FF,
+  )
+}
+
 pub fn indigo() -> Scale {
   from_radix_scale(
     app_background: 0xFDFDFE,
@@ -455,6 +812,23 @@ pub fn indigo() -> Scale {
     solid_background_hover: 0x3A5CCC,
     text_high_contrast: 0x1F2D5C,
     text_low_contrast: 0x3451B2,
+  )
+}
+
+pub fn indigo_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x11131F,
+    app_background_subtle: 0x141726,
+    app_border: 0x304384,
+    element_background: 0x182449,
+    element_background_hover: 0x1D2E62,
+    element_background_strong: 0x253974,
+    element_border_subtle: 0x3A4F97,
+    element_border_strong: 0x435DB1,
+    solid_background: 0x3E63DD,
+    solid_background_hover: 0x5472E4,
+    text_high_contrast: 0xD6E1FF,
+    text_low_contrast: 0x9EB1FF,
   )
 }
 
@@ -475,6 +849,23 @@ pub fn blue() -> Scale {
   )
 }
 
+pub fn blue_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0D1520,
+    app_background_subtle: 0x111927,
+    app_border: 0x104D87,
+    element_background: 0x0D2847,
+    element_background_hover: 0x003362,
+    element_background_strong: 0x004074,
+    element_border_subtle: 0x205D9E,
+    element_border_strong: 0x2870BD,
+    solid_background: 0x0090FF,
+    solid_background_hover: 0x3B9EFF,
+    text_high_contrast: 0xC2E6FF,
+    text_low_contrast: 0x70B8FF,
+  )
+}
+
 pub fn cyan() -> Scale {
   from_radix_scale(
     app_background: 0xFAFDFE,
@@ -489,6 +880,23 @@ pub fn cyan() -> Scale {
     solid_background_hover: 0x0894B3,
     text_high_contrast: 0x0D3C48,
     text_low_contrast: 0x0C7792,
+  )
+}
+
+pub fn cyan_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0B161A,
+    app_background_subtle: 0x101B20,
+    app_border: 0x045468,
+    element_background: 0x082C36,
+    element_background_hover: 0x003848,
+    element_background_strong: 0x004558,
+    element_border_subtle: 0x12677E,
+    element_border_strong: 0x11809C,
+    solid_background: 0x00A2C7,
+    solid_background_hover: 0x23AFD0,
+    text_high_contrast: 0xB6ECF7,
+    text_low_contrast: 0x4CCCE6,
   )
 }
 
@@ -509,6 +917,23 @@ pub fn teal() -> Scale {
   )
 }
 
+pub fn teal_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0D1514,
+    app_background_subtle: 0x111C1B,
+    app_border: 0x145750,
+    element_background: 0x0D2D2A,
+    element_background_hover: 0x023B37,
+    element_background_strong: 0x084843,
+    element_border_subtle: 0x1C6961,
+    element_border_strong: 0x207E73,
+    solid_background: 0x12A594,
+    solid_background_hover: 0x0EB39E,
+    text_high_contrast: 0xADF0DD,
+    text_low_contrast: 0x0BD8B6,
+  )
+}
+
 pub fn jade() -> Scale {
   from_radix_scale(
     app_background: 0xFBFEFD,
@@ -523,6 +948,23 @@ pub fn jade() -> Scale {
     solid_background_hover: 0x259678,
     text_high_contrast: 0x1D3B31,
     text_low_contrast: 0x1A7A5E,
+  )
+}
+
+pub fn jade_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0D1512,
+    app_background_subtle: 0x121C18,
+    app_border: 0x1B5745,
+    element_background: 0x0F2E22,
+    element_background_hover: 0x0B3B2C,
+    element_background_strong: 0x114837,
+    element_border_subtle: 0x246854,
+    element_border_strong: 0x2A7E68,
+    solid_background: 0x29A383,
+    solid_background_hover: 0x27B08B,
+    text_high_contrast: 0xADF0D4,
+    text_low_contrast: 0x1FD8A4,
   )
 }
 
@@ -543,6 +985,23 @@ pub fn green() -> Scale {
   )
 }
 
+pub fn green_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0E1512,
+    app_background_subtle: 0x121B17,
+    app_border: 0x20573E,
+    element_background: 0x132D21,
+    element_background_hover: 0x113B29,
+    element_background_strong: 0x174933,
+    element_border_subtle: 0x28684A,
+    element_border_strong: 0x2F7C57,
+    solid_background: 0x30A46C,
+    solid_background_hover: 0x33B074,
+    text_high_contrast: 0xB1F1CB,
+    text_low_contrast: 0x3DD68C,
+  )
+}
+
 pub fn grass() -> Scale {
   from_radix_scale(
     app_background: 0xFBFEFB,
@@ -557,6 +1016,23 @@ pub fn grass() -> Scale {
     solid_background_hover: 0x3D9A50,
     text_high_contrast: 0x203C25,
     text_low_contrast: 0x297C3B,
+  )
+}
+
+pub fn grass_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0E1511,
+    app_background_subtle: 0x141A15,
+    app_border: 0x2D5736,
+    element_background: 0x1B2A1E,
+    element_background_hover: 0x1D3A24,
+    element_background_strong: 0x25482D,
+    element_border_subtle: 0x366740,
+    element_border_strong: 0x3E7949,
+    solid_background: 0x46A758,
+    solid_background_hover: 0x53B365,
+    text_high_contrast: 0xC2F0C2,
+    text_low_contrast: 0x71D083,
   )
 }
 
@@ -577,6 +1053,23 @@ pub fn lime() -> Scale {
   )
 }
 
+pub fn lime_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x11130C,
+    app_background_subtle: 0x151A10,
+    app_border: 0x3D522A,
+    element_background: 0x1F2917,
+    element_background_hover: 0x29371D,
+    element_background_strong: 0x334423,
+    element_border_subtle: 0x496231,
+    element_border_strong: 0x577538,
+    solid_background: 0xBDEE63,
+    solid_background_hover: 0xD4FF70,
+    text_high_contrast: 0xE3F7BA,
+    text_low_contrast: 0xBDE56C,
+  )
+}
+
 pub fn mint() -> Scale {
   from_radix_scale(
     app_background: 0xF9FEFD,
@@ -594,6 +1087,23 @@ pub fn mint() -> Scale {
   )
 }
 
+pub fn mint_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0E1515,
+    app_background_subtle: 0x0F1B1B,
+    app_border: 0x105650,
+    element_background: 0x092C2B,
+    element_background_hover: 0x003A38,
+    element_background_strong: 0x004744,
+    element_border_subtle: 0x1E685F,
+    element_border_strong: 0x277F70,
+    solid_background: 0x86EAD4,
+    solid_background_hover: 0xA8F5E5,
+    text_high_contrast: 0xC4F5E1,
+    text_low_contrast: 0x58D5BA,
+  )
+}
+
 pub fn sky() -> Scale {
   from_radix_scale(
     app_background: 0xF9FEFF,
@@ -608,5 +1118,22 @@ pub fn sky() -> Scale {
     solid_background_hover: 0x72DBF8,
     text_high_contrast: 0x19404D,
     text_low_contrast: 0x256E93,
+  )
+}
+
+pub fn sky_dark() -> Scale {
+  from_radix_scale(
+    app_background: 0x0D141F,
+    app_background_subtle: 0x111A27,
+    app_border: 0x1B537B,
+    element_background: 0x112840,
+    element_background_hover: 0x113555,
+    element_background_strong: 0x154467,
+    element_border_subtle: 0x1F6692,
+    element_border_strong: 0x197CAE,
+    solid_background: 0x7CE2FE,
+    solid_background_hover: 0xA8EEFF,
+    text_high_contrast: 0xC2F3FF,
+    text_low_contrast: 0x75C7F0,
   )
 }
