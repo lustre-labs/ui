@@ -2,6 +2,7 @@
 
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
+import lustre/ui/alert
 import lustre/ui/aside
 import lustre/ui/box
 import lustre/ui/breadcrumbs
@@ -50,6 +51,8 @@ pub type Variant {
 }
 
 // ELEMENTS --------------------------------------------------------------------
+
+pub const alert: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = alert.alert
 
 pub const aside: fn(List(Attribute(msg)), Element(msg), Element(msg)) ->
   Element(msg) = aside.aside
