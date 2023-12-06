@@ -3,6 +3,8 @@ import lustre/attribute.{attribute}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/ui
+import lustre/ui/alert
+import lustre/ui/aside
 import lustre/ui/breadcrumbs
 import lustre/ui/button
 import lustre/ui/cluster
@@ -424,6 +426,26 @@ fn view() -> Element(Nil) {
           icon.pin_right([]),
           icon.pin_top([]),
           icon.pin_bottom([]),
+        ],
+      ),
+      ui.alert(
+        [],
+        [
+          ui.aside(
+            [aside.content_last(), aside.align_centre()],
+            html.p([], [element.text("This is an alert!")]),
+            icon.info_circled([]),
+          ),
+        ],
+      ),
+      ui.alert(
+        [alert.error(), alert.clear()],
+        [
+          ui.aside(
+            [aside.content_last(), aside.align_centre()],
+            html.p([], [element.text("Ooo this one is scary.")]),
+            icon.exclamation_triangle([]),
+          ),
         ],
       ),
     ],
