@@ -99,15 +99,12 @@ pub const tag: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = ta
 /// warning palette and be coloured accordingly.
 /// 
 pub fn variant(variant: Variant) -> Attribute(a) {
-  attribute(
-    "data-variant",
-    case variant {
-      Primary -> "primary"
-      Greyscale -> "greyscale"
-      Error -> "error"
-      Warning -> "warning"
-      Success -> "success"
-      Info -> "info"
-    },
-  )
+  attribute("data-variant", case variant {
+    Primary -> "primary"
+    Greyscale -> "greyscale"
+    Error -> "error"
+    Warning -> "warning"
+    Success -> "success"
+    Info -> "info"
+  })
 }

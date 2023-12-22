@@ -11,7 +11,7 @@ import simplifile
 pub fn main() {
   let options = Options(case_insensitive: False, multi_line: True)
   let assert Ok(src) = simplifile.read("./src/lustre/ui/styles.gleam")
-  let assert Ok(entries) = simplifile.list_contents("./src/lustre/ui")
+  let assert Ok(entries) = simplifile.get_files("./src/lustre/ui")
   let css = {
     use css, path <- list.fold(entries, "")
     use <- bool.guard(!string.ends_with(path, ".css"), css)
@@ -28,7 +28,9 @@ pub fn main() {
     string.replace(
       src,
       content,
-      "const element_css: String = \"\n" <> css <> "\n\"",
+      "const element_css: String = \"\n"
+      <> css
+      <> "\n\"",
     )
   let assert Ok(_) = simplifile.write(out, "./src/lustre/ui/styles.gleam")
 }

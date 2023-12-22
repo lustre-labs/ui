@@ -1,6 +1,6 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import gleam/map.{type Map}
+import gleam/dict.{type Dict}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/ui.{type Theme}
@@ -15,8 +15,8 @@ import gleam/string
 /// to work and look correct.
 /// 
 pub fn theme(theme: Theme) -> Element(msg) {
-  theme_to_map(theme)
-  |> map.fold(theme_css, string.replace)
+  theme_to_dict(theme)
+  |> dict.fold(theme_css, string.replace)
   |> html.style([], _)
 }
 
@@ -30,64 +30,88 @@ pub fn elements() -> Element(msg) {
 
 // UTILS -----------------------------------------------------------------------
 
-fn theme_to_map(theme: Theme) -> Map(String, String) {
-  map.new()
-  |> map.merge(scale_to_map(theme.primary, "primary"))
-  |> map.merge(scale_to_map(theme.greyscale, "greyscale"))
-  |> map.merge(scale_to_map(theme.error, "error"))
-  |> map.merge(scale_to_map(theme.success, "success"))
-  |> map.merge(scale_to_map(theme.warning, "warning"))
-  |> map.merge(scale_to_map(theme.info, "info"))
+fn theme_to_dict(theme: Theme) -> Dict(String, String) {
+  dict.new()
+  |> dict.merge(scale_to_dict(theme.primary, "primary"))
+  |> dict.merge(scale_to_dict(theme.greyscale, "greyscale"))
+  |> dict.merge(scale_to_dict(theme.error, "error"))
+  |> dict.merge(scale_to_dict(theme.success, "success"))
+  |> dict.merge(scale_to_dict(theme.warning, "warning"))
+  |> dict.merge(scale_to_dict(theme.info, "info"))
 }
 
-fn scale_to_map(scale: Scale, prefix: String) -> Map(String, String) {
-  map.from_list([
+fn scale_to_dict(scale: Scale, prefix: String) -> Dict(String, String) {
+  dict.from_list([
     #(
-      "$(" <> prefix <> ".app_background)",
+      "$("
+      <> prefix
+      <> ".app_background)",
       colour.to_css_rgba_string(scale.app_background),
     ),
     #(
-      "$(" <> prefix <> ".app_background_subtle)",
+      "$("
+      <> prefix
+      <> ".app_background_subtle)",
       colour.to_css_rgba_string(scale.app_background_subtle),
     ),
     #(
-      "$(" <> prefix <> ".app_border)",
+      "$("
+      <> prefix
+      <> ".app_border)",
       colour.to_css_rgba_string(scale.app_border),
     ),
     #(
-      "$(" <> prefix <> ".element_background)",
+      "$("
+      <> prefix
+      <> ".element_background)",
       colour.to_css_rgba_string(scale.element_background),
     ),
     #(
-      "$(" <> prefix <> ".element_background_hover)",
+      "$("
+      <> prefix
+      <> ".element_background_hover)",
       colour.to_css_rgba_string(scale.element_background_hover),
     ),
     #(
-      "$(" <> prefix <> ".element_background_strong)",
+      "$("
+      <> prefix
+      <> ".element_background_strong)",
       colour.to_css_rgba_string(scale.element_background_strong),
     ),
     #(
-      "$(" <> prefix <> ".element_border_subtle)",
+      "$("
+      <> prefix
+      <> ".element_border_subtle)",
       colour.to_css_rgba_string(scale.element_border_subtle),
     ),
     #(
-      "$(" <> prefix <> ".element_border_strong)",
+      "$("
+      <> prefix
+      <> ".element_border_strong)",
       colour.to_css_rgba_string(scale.element_border_strong),
     ),
     #(
-      "$(" <> prefix <> ".solid_background)",
+      "$("
+      <> prefix
+      <> ".solid_background)",
       colour.to_css_rgba_string(scale.solid_background),
     ),
     #(
-      "$(" <> prefix <> ".solid_background_hover)",
+      "$("
+      <> prefix
+      <> ".solid_background_hover)",
       colour.to_css_rgba_string(scale.solid_background_hover),
     ),
     #(
-      "$(" <> prefix <> ".text_high_contrast)",
+      "$("
+      <> prefix
+      <> ".text_high_contrast)",
       colour.to_css_rgba_string(scale.text_high_contrast),
     ),
     #(
-      "$(" <> prefix <> ".text_low_contrast)",
+      "$("
+      <> prefix
+      <> ".text_low_contrast)",
       colour.to_css_rgba_string(scale.text_low_contrast),
     ),
   ])

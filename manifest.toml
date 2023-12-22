@@ -3,15 +3,15 @@
 
 packages = [
   { name = "gleam_community_colour", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "036C206886AFB9F153C552700A7A0B4D2864E3BC96A20C77E5F34A013C051BE3" },
-  { name = "gleam_stdlib", version = "0.32.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "07D64C26D014CF570F8ACADCE602761EA2E74C842D26F2FD49B0D61973D9966F" },
+  { name = "gleam_stdlib", version = "0.34.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "1FB8454D2991E9B4C0C804544D8A9AD0F6184725E20D63C3155F0AEB4230B016" },
   { name = "gleeunit", version = "0.11.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "1397E5C4AC4108769EE979939AC39BF7870659C5AFB714630DEEEE16B8272AD5" },
-  { name = "lustre", version = "3.0.11", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "lustre", source = "hex", outer_checksum = "4B46341D9A3426023CFA21A6CFF4ED0171652A01B8905D1878099308DA2E92D2" },
-  { name = "simplifile", version = "0.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "856DD0CD5FEEB464FB32522F6C9C51F5DE1398799C17028D3645EDC4B732E7DB" },
+  { name = "lustre", version = "3.1.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "lustre", source = "hex", outer_checksum = "27EF84A9ADC73398BD9F76161687AB81E4D7555D1F0E34A0AFF3C67910A329F3" },
+  { name = "simplifile", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "0BD6F0E7DA1A7E11D18B8AD48453225CAFCA4C8CFB4513D217B372D2866C501C" },
 ]
 
 [requirements]
 gleam_community_colour = { version = "~> 1.1" }
-gleam_stdlib = { version = "~> 0.31" }
+gleam_stdlib = { version = "~> 0.34" }
 gleeunit = { version = "~> 0.10" }
 lustre = { version = "~> 3.0" }
-simplifile = { version = "~> 0.1" }
+simplifile = { version = "~> 1.0" }
