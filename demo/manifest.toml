@@ -3,14 +3,14 @@
 
 packages = [
   { name = "gleam_community_colour", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "036C206886AFB9F153C552700A7A0B4D2864E3BC96A20C77E5F34A013C051BE3" },
-  { name = "gleam_stdlib", version = "0.33.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "539E37A2AA5EBE8E75F4B74755E4CC604BD957C3000AC8D705A2024886A2738B" },
-  { name = "gleeunit", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "D3682ED8C5F9CAE1C928F2506DE91625588CC752495988CBE0F5653A42A6F334" },
-  { name = "lustre", version = "3.0.12", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "lustre", source = "hex", outer_checksum = "480DFF1598837DA81620434EF1330C3DC1E8AB96498C7320ED103C6A6320A5BC" },
-  { name = "lustre_ui", version = "0.1.0", build_tools = ["gleam"], requirements = ["gleam_community_colour", "gleam_stdlib", "lustre"], source = "local", path = ".." },
+  { name = "gleam_stdlib", version = "0.34.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "1FB8454D2991E9B4C0C804544D8A9AD0F6184725E20D63C3155F0AEB4230B016" },
+  { name = "gleeunit", version = "1.0.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "D364C87AFEB26BDB4FB8A5ABDE67D635DC9FA52D6AB68416044C35B096C6882D" },
+  { name = "lustre", version = "3.1.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "lustre", source = "hex", outer_checksum = "27EF84A9ADC73398BD9F76161687AB81E4D7555D1F0E34A0AFF3C67910A329F3" },
+  { name = "lustre_ui", version = "0.2.0", build_tools = ["gleam"], requirements = ["gleam_community_colour", "gleam_stdlib", "lustre"], source = "local", path = ".." },
 ]
 
 [requirements]
-gleam_stdlib = { version = "~> 0.32" }
+gleam_stdlib = { version = "~> 0.34" }
 gleeunit = { version = "~> 1.0" }
 lustre = { version = "~> 3.0" }
 lustre_ui = { path = "../" }
