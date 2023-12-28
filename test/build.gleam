@@ -15,7 +15,7 @@ pub fn main() {
   let css = {
     use css, path <- list.fold(entries, "")
     use <- bool.guard(!string.ends_with(path, ".css"), css)
-    let assert Ok(styles) = simplifile.read("./src/lustre/ui/" <> path)
+    let assert Ok(styles) = simplifile.read(path)
 
     css <> styles <> "\n"
   }
@@ -32,7 +32,7 @@ pub fn main() {
       <> css
       <> "\n\"",
     )
-  let assert Ok(_) = simplifile.write(out, "./src/lustre/ui/styles.gleam")
+  let assert Ok(_) = simplifile.write("./src/lustre/ui/styles.gleam", out)
 }
 
 // EXTERNALS -------------------------------------------------------------------
