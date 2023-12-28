@@ -2,11 +2,11 @@
 # You typically do not need to edit this file
 
 packages = [
-  { name = "gleam_community_colour", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "036C206886AFB9F153C552700A7A0B4D2864E3BC96A20C77E5F34A013C051BE3" },
+  { name = "gleam_community_colour", version = "1.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "A49A5E3AE8B637A5ACBA80ECB9B1AFE89FD3D5351FF6410A42B84F666D40D7D5" },
   { name = "gleam_stdlib", version = "0.34.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "1FB8454D2991E9B4C0C804544D8A9AD0F6184725E20D63C3155F0AEB4230B016" },
   { name = "gleeunit", version = "0.11.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "1397E5C4AC4108769EE979939AC39BF7870659C5AFB714630DEEEE16B8272AD5" },
   { name = "lustre", version = "3.1.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "lustre", source = "hex", outer_checksum = "27EF84A9ADC73398BD9F76161687AB81E4D7555D1F0E34A0AFF3C67910A329F3" },
-  { name = "simplifile", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "0BD6F0E7DA1A7E11D18B8AD48453225CAFCA4C8CFB4513D217B372D2866C501C" },
+  { name = "simplifile", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "2B7070FB8617474A35651F6AA27046576615C14A4D97B62FA7C40C24C55A6C5C" },
 ]
 
 [requirements]
