@@ -1,5 +1,5 @@
 name = "lustre_ui"
-version = "0.2.2"
+version = "0.3.0"
 description = "A collection of components and design tokens for building Lustre apps."
 target = "javascript"
 
