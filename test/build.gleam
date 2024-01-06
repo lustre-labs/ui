@@ -23,7 +23,10 @@ pub fn main() {
     regex.compile("const element_css: String = \"(.|\n)+\"", options)
   let assert [Match(content, ..)] = regex.scan(regex, src)
   use css <- compile_css(css)
-  let css = string.replace(css, "\"", "\\\"")
+  let css =
+    css
+    |> string.replace("\\", "\\\\")
+    |> string.replace("\"", "\\\"")
   let out =
     string.replace(
       src,
