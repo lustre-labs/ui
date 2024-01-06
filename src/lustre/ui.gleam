@@ -13,6 +13,7 @@ import lustre/ui/colour.{type Scale}
 import lustre/ui/field
 import lustre/ui/group
 import lustre/ui/input
+import lustre/ui/prose
 import lustre/ui/sequence
 import lustre/ui/stack
 import lustre/ui/tag
@@ -83,6 +84,8 @@ pub const field: fn(
 pub const group: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = group.group
 
 pub const input: fn(List(Attribute(msg))) -> Element(msg) = input.input
+
+pub const prose: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = prose.prose
 
 pub const sequence: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = sequence.sequence
 
