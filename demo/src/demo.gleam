@@ -1,6 +1,6 @@
 import lustre
 import lustre/attribute.{attribute}
-import lustre/element.{type Element} as el
+import lustre/element.{type Element, text}
 import lustre/element/html
 import lustre/ui
 import lustre/ui/styles
@@ -12,6 +12,7 @@ import lustre/ui/cluster
 import lustre/ui/icon
 import lustre/ui/field
 import lustre/ui/input
+import lustre/ui/prose
 
 // MAIN ------------------------------------------------------------------------
 
@@ -29,62 +30,62 @@ fn view() -> Element(Nil) {
 
   ui.stack([attribute.style(styles)], [
     styles.elements(),
-    html.p([], [el.text("Buttons:")]),
+    html.p([], [text("Buttons:")]),
     ui.cluster([cluster.stretch()], [
-      ui.button([button.clear()], [el.text("these")]),
-      ui.button([button.soft()], [el.text("are")]),
-      ui.button([button.solid()], [el.text("some")]),
-      ui.button([button.error()], [el.text("buttons")]),
+      ui.button([button.clear()], [text("these")]),
+      ui.button([button.soft()], [text("are")]),
+      ui.button([button.solid()], [text("some")]),
+      ui.button([button.error()], [text("buttons")]),
       ui.button([button.success()], [ui.centre([], icon.share([]))]),
     ]),
-    html.p([], [el.text("Button groups:")]),
+    html.p([], [text("Button groups:")]),
     ui.group([], [
-      ui.button([], [el.text("these")]),
-      ui.button([], [el.text("are")]),
-      ui.button([], [el.text("some")]),
-      ui.button([], [el.text("buttons")]),
+      ui.button([], [text("these")]),
+      ui.button([], [text("are")]),
+      ui.button([], [text("some")]),
+      ui.button([], [text("buttons")]),
     ]),
-    html.p([], [el.text("Tags:")]),
+    html.p([], [text("Tags:")]),
     ui.cluster([], [
-      ui.tag([], [el.text("erlang")]),
-      ui.tag([], [el.text("elixir")]),
-      ui.tag([attribute("tabindex", "0")], [el.text("gleam"), icon.cross([])]),
-      ui.tag([], [el.text("javascript")]),
+      ui.tag([], [text("erlang")]),
+      ui.tag([], [text("elixir")]),
+      ui.tag([attribute("tabindex", "0")], [text("gleam"), icon.cross([])]),
+      ui.tag([], [text("javascript")]),
     ]),
-    html.p([], [el.text("Breadcrumbs:")]),
+    html.p([], [text("Breadcrumbs:")]),
     ui.breadcrumbs([], icon.caret_right([]), [
-      html.span([], [el.text("Implicit active")]),
-      html.a([], [el.text("Page A")]),
-      html.a([], [el.text("Page B")]),
-      html.a([], [el.text("Page C")]),
+      html.span([], [text("Implicit active")]),
+      html.a([], [text("Page A")]),
+      html.a([], [text("Page B")]),
+      html.a([], [text("Page C")]),
     ]),
     ui.breadcrumbs([], icon.caret_right([]), [
-      html.span([], [el.text("Explicit .active class")]),
-      html.a([], [el.text("Page A")]),
-      html.a([breadcrumbs.active()], [el.text("Page B")]),
-      html.a([], [el.text("Page C")]),
+      html.span([], [text("Explicit .active class")]),
+      html.a([], [text("Page A")]),
+      html.a([breadcrumbs.active()], [text("Page B")]),
+      html.a([], [text("Page C")]),
     ]),
-    html.p([], [el.text("Inputs:")]),
+    html.p([], [text("Inputs:")]),
     ui.input([]),
-    html.p([], [el.text("...with placeholder")]),
+    html.p([], [text("...with placeholder")]),
     ui.input([input.error(), attribute.placeholder("Hi")]),
-    html.p([], [el.text("...disabled")]),
+    html.p([], [text("...disabled")]),
     ui.input([
       input.error(),
       attribute.placeholder("Hi"),
       attribute.disabled(True),
     ]),
-    html.p([], [el.text("...clear variant")]),
+    html.p([], [text("...clear variant")]),
     ui.input([input.clear(), attribute.placeholder("Hi")]),
-    html.p([], [el.text("Fields:")]),
-    ui.field([], [el.text("Name")], ui.input([]), [el.text("0/200")]),
+    html.p([], [text("Fields:")]),
+    ui.field([], [text("Name")], ui.input([]), [text("0/200")]),
     ui.field(
       [field.error(), field.label_centre(), field.message_start()],
-      [el.text("Name")],
+      [text("Name")],
       ui.input([attribute.disabled(True)]),
-      [el.text("0/200")],
+      [text("0/200")],
     ),
-    html.p([], [el.text("Icons:")]),
+    html.p([], [text("Icons:")]),
     ui.cluster([], [
       icon.font_style([]),
       icon.font_italic([]),
@@ -405,16 +406,103 @@ fn view() -> Element(Nil) {
     ui.alert([], [
       ui.aside(
         [aside.content_last(), aside.align_centre()],
-        html.p([], [el.text("This is an alert!")]),
+        html.p([], [text("This is an alert!")]),
         icon.info_circled([]),
       ),
     ]),
     ui.alert([alert.error(), alert.clear()], [
       ui.aside(
         [aside.content_last(), aside.align_centre()],
-        html.p([], [el.text("Ooo this one is scary.")]),
+        html.p([], [text("Ooo this one is scary.")]),
         icon.exclamation_triangle([]),
       ),
+    ]),
+    ui.prose([prose.full()], [
+      html.h1([], [text("Prose:")]),
+      html.h2([], [text("A demo")]),
+      html.p([], [
+        text(
+          "This is a demo of the 'lustre-ui-prose' class. Bare HTML tags that
+          are descendants of elements with this class are styled to make them
+          nice to consume in content-heavy situations like rendering a blog post
+          or formatting user-generated content.",
+        ),
+      ]),
+      html.p([], [
+        text(
+          "Here's a second paragraph to see how multiple blocks of content look
+          stacked together. As you can see, there is spacing between them.",
+        ),
+      ]),
+      html.h3([], [text("It even supports lists!")]),
+      html.ul([], [
+        html.li([], [text("Unordered list item 1")]),
+        html.li([], [text("Unordered list item 2")]),
+        html.li([], [text("Unordered list item 3")]),
+      ]),
+      html.p([], [
+        text(
+          "And of course, it supports ordered lists too. Here's a list of
+          programming languages in order of preference:",
+        ),
+      ]),
+      html.ol([], [
+        html.li([], [text("Gleam")]),
+        html.li([], [text("Elm")]),
+        html.li([], [text("JavaScript")]),
+      ]),
+      html.h3([], [text("Inline elements")]),
+      html.p([], [
+        text("Inline elements like "),
+        html.a([attribute.href("https://www.google.com")], [text("links")]),
+        text(" and "),
+        html.em([], [text("emphasis")]),
+        text(" are also styled nicely. "),
+        html.strong([], [text("Strong")]),
+        text(" text is also supported, as is "),
+        html.code([], [text("code")]),
+        text(" and "),
+        html.kbd([], [text("keyboard")]),
+        text(" text."),
+      ]),
+      html.h3([], [text("Blockquotes")]),
+      html.p([], [
+        text(
+          "Blockquotes are also supported. Here's a quote from the Gleam website:",
+        ),
+      ]),
+      html.blockquote([], [
+        html.p([], [
+          text(
+            "The power of a type system, the expressiveness of functional
+            programming, and the reliability of the highly concurrent, fault
+            tolerant Erlang runtime, with a familiar and modern syntax.",
+          ),
+        ]),
+      ]),
+      html.h3([], [text("Code blocks")]),
+      html.p([], [
+        text(
+          "Code blocks are also supported. Here's a code block with syntax
+          highlighting:",
+        ),
+      ]),
+      html.pre([], [
+        html.code([], [
+          text(
+            "export const compile_css = async (css, next) => {
+  const to = join(cwd(), \"./priv/styles.css\");
+  const { css: out } = await compiler.process(css, { from: undefined, to });
+  await writeFile(to, out, { encoding: \"utf8\" });
+
+  next(out);
+};
+",
+          ),
+        ]),
+      ]),
+      html.h3([], [text("Images")]),
+      html.img([attribute.src("https://source.unsplash.com/random")]),
     ]),
   ])
 }
