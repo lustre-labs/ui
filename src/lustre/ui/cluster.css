@@ -1,3 +1,4 @@
+.use-lustre-ui .cluster,
 .lustre-ui-cluster {
   --gap: var(--space-md);
   --dir: flex-start;

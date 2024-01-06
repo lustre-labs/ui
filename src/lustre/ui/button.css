@@ -1,3 +1,5 @@
+.use-lustre-ui button,
+.use-lustre-ui .button,
 .lustre-ui-button {
   --bg-active: var(--element-background-strong);
   --bg-hover: var(--element-background-hover);

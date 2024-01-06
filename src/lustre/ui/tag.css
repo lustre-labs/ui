@@ -1,3 +1,4 @@
+.use-lustre-ui .tag,
 .lustre-ui-tag {
   --bg-active: var(--element-background-strong);
   --bg-hover: var(--element-background-hover);

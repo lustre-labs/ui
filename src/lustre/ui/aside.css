@@ -1,3 +1,4 @@
+.use-lustre-ui .aside,
 .lustre-ui-aside {
   --align: start;
   --gap: var(--space-md);

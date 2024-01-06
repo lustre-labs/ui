@@ -1,4 +1,7 @@
-.lustre-ui-centre {
+.use-lustre-ui .centre,
+.use-lustre-ui .center,
+.lustre-ui-centre,
+.lustre-ui-center {
   --display: flex;
 
   display: var(--display);

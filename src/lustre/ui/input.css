@@ -1,3 +1,5 @@
+.use-lustre-ui input:not([type~="checkbox file radio range"]),
+.use-lustre-ui .input,
 .lustre-ui-input {
   --border-active: var(--element-border-strong);
   --border: var(--element-border-subtle);
