@@ -17,10 +17,7 @@ import lustre/ui/prose
 // MAIN ------------------------------------------------------------------------
 
 pub fn main() {
-  let app = lustre.element(view())
-  let assert Ok(_) = lustre.start(app, "[data-lustre-app]", Nil)
-
-  Nil
+  lustre.element(view())
 }
 
 // VIEW ------------------------------------------------------------------------
@@ -29,7 +26,7 @@ fn view() -> Element(Nil) {
   let styles = [#("width", "80ch"), #("margin", "0 auto"), #("padding", "2rem")]
 
   ui.stack([attribute.style(styles)], [
-    styles.elements(),
+    styles.without_reset(),
     html.p([], [text("Buttons:")]),
     ui.cluster([cluster.stretch()], [
       ui.button([button.clear()], [text("these")]),
