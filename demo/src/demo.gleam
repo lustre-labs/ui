@@ -206,7 +206,7 @@ fn view() -> Element(Nil) {
       icon.minus([]),
       icon.check([]),
       icon.cross([]),
-      icon.check_cirlced([]),
+      icon.check_circled([]),
       icon.cross_circled([]),
       icon.plus_circled([]),
       icon.minus_circled([]),
