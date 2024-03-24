@@ -1,5 +1,8 @@
 // IMPORTS ---------------------------------------------------------------------
 
+import gleam/dynamic.{type DecodeError, type Dynamic}
+import gleam/json.{type Json}
+import gleam/result
 import gleam_community/colour.{type Colour}
 
 // TYPES -----------------------------------------------------------------------
@@ -37,6 +40,62 @@ pub type Scale {
     // Radix Scale 11. Low-contrast text
     text_low_contrast: Colour,
   )
+}
+
+// JSON ------------------------------------------------------------------------
+
+pub fn encode_scale(scale: Scale) -> Json {
+  json.object([
+    #("app_background", colour.encode(scale.app_background)),
+    #("app_background_subtle", colour.encode(scale.app_background_subtle)),
+    #("app_border", colour.encode(scale.app_border)),
+    #("element_background", colour.encode(scale.element_background)),
+    #("element_background_hover", colour.encode(scale.element_background_hover)),
+    #(
+      "element_background_strong",
+      colour.encode(scale.element_background_strong),
+    ),
+    #("element_border_subtle", colour.encode(scale.element_border_subtle)),
+    #("element_border_strong", colour.encode(scale.element_border_strong)),
+    #("solid_background", colour.encode(scale.solid_background)),
+    #("solid_background_hover", colour.encode(scale.solid_background_hover)),
+    #("text_high_contrast", colour.encode(scale.text_high_contrast)),
+    #("text_low_contrast", colour.encode(scale.text_low_contrast)),
+  ])
+}
+
+pub fn scale_decoder(json: Dynamic) -> Result(Scale, List(DecodeError)) {
+  let attempt = fn(field, then) {
+    result.try(dynamic.field(field, colour.decoder)(json), then)
+  }
+
+  use app_background <- attempt("app_background")
+  use app_background_subtle <- attempt("app_background_subtle")
+  use app_border <- attempt("app_border")
+  use element_background <- attempt("element_background")
+  use element_background_hover <- attempt("element_background_hover")
+  use element_background_strong <- attempt("element_background_strong")
+  use element_border_subtle <- attempt("element_border_subtle")
+  use element_border_strong <- attempt("element_border_strong")
+  use solid_background <- attempt("solid_background")
+  use solid_background_hover <- attempt("solid_background_hover")
+  use text_high_contrast <- attempt("text_high_contrast")
+  use text_low_contrast <- attempt("text_low_contrast")
+
+  Ok(Scale(
+    app_background,
+    app_background_subtle,
+    app_border,
+    element_background,
+    element_background_hover,
+    element_background_strong,
+    element_border_subtle,
+    element_border_strong,
+    solid_background,
+    solid_background_hover,
+    text_high_contrast,
+    text_low_contrast,
+  ))
 }
 
 fn from_radix_scale(

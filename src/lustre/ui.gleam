@@ -1,5 +1,7 @@
 // IMPORTS ---------------------------------------------------------------------
 
+import gleam/dynamic.{type DecodeError, type Dynamic}
+import gleam/json.{type Json}
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/ui/alert
@@ -21,12 +23,12 @@ import lustre/ui/tag
 // TYPES -----------------------------------------------------------------------
 
 /// A theme is a collection of colour scales that define the look and feel of
-/// your application. You can consider the "primary" scale as your brand or 
+/// your application. You can consider the "primary" scale as your brand or
 /// accent colour. The "greyscale" scale can be used when you want suitable
 /// shading without any particular colour or meaning. The "error", "warning",
 /// "success", and "info" scales are semantic colours that can be used to communicate
 /// meaning to the user.
-/// 
+///
 pub type Theme {
   Theme(
     primary: Scale,
@@ -38,10 +40,10 @@ pub type Theme {
   )
 }
 
-/// This type enumerates the different colour scales that are available in a 
+/// This type enumerates the different colour scales that are available in a
 /// theme. It is mostly used to set the variant of an element using the
 /// `variant` attribute, but you could also use it in your own custom elements.
-/// 
+///
 pub type Variant {
   Primary
   Greyscale
@@ -97,10 +99,10 @@ pub const tag: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg) = ta
 
 /// Use this attribute to set the colour scale of an element. Unless a child
 /// element sets its own variant, it will inherit the variant of its parent. You
-/// could, for example, set the variant on some custom alert element to be 
+/// could, for example, set the variant on some custom alert element to be
 /// `Warning`. Then, any buttons or icons inside the alert will inherit the
 /// warning palette and be coloured accordingly.
-/// 
+///
 pub fn variant(variant: Variant) -> Attribute(a) {
   attribute("data-variant", case variant {
     Primary -> "primary"
@@ -110,4 +112,29 @@ pub fn variant(variant: Variant) -> Attribute(a) {
     Success -> "success"
     Info -> "info"
   })
+}
+
+// JSON ------------------------------------------------------------------------
+
+pub fn encode_theme(theme: Theme) -> Json {
+  json.object([
+    #("primary", colour.encode_scale(theme.primary)),
+    #("greyscale", colour.encode_scale(theme.greyscale)),
+    #("error", colour.encode_scale(theme.error)),
+    #("warning", colour.encode_scale(theme.warning)),
+    #("success", colour.encode_scale(theme.success)),
+    #("info", colour.encode_scale(theme.info)),
+  ])
+}
+
+pub fn theme_decoder(json: Dynamic) -> Result(Theme, List(DecodeError)) {
+  dynamic.decode6(
+    Theme,
+    dynamic.field("primary", colour.scale_decoder),
+    dynamic.field("greyscale", colour.scale_decoder),
+    dynamic.field("error", colour.scale_decoder),
+    dynamic.field("warning", colour.scale_decoder),
+    dynamic.field("success", colour.scale_decoder),
+    dynamic.field("info", colour.scale_decoder),
+  )(json)
 }
