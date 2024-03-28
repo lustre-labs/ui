@@ -17,7 +17,7 @@ gleam = ">= 0.33.0"
 gleam_community_colour = "~> 1.4"
 gleam_json = "~> 1.0"
 gleam_stdlib = "~> 0.34"
-lustre = "~> 3.0 or ~> 4.0"
+lustre = "~> 4.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"
