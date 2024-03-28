@@ -5,20 +5,20 @@ import gleam/json.{type Json}
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/ui/alert
-import lustre/ui/aside
-import lustre/ui/box
 import lustre/ui/breadcrumbs
 import lustre/ui/button
-import lustre/ui/centre
-import lustre/ui/cluster
-import lustre/ui/colour.{type Scale}
 import lustre/ui/field
-import lustre/ui/group
 import lustre/ui/input
+import lustre/ui/layout/aside
+import lustre/ui/layout/box
+import lustre/ui/layout/centre
+import lustre/ui/layout/cluster
+import lustre/ui/layout/group
+import lustre/ui/layout/sequence
+import lustre/ui/layout/stack
 import lustre/ui/prose
-import lustre/ui/sequence
-import lustre/ui/stack
 import lustre/ui/tag
+import lustre/ui/util/colour.{type Scale}
 
 // TYPES -----------------------------------------------------------------------
 

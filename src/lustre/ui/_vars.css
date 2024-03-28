@@ -104,16 +104,16 @@
   --text-4xl: calc(var(--text-3xl) * 1.25);
   --text-5xl: calc(var(--text-4xl) * 1.25);
 
-  --space-2xs: calc(0.25 * 1rem);
-  --space-xs: calc(0.5 * 1rem);
-  --space-sm: calc(0.75 * 1rem);
+  --space-2xs: calc(0.25 * var(--space-md));
+  --space-xs: calc(0.5 * var(--space-md));
+  --space-sm: calc(0.75 * var(--space-md));
   --space-md: 1rem;
-  --space-lg: calc(1.25 * 1rem);
-  --space-xl: calc(2 * 1rem);
-  --space-2xl: calc(3.25 * 1rem);
-  --space-3xl: calc(5.25 * 1rem);
-  --space-4xl: calc(8.5 * 1rem);
-  --space-5xl: calc(13.75 * 1rem);
+  --space-lg: calc(1.25 * var(--space-md));
+  --space-xl: calc(2 * var(--space-md));
+  --space-2xl: calc(3.25 * var(--space-md));
+  --space-3xl: calc(5.25 * var(--space-md));
+  --space-4xl: calc(8.5 * var(--space-md));
+  --space-5xl: calc(13.75 * var(--space-md));
 
   --font-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,

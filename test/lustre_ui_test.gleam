@@ -2,7 +2,7 @@ import gleam/json
 import gleeunit
 import gleeunit/should
 import lustre/ui.{Theme}
-import lustre/ui/colour
+import lustre/ui/util/colour
 
 pub fn main() {
   gleeunit.main()
