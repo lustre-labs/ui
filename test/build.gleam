@@ -10,7 +10,7 @@ import simplifile
 
 pub fn main() {
   let options = Options(case_insensitive: False, multi_line: True)
-  let assert Ok(src) = simplifile.read("./src/lustre/ui/styles.gleam")
+  let assert Ok(src) = simplifile.read("./src/lustre/ui/util/styles.gleam")
   let assert Ok(entries) = simplifile.get_files("./src/lustre/ui")
   let css = {
     use css, path <- list.fold(entries, "")
@@ -23,7 +23,7 @@ pub fn main() {
     let assert Ok(regex) =
       regex.compile("const element_css: String = \"(.|\n)+\"", options)
     let assert [Match(content, ..)] = regex.scan(regex, src)
-    use css <- compile_css(css, "styles")
+    use css <- compile_css(css, "lustre-ui")
     let css =
       css
       |> string.replace("\\", "\\\\")
@@ -34,7 +34,8 @@ pub fn main() {
         content,
         "const element_css: String = \"\n" <> css <> "\n\"",
       )
-    let assert Ok(_) = simplifile.write("./src/lustre/ui/styles.gleam", out)
+    let assert Ok(_) =
+      simplifile.write("./src/lustre/ui/util/styles.gleam", out)
   }
 
   let css = {
@@ -51,7 +52,7 @@ pub fn main() {
     let assert Ok(regex) =
       regex.compile("const element_css_no_reset: String = \"(.|\n)+\"", options)
     let assert [Match(content, ..)] = regex.scan(regex, src)
-    use css <- compile_css(css, "styles-no-reset")
+    use css <- compile_css(css, "lustre-ui-no-reset")
     let css =
       css
       |> string.replace("\\", "\\\\")
@@ -62,7 +63,8 @@ pub fn main() {
         content,
         "const element_css_no_reset: String = \"\n" <> css <> "\n\"",
       )
-    let assert Ok(_) = simplifile.write("./src/lustre/ui/styles.gleam", out)
+    let assert Ok(_) =
+      simplifile.write("./src/lustre/ui/util/styles.gleam", out)
   }
 }
 
