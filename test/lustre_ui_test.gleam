@@ -1,7 +1,7 @@
 import gleam/json
 import gleeunit
 import gleeunit/should
-import lustre/ui.{Theme}
+import lustre/ui.{Px, Rem, Size, Theme}
 import lustre/ui/util/colour
 
 pub fn main() {
@@ -11,6 +11,9 @@ pub fn main() {
 pub fn json_identity_test() {
   let theme =
     Theme(
+      space: Size(base: Rem(1.0), ratio: 1.618),
+      text: Size(base: Rem(1.125), ratio: 1.215),
+      radius: Px(4.0),
       primary: colour.iris(),
       greyscale: colour.slate(),
       error: colour.red(),

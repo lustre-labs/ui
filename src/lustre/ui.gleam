@@ -31,6 +31,12 @@ import lustre/ui/util/colour.{type Scale}
 ///
 pub type Theme {
   Theme(
+    //
+    space: Size,
+    text: Size,
+    //
+    radius: Value,
+    //
     primary: Scale,
     greyscale: Scale,
     error: Scale,
@@ -38,6 +44,20 @@ pub type Theme {
     success: Scale,
     info: Scale,
   )
+}
+
+///
+///
+pub type Size {
+  Size(base: Value, ratio: Float)
+}
+
+///
+///
+pub type Value {
+  Rem(Float)
+  Px(Float)
+  Var(String)
 }
 
 /// This type enumerates the different colour scales that are available in a
@@ -118,6 +138,9 @@ pub fn variant(variant: Variant) -> Attribute(a) {
 
 pub fn encode_theme(theme: Theme) -> Json {
   json.object([
+    #("space", encode_size(theme.space)),
+    #("text", encode_size(theme.text)),
+    #("radius", encode_value(theme.radius)),
     #("primary", colour.encode_scale(theme.primary)),
     #("greyscale", colour.encode_scale(theme.greyscale)),
     #("error", colour.encode_scale(theme.error)),
@@ -127,9 +150,27 @@ pub fn encode_theme(theme: Theme) -> Json {
   ])
 }
 
+fn encode_size(size: Size) -> Json {
+  json.object([
+    #("base", encode_value(size.base)),
+    #("ratio", json.float(size.ratio)),
+  ])
+}
+
+fn encode_value(value: Value) -> Json {
+  case value {
+    Rem(value) -> json.object([#("rem", json.float(value))])
+    Px(value) -> json.object([#("px", json.float(value))])
+    Var(value) -> json.object([#("var", json.string(value))])
+  }
+}
+
 pub fn theme_decoder(json: Dynamic) -> Result(Theme, List(DecodeError)) {
-  dynamic.decode6(
+  dynamic.decode9(
     Theme,
+    dynamic.field("space", size_decoder),
+    dynamic.field("text", size_decoder),
+    dynamic.field("radius", value_decoder),
     dynamic.field("primary", colour.scale_decoder),
     dynamic.field("greyscale", colour.scale_decoder),
     dynamic.field("error", colour.scale_decoder),
@@ -137,4 +178,20 @@ pub fn theme_decoder(json: Dynamic) -> Result(Theme, List(DecodeError)) {
     dynamic.field("success", colour.scale_decoder),
     dynamic.field("info", colour.scale_decoder),
   )(json)
+}
+
+fn size_decoder(json: Dynamic) -> Result(Size, List(DecodeError)) {
+  dynamic.decode2(
+    Size,
+    dynamic.field("base", value_decoder),
+    dynamic.field("ratio", dynamic.float),
+  )(json)
+}
+
+fn value_decoder(json: Dynamic) -> Result(Value, List(DecodeError)) {
+  dynamic.any([
+    dynamic.decode1(Rem, dynamic.field("rem", dynamic.float)),
+    dynamic.decode1(Px, dynamic.field("px", dynamic.float)),
+    dynamic.decode1(Var, dynamic.field("var", dynamic.string)),
+  ])(json)
 }
