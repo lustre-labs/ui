@@ -48,6 +48,12 @@
   color: var(--text-low-contrast);
 }
 
+/* BORDER RADIUS ------------------------------------------------------------ */
+
+.border-radius {
+  border-radius: var(--border-radius);
+}
+
 /* TEXT SIZE ---------------------------------------------------------------- */
 
 .text-xs {

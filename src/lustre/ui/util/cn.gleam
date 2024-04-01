@@ -44,6 +44,10 @@ pub fn border_element_strong() -> Attribute(msg) {
   attribute.class("border-element-strong")
 }
 
+pub fn border_radius() -> Attribute(msg) {
+  attribute.class("border-radius")
+}
+
 pub fn text_high_contrast() -> Attribute(msg) {
   attribute.class("text-high-contrast")
 }
