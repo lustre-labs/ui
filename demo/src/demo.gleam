@@ -1,5 +1,5 @@
-import gleam/int
 import gleam/float
+import gleam/int
 import gleam/result
 import lustre
 import lustre/attribute.{attribute}
@@ -522,6 +522,7 @@ fn view(theme: Theme) -> Element(Msg) {
         icon.framer_logo([]),
         icon.sketch_logo([]),
         icon.twitter_logo([]),
+        icon.mastodon_logo([]),
         icon.iconjar_logo([]),
         icon.github_logo([]),
         icon.vercel_logo([]),
