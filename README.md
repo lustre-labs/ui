@@ -76,7 +76,7 @@ gleam add lustre_ui
 
 Ensure the required CSS is rendered in your apps by either serving the stylesheet
 found in the `priv/static` directory of this package or rendering the styles inline
-using the functions found in [`lustre/ui/util/styes`](https://hexdocs.pm/lustre_ui/lustre/ui/util/styles.html).
+using the functions found in [`lustre/ui/util/styles`](https://hexdocs.pm/lustre_ui/lustre/ui/util/styles.html).
 
 Lustre UI is configured to work out of the box with no additional themeing or
 setup required, so you can just drop the stylesheet in and go!
