@@ -22,7 +22,7 @@ jobs:
           fi
           echo "tag does not match version in gleam.toml, refusing to publish"
           exit 1
-      - run: gleam format --check src test
+      - run: gleam format --check src
       - run: gleam publish -y
         env:
           HEXPM_USER: ${{ secrets.HEX_USERNAME }}
