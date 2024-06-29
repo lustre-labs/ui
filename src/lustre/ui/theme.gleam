@@ -4,6 +4,7 @@ import gleam/float
 import gleam/int
 import gleam/list
 import gleam/option.{type Option, None, Some}
+import gleam/string
 import gleam_community/colour.{type Colour}
 import lustre/attribute.{attribute}
 import lustre/element.{type Element}
@@ -302,13 +303,13 @@ fn to_css_variables(theme: Theme) -> List(#(String, String)) {
       #(var("radius-xl"), float.to_string(theme.radius.xl) <> "rem"),
       #(var("radius-xl-2"), float.to_string(theme.radius.xl_2) <> "rem"),
       #(var("radius-xl-3"), float.to_string(theme.radius.xl_3) <> "rem"),
-      #(var("space-xs"), float.to_string(theme.space.xs) <> "rem"),
-      #(var("space-sm"), float.to_string(theme.space.sm) <> "rem"),
-      #(var("space-md"), float.to_string(theme.space.md) <> "rem"),
-      #(var("space-lg"), float.to_string(theme.space.lg) <> "rem"),
-      #(var("space-xl"), float.to_string(theme.space.xl) <> "rem"),
-      #(var("space-xl-2"), float.to_string(theme.space.xl_2) <> "rem"),
-      #(var("space-xl-3"), float.to_string(theme.space.xl_3) <> "rem"),
+      #(var("spacing-xs"), float.to_string(theme.space.xs) <> "rem"),
+      #(var("spacing-sm"), float.to_string(theme.space.sm) <> "rem"),
+      #(var("spacing-md"), float.to_string(theme.space.md) <> "rem"),
+      #(var("spacing-lg"), float.to_string(theme.space.lg) <> "rem"),
+      #(var("spacing-xl"), float.to_string(theme.space.xl) <> "rem"),
+      #(var("spacing-xl-2"), float.to_string(theme.space.xl_2) <> "rem"),
+      #(var("spacing-xl-3"), float.to_string(theme.space.xl_3) <> "rem"),
     ],
     to_colours_variables(theme.base, "base"),
     to_colours_variables(theme.primary, "primary"),
@@ -538,3 +539,109 @@ pub const danger = ColourScaleVariables(
   text: "rgb(var(--w-danger-text))",
   text_subtle: "rgb(var(--w-danger-text_subtle))",
 )
+
+// BASE STYLES ----------------------------------------------------------------
+
+pub fn base_styles() {
+  html.style(
+    [],
+    "body { background:"
+      <> css_color_value("base-bg")
+      <> ";color:"
+      <> css_color_value("base-text")
+      <> ";font-family:"
+      <> css_var_value("font-text")
+      <> ";}"
+      <> "h1, h2, h3, h4, h5, h6 {"
+      <> css_var_value("font-heading")
+      <> ";}"
+      <> "code {"
+      <> css_var_value("font-code")
+      <> ";}",
+  )
+}
+
+pub fn base_classes() {
+  html.style(
+    [],
+    ["base", "primary", "secondary", "success", "warning", "danger"]
+      |> list.map(fn(variant) {
+        // .w-variant
+        ".w-"
+        <> variant
+        <> " {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-tint")
+        <> ";border-color:"
+        <> css_color_value(variant <> "-accent")
+        <> ";color:"
+        <> css_color_value(variant <> "-text")
+        <> ";}"
+        // .w-variant (anchors and buttons) - hover
+        <> ".w-"
+        <> variant
+        <> ":is(a,button):hover {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-tint-strong")
+        <> ";border-color:"
+        <> css_color_value(variant <> "-accent-strong")
+        <> ";}"
+        // .w-variant (anchors and buttons) - active / focus
+        <> ".w-"
+        <> variant
+        <> ":is(a,button):is(:active:focus) {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-tint-subtle")
+        <> ";border-color:"
+        <> css_color_value(variant <> "-accent-subtle")
+        <> ";}"
+        // .w-variant.w-solid
+        <> " .w-"
+        <> variant
+        <> ".w-solid {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-solid")
+        <> ";color:"
+        <> css_color_value(variant <> "-solid-text")
+        <> ";}"
+        // .w-variant.w-solid (anchors and buttons) - hover
+        <> ".w-"
+        <> variant
+        <> ".w-solid:is(a,button):hover {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-solid-strong")
+        <> ";}"
+        // .w-variant.w-solid (anchors and buttons) - active / focus
+        <> ".w-"
+        <> variant
+        <> ".w-solid:is(a,button):is(:active:focus) {"
+        <> "background-color:"
+        <> css_color_value(variant <> "-solid-subtle")
+        <> ";}"
+      })
+      |> string.join(""),
+  )
+}
+
+fn css_var(id: String) -> String {
+  "--" <> prefix <> "-" <> id
+}
+
+fn css_var_value(id: String) -> String {
+  "var(" <> css_var(id) <> ")"
+}
+
+fn css_color_value(id) {
+  "rgb(" <> css_var_value(id) <> ")"
+}
+
+// CSS RESET ------------------------------------------------------------------
+
+///
+///
+pub fn css_reset() {
+  html.style(
+    [],
+    "a,hr{color:inherit}progress,sub,sup{vertical-align:baseline}blockquote,body,dd,dl,fieldset,figure,h1,h2,h3,h4,h5,h6,hr,menu,ol,p,pre,ul{margin:0}dialog,fieldset,legend,menu,ol,ul{padding:0}*,::after,::before{box-sizing:border-box;border:0 solid currentColor}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,\"Noto Sans\",sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\";font-feature-settings:normal;font-variation-settings:normal}body{line-height:inherit}hr{height:0;border-top-width:1px}abbr:where([title]){text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}menu,ol,ul{list-style:none}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}",
+  )
+}
