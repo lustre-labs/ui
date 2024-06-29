@@ -10,7 +10,7 @@ links = [
   { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
 ]
 
-internal_modules = ["internals/*", "lustre/ui/internals"]
+internal_modules = ["internals/*", "lustre/ui/internals/*"]
 gleam = ">= 1.0.0"
 
 [dependencies]

@@ -4,7 +4,43 @@ import lustre
 import lustre/attribute
 import lustre/element.{type Element}
 import lustre/element/html
+import lustre/ui/heading
 import lustre/ui/theme
+
+//
+//
+fn components() {
+  [
+    #("lustre/ui/heading", [
+      heading.view([heading.extra_small()], [html.text("Heading")]),
+      heading.view([heading.small()], [html.text("Heading")]),
+      heading.view([], [html.text("Heading")]),
+      heading.view([heading.large()], [html.text("Heading")]),
+      heading.view([heading.extra_large()], [html.text("Heading")]),
+    ]),
+  ]
+}
+
+//  
+//
+fn view_component(component: #(String, List(Element(msg)))) {
+  let #(name, children) = component
+
+  html.article([], [
+    html.header([attribute.style([#("padding", theme.spacing.md)])], [
+      heading.view([heading.small(), heading.subtle()], [html.text(name)]),
+    ]),
+    html.ul(
+      [],
+      children
+        |> list.map(fn(child) {
+          html.li([attribute.style([#("padding", "0 " <> theme.spacing.md)])], [
+            child,
+          ])
+        }),
+    ),
+  ])
+}
 
 // We're using the default light and dark themes.
 // The dark theme can be set using the provided class,
@@ -35,26 +71,13 @@ fn view_examples(children: List(Element(msg))) {
       ]),
     ],
     [
-      html.div(
-        [],
-        children
-          |> list.map(fn(child) {
-            html.div([attribute.style([#("padding", theme.spacing.md)])], [
-              child,
-            ])
-          }),
-      ),
+      html.div([], children),
       html.div(
         [
           attribute.class("ui-theme-dark"),
           attribute.style([#("background", theme.base.bg)]),
         ],
-        children
-          |> list.map(fn(child) {
-            html.div([attribute.style([#("padding", theme.spacing.md)])], [
-              child,
-            ])
-          }),
+        children,
       ),
     ],
   )
@@ -63,15 +86,7 @@ fn view_examples(children: List(Element(msg))) {
 pub fn main() {
   element.fragment([
     theme_styles(),
-    view_examples([
-      html.p(
-        [
-          attribute.class("w-secondary"),
-          attribute.style([#("padding", theme.spacing.md)]),
-        ],
-        [html.text("hello")],
-      ),
-    ]),
+    view_examples(list.map(components(), view_component)),
   ])
   |> lustre.element()
   |> lustre.start("#app", Nil)
