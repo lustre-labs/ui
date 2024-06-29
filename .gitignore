@@ -3,3 +3,5 @@
 build
 erl_crash.dump
 node_modules
+example/index.html
+example/priv
