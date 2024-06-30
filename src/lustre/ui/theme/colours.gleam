@@ -4,8 +4,8 @@ import gleam_community/colour.{type Colour}
 
 // TYPES -----------------------------------------------------------------------
 
-pub type Colours {
-  Colours(
+pub type ColourScale {
+  ColourScale(
     bg: Colour,
     bg_subtle: Colour,
     //
@@ -29,7 +29,7 @@ pub type Colours {
 
 // CONSTRUCTORS ----------------------------------------------------------------
 
-pub fn gray() -> Colours {
+pub fn gray() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 252, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(249, 249, 249)
   let assert Ok(tint) = colour.from_rgb255(232, 232, 232)
@@ -45,7 +45,7 @@ pub fn gray() -> Colours {
   let assert Ok(text) = colour.from_rgb255(32, 32, 32)
   let assert Ok(text_subtle) = colour.from_rgb255(100, 100, 100)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -63,7 +63,7 @@ pub fn gray() -> Colours {
   )
 }
 
-pub fn mauve() -> Colours {
+pub fn mauve() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 252, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(250, 249, 251)
   let assert Ok(tint) = colour.from_rgb255(234, 231, 236)
@@ -79,7 +79,7 @@ pub fn mauve() -> Colours {
   let assert Ok(text) = colour.from_rgb255(33, 31, 38)
   let assert Ok(text_subtle) = colour.from_rgb255(101, 99, 109)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -97,7 +97,7 @@ pub fn mauve() -> Colours {
   )
 }
 
-pub fn slate() -> Colours {
+pub fn slate() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 252, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(249, 249, 251)
   let assert Ok(tint) = colour.from_rgb255(232, 232, 236)
@@ -113,7 +113,7 @@ pub fn slate() -> Colours {
   let assert Ok(text) = colour.from_rgb255(28, 32, 36)
   let assert Ok(text_subtle) = colour.from_rgb255(96, 100, 108)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -131,7 +131,7 @@ pub fn slate() -> Colours {
   )
 }
 
-pub fn sage() -> Colours {
+pub fn sage() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(251, 253, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(247, 249, 248)
   let assert Ok(tint) = colour.from_rgb255(230, 233, 232)
@@ -147,7 +147,7 @@ pub fn sage() -> Colours {
   let assert Ok(text) = colour.from_rgb255(26, 33, 30)
   let assert Ok(text_subtle) = colour.from_rgb255(95, 101, 99)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -165,7 +165,7 @@ pub fn sage() -> Colours {
   )
 }
 
-pub fn olive() -> Colours {
+pub fn olive() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 253, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(248, 250, 248)
   let assert Ok(tint) = colour.from_rgb255(231, 233, 231)
@@ -181,7 +181,7 @@ pub fn olive() -> Colours {
   let assert Ok(text) = colour.from_rgb255(29, 33, 28)
   let assert Ok(text_subtle) = colour.from_rgb255(96, 101, 95)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -199,7 +199,7 @@ pub fn olive() -> Colours {
   )
 }
 
-pub fn sand() -> Colours {
+pub fn sand() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 253, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(249, 249, 248)
   let assert Ok(tint) = colour.from_rgb255(233, 232, 230)
@@ -215,7 +215,7 @@ pub fn sand() -> Colours {
   let assert Ok(text) = colour.from_rgb255(33, 32, 28)
   let assert Ok(text_subtle) = colour.from_rgb255(99, 99, 94)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -233,7 +233,7 @@ pub fn sand() -> Colours {
   )
 }
 
-pub fn tomato() -> Colours {
+pub fn tomato() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(255, 252, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(255, 248, 247)
   let assert Ok(tint) = colour.from_rgb255(255, 220, 211)
@@ -249,7 +249,7 @@ pub fn tomato() -> Colours {
   let assert Ok(text) = colour.from_rgb255(92, 39, 31)
   let assert Ok(text_subtle) = colour.from_rgb255(209, 52, 21)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -267,7 +267,7 @@ pub fn tomato() -> Colours {
   )
 }
 
-pub fn red() -> Colours {
+pub fn red() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(255, 252, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(255, 247, 247)
   let assert Ok(tint) = colour.from_rgb255(255, 219, 220)
@@ -283,7 +283,7 @@ pub fn red() -> Colours {
   let assert Ok(text) = colour.from_rgb255(100, 23, 35)
   let assert Ok(text_subtle) = colour.from_rgb255(206, 44, 49)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -301,7 +301,7 @@ pub fn red() -> Colours {
   )
 }
 
-pub fn ruby() -> Colours {
+pub fn ruby() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(255, 252, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(255, 247, 248)
   let assert Ok(tint) = colour.from_rgb255(255, 220, 225)
@@ -317,7 +317,7 @@ pub fn ruby() -> Colours {
   let assert Ok(text) = colour.from_rgb255(100, 23, 43)
   let assert Ok(text_subtle) = colour.from_rgb255(202, 36, 77)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -335,7 +335,7 @@ pub fn ruby() -> Colours {
   )
 }
 
-pub fn crimson() -> Colours {
+pub fn crimson() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(255, 252, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(254, 247, 249)
   let assert Ok(tint) = colour.from_rgb255(254, 220, 231)
@@ -351,7 +351,7 @@ pub fn crimson() -> Colours {
   let assert Ok(text) = colour.from_rgb255(98, 22, 57)
   let assert Ok(text_subtle) = colour.from_rgb255(203, 29, 99)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -369,7 +369,7 @@ pub fn crimson() -> Colours {
   )
 }
 
-pub fn pink() -> Colours {
+pub fn pink() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(255, 252, 254)
   let assert Ok(bg_subtle) = colour.from_rgb255(254, 247, 251)
   let assert Ok(tint) = colour.from_rgb255(251, 220, 239)
@@ -385,7 +385,7 @@ pub fn pink() -> Colours {
   let assert Ok(text) = colour.from_rgb255(101, 18, 73)
   let assert Ok(text_subtle) = colour.from_rgb255(194, 41, 138)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -403,7 +403,7 @@ pub fn pink() -> Colours {
   )
 }
 
-pub fn plum() -> Colours {
+pub fn plum() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(254, 252, 255)
   let assert Ok(bg_subtle) = colour.from_rgb255(253, 247, 253)
   let assert Ok(tint) = colour.from_rgb255(247, 222, 248)
@@ -419,7 +419,7 @@ pub fn plum() -> Colours {
   let assert Ok(text) = colour.from_rgb255(83, 25, 93)
   let assert Ok(text_subtle) = colour.from_rgb255(149, 62, 163)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -437,7 +437,7 @@ pub fn plum() -> Colours {
   )
 }
 
-pub fn purple() -> Colours {
+pub fn purple() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(254, 252, 254)
   let assert Ok(bg_subtle) = colour.from_rgb255(251, 247, 254)
   let assert Ok(tint) = colour.from_rgb255(242, 226, 252)
@@ -453,7 +453,7 @@ pub fn purple() -> Colours {
   let assert Ok(text) = colour.from_rgb255(64, 32, 96)
   let assert Ok(text_subtle) = colour.from_rgb255(129, 69, 181)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -471,7 +471,7 @@ pub fn purple() -> Colours {
   )
 }
 
-pub fn violet() -> Colours {
+pub fn violet() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 252, 254)
   let assert Ok(bg_subtle) = colour.from_rgb255(250, 248, 255)
   let assert Ok(tint) = colour.from_rgb255(235, 228, 255)
@@ -487,7 +487,7 @@ pub fn violet() -> Colours {
   let assert Ok(text) = colour.from_rgb255(47, 38, 95)
   let assert Ok(text_subtle) = colour.from_rgb255(101, 80, 185)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -505,7 +505,7 @@ pub fn violet() -> Colours {
   )
 }
 
-pub fn iris() -> Colours {
+pub fn iris() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 253, 255)
   let assert Ok(bg_subtle) = colour.from_rgb255(248, 248, 255)
   let assert Ok(tint) = colour.from_rgb255(230, 231, 255)
@@ -521,7 +521,7 @@ pub fn iris() -> Colours {
   let assert Ok(text) = colour.from_rgb255(39, 41, 98)
   let assert Ok(text_subtle) = colour.from_rgb255(87, 83, 198)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -539,7 +539,7 @@ pub fn iris() -> Colours {
   )
 }
 
-pub fn indigo() -> Colours {
+pub fn indigo() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 253, 254)
   let assert Ok(bg_subtle) = colour.from_rgb255(247, 249, 255)
   let assert Ok(tint) = colour.from_rgb255(225, 233, 255)
@@ -555,7 +555,7 @@ pub fn indigo() -> Colours {
   let assert Ok(text) = colour.from_rgb255(31, 45, 92)
   let assert Ok(text_subtle) = colour.from_rgb255(58, 91, 199)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -573,7 +573,7 @@ pub fn indigo() -> Colours {
   )
 }
 
-pub fn blue() -> Colours {
+pub fn blue() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(251, 253, 255)
   let assert Ok(bg_subtle) = colour.from_rgb255(244, 250, 255)
   let assert Ok(tint) = colour.from_rgb255(213, 239, 255)
@@ -589,7 +589,7 @@ pub fn blue() -> Colours {
   let assert Ok(text) = colour.from_rgb255(17, 50, 100)
   let assert Ok(text_subtle) = colour.from_rgb255(13, 116, 206)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -607,7 +607,7 @@ pub fn blue() -> Colours {
   )
 }
 
-pub fn cyan() -> Colours {
+pub fn cyan() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(250, 253, 254)
   let assert Ok(bg_subtle) = colour.from_rgb255(242, 250, 251)
   let assert Ok(tint) = colour.from_rgb255(202, 241, 246)
@@ -623,7 +623,7 @@ pub fn cyan() -> Colours {
   let assert Ok(text) = colour.from_rgb255(13, 60, 72)
   let assert Ok(text_subtle) = colour.from_rgb255(16, 125, 152)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -641,7 +641,7 @@ pub fn cyan() -> Colours {
   )
 }
 
-pub fn teal() -> Colours {
+pub fn teal() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(250, 254, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(243, 251, 249)
   let assert Ok(tint) = colour.from_rgb255(204, 243, 234)
@@ -657,7 +657,7 @@ pub fn teal() -> Colours {
   let assert Ok(text) = colour.from_rgb255(13, 61, 56)
   let assert Ok(text_subtle) = colour.from_rgb255(0, 133, 115)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -675,7 +675,7 @@ pub fn teal() -> Colours {
   )
 }
 
-pub fn jade() -> Colours {
+pub fn jade() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(251, 254, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(244, 251, 247)
   let assert Ok(tint) = colour.from_rgb255(214, 241, 227)
@@ -691,7 +691,7 @@ pub fn jade() -> Colours {
   let assert Ok(text) = colour.from_rgb255(29, 59, 49)
   let assert Ok(text_subtle) = colour.from_rgb255(32, 131, 104)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -709,7 +709,7 @@ pub fn jade() -> Colours {
   )
 }
 
-pub fn green() -> Colours {
+pub fn green() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(251, 254, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(244, 251, 246)
   let assert Ok(tint) = colour.from_rgb255(214, 241, 223)
@@ -725,7 +725,7 @@ pub fn green() -> Colours {
   let assert Ok(text) = colour.from_rgb255(25, 59, 45)
   let assert Ok(text_subtle) = colour.from_rgb255(33, 131, 88)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -743,7 +743,7 @@ pub fn green() -> Colours {
   )
 }
 
-pub fn grass() -> Colours {
+pub fn grass() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(251, 254, 251)
   let assert Ok(bg_subtle) = colour.from_rgb255(245, 251, 245)
   let assert Ok(tint) = colour.from_rgb255(218, 241, 219)
@@ -759,7 +759,7 @@ pub fn grass() -> Colours {
   let assert Ok(text) = colour.from_rgb255(32, 60, 37)
   let assert Ok(text_subtle) = colour.from_rgb255(42, 126, 59)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -777,7 +777,7 @@ pub fn grass() -> Colours {
   )
 }
 
-pub fn brown() -> Colours {
+pub fn brown() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(254, 253, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(252, 249, 246)
   let assert Ok(tint) = colour.from_rgb255(240, 228, 217)
@@ -793,7 +793,7 @@ pub fn brown() -> Colours {
   let assert Ok(text) = colour.from_rgb255(62, 51, 46)
   let assert Ok(text_subtle) = colour.from_rgb255(129, 94, 70)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -811,7 +811,7 @@ pub fn brown() -> Colours {
   )
 }
 
-pub fn bronze() -> Colours {
+pub fn bronze() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 252, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(253, 247, 245)
   let assert Ok(tint) = colour.from_rgb255(239, 228, 223)
@@ -827,7 +827,7 @@ pub fn bronze() -> Colours {
   let assert Ok(text) = colour.from_rgb255(67, 48, 43)
   let assert Ok(text_subtle) = colour.from_rgb255(125, 94, 84)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -845,7 +845,7 @@ pub fn bronze() -> Colours {
   )
 }
 
-pub fn gold() -> Colours {
+pub fn gold() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 253, 252)
   let assert Ok(bg_subtle) = colour.from_rgb255(250, 249, 242)
   let assert Ok(tint) = colour.from_rgb255(234, 230, 219)
@@ -861,7 +861,7 @@ pub fn gold() -> Colours {
   let assert Ok(text) = colour.from_rgb255(59, 53, 43)
   let assert Ok(text_subtle) = colour.from_rgb255(113, 98, 75)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -879,7 +879,7 @@ pub fn gold() -> Colours {
   )
 }
 
-pub fn sky() -> Colours {
+pub fn sky() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(249, 254, 255)
   let assert Ok(bg_subtle) = colour.from_rgb255(241, 250, 253)
   let assert Ok(tint) = colour.from_rgb255(209, 240, 250)
@@ -895,7 +895,7 @@ pub fn sky() -> Colours {
   let assert Ok(text) = colour.from_rgb255(29, 62, 86)
   let assert Ok(text_subtle) = colour.from_rgb255(0, 116, 158)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -913,7 +913,7 @@ pub fn sky() -> Colours {
   )
 }
 
-pub fn mint() -> Colours {
+pub fn mint() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(249, 254, 253)
   let assert Ok(bg_subtle) = colour.from_rgb255(242, 251, 249)
   let assert Ok(tint) = colour.from_rgb255(200, 244, 233)
@@ -929,7 +929,7 @@ pub fn mint() -> Colours {
   let assert Ok(text) = colour.from_rgb255(22, 67, 60)
   let assert Ok(text_subtle) = colour.from_rgb255(2, 120, 100)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -947,7 +947,7 @@ pub fn mint() -> Colours {
   )
 }
 
-pub fn lime() -> Colours {
+pub fn lime() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 253, 250)
   let assert Ok(bg_subtle) = colour.from_rgb255(248, 250, 243)
   let assert Ok(tint) = colour.from_rgb255(226, 240, 189)
@@ -963,7 +963,7 @@ pub fn lime() -> Colours {
   let assert Ok(text) = colour.from_rgb255(55, 64, 28)
   let assert Ok(text_subtle) = colour.from_rgb255(92, 124, 47)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -981,7 +981,7 @@ pub fn lime() -> Colours {
   )
 }
 
-pub fn yellow() -> Colours {
+pub fn yellow() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(253, 253, 249)
   let assert Ok(bg_subtle) = colour.from_rgb255(254, 252, 233)
   let assert Ok(tint) = colour.from_rgb255(255, 243, 148)
@@ -997,7 +997,7 @@ pub fn yellow() -> Colours {
   let assert Ok(text) = colour.from_rgb255(71, 59, 31)
   let assert Ok(text_subtle) = colour.from_rgb255(158, 108, 0)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1015,7 +1015,7 @@ pub fn yellow() -> Colours {
   )
 }
 
-pub fn amber() -> Colours {
+pub fn amber() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(254, 253, 251)
   let assert Ok(bg_subtle) = colour.from_rgb255(254, 251, 233)
   let assert Ok(tint) = colour.from_rgb255(255, 238, 156)
@@ -1031,7 +1031,7 @@ pub fn amber() -> Colours {
   let assert Ok(text) = colour.from_rgb255(79, 52, 34)
   let assert Ok(text_subtle) = colour.from_rgb255(171, 100, 0)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1049,7 +1049,7 @@ pub fn amber() -> Colours {
   )
 }
 
-pub fn orange() -> Colours {
+pub fn orange() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(254, 252, 251)
   let assert Ok(bg_subtle) = colour.from_rgb255(255, 247, 237)
   let assert Ok(tint) = colour.from_rgb255(255, 223, 181)
@@ -1065,7 +1065,7 @@ pub fn orange() -> Colours {
   let assert Ok(text) = colour.from_rgb255(88, 45, 29)
   let assert Ok(text_subtle) = colour.from_rgb255(204, 78, 0)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1083,7 +1083,7 @@ pub fn orange() -> Colours {
   )
 }
 
-pub fn gray_dark() -> Colours {
+pub fn gray_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(25, 25, 25)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 17, 17)
   let assert Ok(tint) = colour.from_rgb255(42, 42, 42)
@@ -1099,7 +1099,7 @@ pub fn gray_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(238, 238, 238)
   let assert Ok(text_subtle) = colour.from_rgb255(180, 180, 180)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1117,7 +1117,7 @@ pub fn gray_dark() -> Colours {
   )
 }
 
-pub fn mauve_dark() -> Colours {
+pub fn mauve_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(26, 25, 27)
   let assert Ok(bg_subtle) = colour.from_rgb255(18, 17, 19)
   let assert Ok(tint) = colour.from_rgb255(43, 41, 45)
@@ -1133,7 +1133,7 @@ pub fn mauve_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(238, 238, 240)
   let assert Ok(text_subtle) = colour.from_rgb255(181, 178, 188)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1151,7 +1151,7 @@ pub fn mauve_dark() -> Colours {
   )
 }
 
-pub fn slate_dark() -> Colours {
+pub fn slate_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(24, 25, 27)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 17, 19)
   let assert Ok(tint) = colour.from_rgb255(39, 42, 45)
@@ -1167,7 +1167,7 @@ pub fn slate_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(237, 238, 240)
   let assert Ok(text_subtle) = colour.from_rgb255(176, 180, 186)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1185,7 +1185,7 @@ pub fn slate_dark() -> Colours {
   )
 }
 
-pub fn sage_dark() -> Colours {
+pub fn sage_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(23, 25, 24)
   let assert Ok(bg_subtle) = colour.from_rgb255(16, 18, 17)
   let assert Ok(tint) = colour.from_rgb255(39, 42, 41)
@@ -1201,7 +1201,7 @@ pub fn sage_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(236, 238, 237)
   let assert Ok(text_subtle) = colour.from_rgb255(173, 181, 178)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1219,7 +1219,7 @@ pub fn sage_dark() -> Colours {
   )
 }
 
-pub fn olive_dark() -> Colours {
+pub fn olive_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(24, 25, 23)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 18, 16)
   let assert Ok(tint) = colour.from_rgb255(40, 42, 39)
@@ -1235,7 +1235,7 @@ pub fn olive_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(236, 238, 236)
   let assert Ok(text_subtle) = colour.from_rgb255(175, 181, 173)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1253,7 +1253,7 @@ pub fn olive_dark() -> Colours {
   )
 }
 
-pub fn sand_dark() -> Colours {
+pub fn sand_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(25, 25, 24)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 17, 16)
   let assert Ok(tint) = colour.from_rgb255(42, 42, 40)
@@ -1269,7 +1269,7 @@ pub fn sand_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(238, 238, 236)
   let assert Ok(text_subtle) = colour.from_rgb255(181, 179, 173)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1287,7 +1287,7 @@ pub fn sand_dark() -> Colours {
   )
 }
 
-pub fn tomato_dark() -> Colours {
+pub fn tomato_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(31, 21, 19)
   let assert Ok(bg_subtle) = colour.from_rgb255(24, 17, 17)
   let assert Ok(tint) = colour.from_rgb255(78, 21, 17)
@@ -1303,7 +1303,7 @@ pub fn tomato_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(251, 211, 203)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 151, 125)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1321,7 +1321,7 @@ pub fn tomato_dark() -> Colours {
   )
 }
 
-pub fn red_dark() -> Colours {
+pub fn red_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(32, 19, 20)
   let assert Ok(bg_subtle) = colour.from_rgb255(25, 17, 17)
   let assert Ok(tint) = colour.from_rgb255(80, 15, 28)
@@ -1337,7 +1337,7 @@ pub fn red_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(255, 209, 217)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 149, 146)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1355,7 +1355,7 @@ pub fn red_dark() -> Colours {
   )
 }
 
-pub fn ruby_dark() -> Colours {
+pub fn ruby_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(30, 21, 23)
   let assert Ok(bg_subtle) = colour.from_rgb255(25, 17, 19)
   let assert Ok(tint) = colour.from_rgb255(78, 19, 37)
@@ -1371,7 +1371,7 @@ pub fn ruby_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(254, 210, 225)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 148, 157)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1389,7 +1389,7 @@ pub fn ruby_dark() -> Colours {
   )
 }
 
-pub fn crimson_dark() -> Colours {
+pub fn crimson_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(32, 19, 24)
   let assert Ok(bg_subtle) = colour.from_rgb255(25, 17, 20)
   let assert Ok(tint) = colour.from_rgb255(77, 18, 47)
@@ -1405,7 +1405,7 @@ pub fn crimson_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(253, 211, 232)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 146, 173)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1423,7 +1423,7 @@ pub fn crimson_dark() -> Colours {
   )
 }
 
-pub fn pink_dark() -> Colours {
+pub fn pink_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(33, 18, 29)
   let assert Ok(bg_subtle) = colour.from_rgb255(25, 17, 23)
   let assert Ok(tint) = colour.from_rgb255(75, 20, 61)
@@ -1439,7 +1439,7 @@ pub fn pink_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(253, 209, 234)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 141, 204)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1457,7 +1457,7 @@ pub fn pink_dark() -> Colours {
   )
 }
 
-pub fn plum_dark() -> Colours {
+pub fn plum_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(32, 19, 32)
   let assert Ok(bg_subtle) = colour.from_rgb255(24, 17, 24)
   let assert Ok(tint) = colour.from_rgb255(69, 29, 71)
@@ -1473,7 +1473,7 @@ pub fn plum_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(244, 212, 244)
   let assert Ok(text_subtle) = colour.from_rgb255(231, 150, 243)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1491,7 +1491,7 @@ pub fn plum_dark() -> Colours {
   )
 }
 
-pub fn purple_dark() -> Colours {
+pub fn purple_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(30, 21, 35)
   let assert Ok(bg_subtle) = colour.from_rgb255(24, 17, 27)
   let assert Ok(tint) = colour.from_rgb255(61, 34, 78)
@@ -1507,7 +1507,7 @@ pub fn purple_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(236, 217, 250)
   let assert Ok(text_subtle) = colour.from_rgb255(209, 157, 255)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1525,7 +1525,7 @@ pub fn purple_dark() -> Colours {
   )
 }
 
-pub fn violet_dark() -> Colours {
+pub fn violet_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(27, 21, 37)
   let assert Ok(bg_subtle) = colour.from_rgb255(20, 18, 31)
   let assert Ok(tint) = colour.from_rgb255(51, 37, 91)
@@ -1541,7 +1541,7 @@ pub fn violet_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(226, 221, 254)
   let assert Ok(text_subtle) = colour.from_rgb255(186, 167, 255)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1559,7 +1559,7 @@ pub fn violet_dark() -> Colours {
   )
 }
 
-pub fn iris_dark() -> Colours {
+pub fn iris_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(23, 22, 37)
   let assert Ok(bg_subtle) = colour.from_rgb255(19, 19, 30)
   let assert Ok(tint) = colour.from_rgb255(38, 42, 101)
@@ -1575,7 +1575,7 @@ pub fn iris_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(224, 223, 254)
   let assert Ok(text_subtle) = colour.from_rgb255(177, 169, 255)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1593,7 +1593,7 @@ pub fn iris_dark() -> Colours {
   )
 }
 
-pub fn indigo_dark() -> Colours {
+pub fn indigo_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(20, 23, 38)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 19, 31)
   let assert Ok(tint) = colour.from_rgb255(29, 46, 98)
@@ -1609,7 +1609,7 @@ pub fn indigo_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(214, 225, 255)
   let assert Ok(text_subtle) = colour.from_rgb255(158, 177, 255)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1627,7 +1627,7 @@ pub fn indigo_dark() -> Colours {
   )
 }
 
-pub fn blue_dark() -> Colours {
+pub fn blue_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(17, 25, 39)
   let assert Ok(bg_subtle) = colour.from_rgb255(13, 21, 32)
   let assert Ok(tint) = colour.from_rgb255(0, 51, 98)
@@ -1643,7 +1643,7 @@ pub fn blue_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(194, 230, 255)
   let assert Ok(text_subtle) = colour.from_rgb255(112, 184, 255)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1661,7 +1661,7 @@ pub fn blue_dark() -> Colours {
   )
 }
 
-pub fn cyan_dark() -> Colours {
+pub fn cyan_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(16, 27, 32)
   let assert Ok(bg_subtle) = colour.from_rgb255(11, 22, 26)
   let assert Ok(tint) = colour.from_rgb255(0, 56, 72)
@@ -1677,7 +1677,7 @@ pub fn cyan_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(182, 236, 247)
   let assert Ok(text_subtle) = colour.from_rgb255(76, 204, 230)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1695,7 +1695,7 @@ pub fn cyan_dark() -> Colours {
   )
 }
 
-pub fn teal_dark() -> Colours {
+pub fn teal_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(17, 28, 27)
   let assert Ok(bg_subtle) = colour.from_rgb255(13, 21, 20)
   let assert Ok(tint) = colour.from_rgb255(2, 59, 55)
@@ -1711,7 +1711,7 @@ pub fn teal_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(173, 240, 221)
   let assert Ok(text_subtle) = colour.from_rgb255(11, 216, 182)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1729,7 +1729,7 @@ pub fn teal_dark() -> Colours {
   )
 }
 
-pub fn jade_dark() -> Colours {
+pub fn jade_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(18, 28, 24)
   let assert Ok(bg_subtle) = colour.from_rgb255(13, 21, 18)
   let assert Ok(tint) = colour.from_rgb255(11, 59, 44)
@@ -1745,7 +1745,7 @@ pub fn jade_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(173, 240, 212)
   let assert Ok(text_subtle) = colour.from_rgb255(31, 216, 164)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1763,7 +1763,7 @@ pub fn jade_dark() -> Colours {
   )
 }
 
-pub fn green_dark() -> Colours {
+pub fn green_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(18, 27, 23)
   let assert Ok(bg_subtle) = colour.from_rgb255(14, 21, 18)
   let assert Ok(tint) = colour.from_rgb255(17, 59, 41)
@@ -1779,7 +1779,7 @@ pub fn green_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(177, 241, 203)
   let assert Ok(text_subtle) = colour.from_rgb255(61, 214, 140)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1797,7 +1797,7 @@ pub fn green_dark() -> Colours {
   )
 }
 
-pub fn grass_dark() -> Colours {
+pub fn grass_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(20, 26, 21)
   let assert Ok(bg_subtle) = colour.from_rgb255(14, 21, 17)
   let assert Ok(tint) = colour.from_rgb255(29, 58, 36)
@@ -1813,7 +1813,7 @@ pub fn grass_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(194, 240, 194)
   let assert Ok(text_subtle) = colour.from_rgb255(113, 208, 131)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1831,7 +1831,7 @@ pub fn grass_dark() -> Colours {
   )
 }
 
-pub fn brown_dark() -> Colours {
+pub fn brown_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(28, 24, 22)
   let assert Ok(bg_subtle) = colour.from_rgb255(18, 17, 15)
   let assert Ok(tint) = colour.from_rgb255(50, 41, 34)
@@ -1847,7 +1847,7 @@ pub fn brown_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(242, 225, 202)
   let assert Ok(text_subtle) = colour.from_rgb255(219, 181, 148)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1865,7 +1865,7 @@ pub fn brown_dark() -> Colours {
   )
 }
 
-pub fn bronze_dark() -> Colours {
+pub fn bronze_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(28, 25, 23)
   let assert Ok(bg_subtle) = colour.from_rgb255(20, 17, 16)
   let assert Ok(tint) = colour.from_rgb255(48, 42, 39)
@@ -1881,7 +1881,7 @@ pub fn bronze_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(237, 224, 217)
   let assert Ok(text_subtle) = colour.from_rgb255(212, 179, 165)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1899,7 +1899,7 @@ pub fn bronze_dark() -> Colours {
   )
 }
 
-pub fn gold_dark() -> Colours {
+pub fn gold_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(27, 26, 23)
   let assert Ok(bg_subtle) = colour.from_rgb255(18, 18, 17)
   let assert Ok(tint) = colour.from_rgb255(45, 43, 38)
@@ -1915,7 +1915,7 @@ pub fn gold_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(232, 226, 217)
   let assert Ok(text_subtle) = colour.from_rgb255(203, 185, 159)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1933,7 +1933,7 @@ pub fn gold_dark() -> Colours {
   )
 }
 
-pub fn sky_dark() -> Colours {
+pub fn sky_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(17, 26, 39)
   let assert Ok(bg_subtle) = colour.from_rgb255(13, 20, 31)
   let assert Ok(tint) = colour.from_rgb255(17, 53, 85)
@@ -1949,7 +1949,7 @@ pub fn sky_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(194, 243, 255)
   let assert Ok(text_subtle) = colour.from_rgb255(117, 199, 240)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -1967,7 +1967,7 @@ pub fn sky_dark() -> Colours {
   )
 }
 
-pub fn mint_dark() -> Colours {
+pub fn mint_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(15, 27, 27)
   let assert Ok(bg_subtle) = colour.from_rgb255(14, 21, 21)
   let assert Ok(tint) = colour.from_rgb255(0, 58, 56)
@@ -1983,7 +1983,7 @@ pub fn mint_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(196, 245, 225)
   let assert Ok(text_subtle) = colour.from_rgb255(88, 213, 186)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -2001,7 +2001,7 @@ pub fn mint_dark() -> Colours {
   )
 }
 
-pub fn lime_dark() -> Colours {
+pub fn lime_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(21, 26, 16)
   let assert Ok(bg_subtle) = colour.from_rgb255(17, 19, 12)
   let assert Ok(tint) = colour.from_rgb255(41, 55, 29)
@@ -2017,7 +2017,7 @@ pub fn lime_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(227, 247, 186)
   let assert Ok(text_subtle) = colour.from_rgb255(189, 229, 108)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -2035,7 +2035,7 @@ pub fn lime_dark() -> Colours {
   )
 }
 
-pub fn yellow_dark() -> Colours {
+pub fn yellow_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(27, 24, 15)
   let assert Ok(bg_subtle) = colour.from_rgb255(20, 18, 11)
   let assert Ok(tint) = colour.from_rgb255(54, 43, 0)
@@ -2051,7 +2051,7 @@ pub fn yellow_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(246, 238, 180)
   let assert Ok(text_subtle) = colour.from_rgb255(245, 225, 71)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -2069,7 +2069,7 @@ pub fn yellow_dark() -> Colours {
   )
 }
 
-pub fn amber_dark() -> Colours {
+pub fn amber_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(29, 24, 15)
   let assert Ok(bg_subtle) = colour.from_rgb255(22, 18, 12)
   let assert Ok(tint) = colour.from_rgb255(63, 39, 0)
@@ -2085,7 +2085,7 @@ pub fn amber_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(255, 231, 179)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 202, 22)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
@@ -2103,7 +2103,7 @@ pub fn amber_dark() -> Colours {
   )
 }
 
-pub fn orange_dark() -> Colours {
+pub fn orange_dark() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(30, 22, 15)
   let assert Ok(bg_subtle) = colour.from_rgb255(23, 18, 14)
   let assert Ok(tint) = colour.from_rgb255(70, 33, 0)
@@ -2119,7 +2119,7 @@ pub fn orange_dark() -> Colours {
   let assert Ok(text) = colour.from_rgb255(255, 224, 194)
   let assert Ok(text_subtle) = colour.from_rgb255(255, 160, 87)
 
-  Colours(
+  ColourScale(
     bg,
     bg_subtle,
     tint,
