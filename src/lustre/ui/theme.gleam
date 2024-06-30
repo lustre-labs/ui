@@ -111,67 +111,67 @@ pub fn dark_theme() -> Theme {
 
 ///
 ///
-pub fn with_heading_font(font: String, theme: Theme) -> Theme {
+pub fn with_heading_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, heading: font))
 }
 
 ///
 ///
-pub fn with_body_font(font: String, theme: Theme) -> Theme {
+pub fn with_body_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, body: font))
 }
 
 ///
 ///
-pub fn with_code_font(font: String, theme: Theme) -> Theme {
+pub fn with_code_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, code: font))
 }
 
 ///
 ///
-pub fn with_radius(scale: Sizes, theme: Theme) -> Theme {
+pub fn with_radius(theme: Theme, scale: Sizes) -> Theme {
   Theme(..theme, radius: scale)
 }
 
 ///
 ///
-pub fn with_space(scale: Sizes, theme: Theme) -> Theme {
+pub fn with_space(theme: Theme, scale: Sizes) -> Theme {
   Theme(..theme, space: scale)
 }
 
 ///
 ///
-pub fn with_base_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_base_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, base: colour_scale)
 }
 
 ///
 ///
-pub fn with_primary_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_primary_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, primary: colour_scale)
 }
 
 ///
 ///
-pub fn with_secondary_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_secondary_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, secondary: colour_scale)
 }
 
 ///
 ///
-pub fn with_success_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_success_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, success: colour_scale)
 }
 
 ///
 ///
-pub fn with_warning_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_warning_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, warning: colour_scale)
 }
 
 ///
 ///
-pub fn with_danger_colours(colour_scale: ColourScale, theme: Theme) -> Theme {
+pub fn with_danger_colours(theme: Theme, colour_scale: ColourScale) -> Theme {
   Theme(..theme, danger: colour_scale)
 }
 
