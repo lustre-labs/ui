@@ -4,6 +4,21 @@ import gleam_community/colour.{type Colour}
 
 // TYPES -----------------------------------------------------------------------
 
+///
+///
+pub type ColourPalette {
+  ColourPalette(
+    base: ColourScale,
+    primary: ColourScale,
+    secondary: ColourScale,
+    success: ColourScale,
+    warning: ColourScale,
+    danger: ColourScale,
+  )
+}
+
+///
+///
 pub type ColourScale {
   ColourScale(
     bg: Colour,
@@ -27,7 +42,44 @@ pub type ColourScale {
   )
 }
 
-// CONSTRUCTORS ----------------------------------------------------------------
+// COLOUR PALETTES -------------------------------------------------------------
+
+/// Lustre UI's default light colour palette. You can use this if you don't have
+/// any strict requirements around colours and you want to start building your
+/// app straight away.
+///
+/// This is the light mode palette used by the [default theme](./theme.html#default).
+///
+pub fn default_light_palette() -> ColourPalette {
+  ColourPalette(
+    base: slate(),
+    primary: pink(),
+    secondary: cyan(),
+    success: green(),
+    warning: yellow(),
+    danger: red(),
+  )
+}
+
+/// Lustre UI's default dark colour palette. You can use this if you don't have
+/// any strict requirements around colours and you want to start building your
+/// app straight away.
+///
+/// This is the dark mode palette used by the [default theme](./theme.html#default),
+/// but it is not required to _only_ use this palette for dark mode!
+///
+pub fn default_dark_palette() -> ColourPalette {
+  ColourPalette(
+    base: slate_dark(),
+    primary: pink_dark(),
+    secondary: cyan_dark(),
+    success: green_dark(),
+    warning: yellow_dark(),
+    danger: red_dark(),
+  )
+}
+
+// COLOUR SCALES ---------------------------------------------------------------
 
 pub fn gray() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 252, 252)
@@ -2136,3 +2188,4 @@ pub fn orange_dark() -> ColourScale {
     text_subtle,
   )
 }
+// CONVERSIONS -----------------------------------------------------------------
