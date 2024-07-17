@@ -1,9 +1,12 @@
 // IMPORTS ---------------------------------------------------------------------
 
+import gleam/dynamic.{type DecodeError, type Dynamic, DecodeError}
 import gleam/float
 import gleam/int
+import gleam/json.{type Json}
 import gleam/option.{type Option, None, Some}
 import gleam/pair
+import gleam/result
 import gleam/string
 import gleam_community/colour.{type Colour} as gleam_community_colour
 import lustre/attribute.{attribute}
@@ -168,43 +171,62 @@ pub fn default() -> Theme {
 
 // MANIPULATIONS ---------------------------------------------------------------
 
-///
+/// Set all of the fonts in a theme at once.
 ///
 pub fn with_fonts(theme: Theme, fonts: Fonts) -> Theme {
   Theme(..theme, font: fonts)
 }
 
+/// Replace the heading font in a theme with a new value. The provided string
+/// should match the kind of font stack you might write in a CSS `font-family`
+/// rule.
 ///
+/// The heading font is typically used in the title and section headings in prose,
+/// but can also be used in heroes and other prominent sections.
 ///
 pub fn with_heading_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, heading: font))
 }
 
+/// Replace the body font in a theme with a new value. The provided string
+/// should match the kind of font stack you might write in a CSS `font-family`
+/// rule.
 ///
+/// The body font is typically used throughout an interface as the primary font
+/// in all copy.
 ///
 pub fn with_body_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, body: font))
 }
 
+/// Replace the code font in a theme with a new value. The provided string
+/// should match the kind of font stack you might write in a CSS `font-family`
+/// rule.
 ///
+/// The code font is typically a monospaced font used for code snippets in prose,
+/// but may also be used as an alternative heading font or otherwise used as an
+/// alternative to the body font.
 ///
 pub fn with_code_font(theme: Theme, font: String) -> Theme {
   Theme(..theme, font: Fonts(..theme.font, code: font))
 }
 
-///
+/// Set the size scale used for border radius in a theme. The radius scale determines
+/// how rounded the elements in your application UI appear.
 ///
 pub fn with_radius(theme: Theme, scale: SizeScale) -> Theme {
   Theme(..theme, radius: scale)
 }
 
-///
+/// Set the space scale in a theme. The space scale determines how much visual
+/// space there is in your UI. It is used both within elements as padding and
+/// between elements to separate them in a collection.
 ///
 pub fn with_space(theme: Theme, scale: SizeScale) -> Theme {
   Theme(..theme, space: scale)
 }
 
-/// Replace a theme's default colour palette with a new one.
+/// Set a theme's default colour palette with a new one.
 ///
 pub fn with_light_palette(theme: Theme, light: ColourPalette) -> Theme {
   Theme(..theme, light: light)
@@ -369,7 +391,7 @@ pub fn with_dark_danger_scale(theme: Theme, scale: ColourScale) -> Theme {
 
 // CONVERSIONS -----------------------------------------------------------------
 
-///
+/// Render a `Theme` as a `<style>` tag.
 ///
 pub fn to_style(theme theme: Theme) -> Element(msg) {
   let data_attr = attribute("data-lustre-ui-theme", theme.id)
@@ -577,6 +599,127 @@ fn var(name: String) -> String {
   "--lustre-ui-" <> name
 }
 
+// JSON ------------------------------------------------------------------------
+
+pub fn encode(theme: Theme) -> Json {
+  json.object([
+    #("id", json.string(theme.id)),
+    #("selector", encode_selector(theme.selector)),
+    #("font", encode_fonts(theme.font)),
+    #("radius", encode_sizes(theme.radius)),
+    #("space", encode_sizes(theme.space)),
+    #("light", colour.encode_palette(theme.light)),
+    #("dark", case theme.dark {
+      Some(#(selector, dark)) ->
+        json.preprocessed_array([
+          encode_selector(selector),
+          colour.encode_palette(dark),
+        ])
+      None -> json.null()
+    }),
+  ])
+}
+
+fn encode_selector(selector: Selector) -> Json {
+  case selector {
+    Global -> json.object([#("kind", json.string("Global"))])
+    Class(class) ->
+      json.object([
+        #("kind", json.string("Class")),
+        #("class", json.string(class)),
+      ])
+    DataAttribute(name, value) ->
+      json.object([
+        #("kind", json.string("DataAttribute")),
+        #("name", json.string(name)),
+        #("value", json.string(value)),
+      ])
+  }
+}
+
+fn encode_fonts(fonts: Fonts) -> Json {
+  json.object([
+    #("heading", json.string(fonts.heading)),
+    #("body", json.string(fonts.body)),
+    #("code", json.string(fonts.code)),
+  ])
+}
+
+fn encode_sizes(sizes: SizeScale) -> Json {
+  json.object([
+    #("xs", json.float(sizes.xs)),
+    #("sm", json.float(sizes.sm)),
+    #("md", json.float(sizes.md)),
+    #("lg", json.float(sizes.lg)),
+    #("xl", json.float(sizes.xl)),
+    #("xl-2", json.float(sizes.xl_2)),
+    #("xl-3", json.float(sizes.xl_3)),
+  ])
+}
+
+pub fn decoder(json: Dynamic) -> Result(Theme, List(DecodeError)) {
+  dynamic.decode7(
+    Theme,
+    dynamic.field("id", dynamic.string),
+    dynamic.field("selector", selector_decoder),
+    dynamic.field("font", fonts_decoder),
+    dynamic.field("radius", sizes_decoder),
+    dynamic.field("space", sizes_decoder),
+    dynamic.field("light", colour.palette_decoder),
+    dynamic.field(
+      "dark",
+      dynamic.optional(dynamic.tuple2(selector_decoder, colour.palette_decoder)),
+    ),
+  )(json)
+}
+
+fn selector_decoder(json: Dynamic) -> Result(Selector, List(DecodeError)) {
+  use kind <- result.try(dynamic.field("kind", dynamic.string)(json))
+
+  case kind {
+    "Global" -> Ok(Global)
+    "Class" ->
+      json |> dynamic.decode1(Class, dynamic.field("class", dynamic.string))
+    "DataAttribute" ->
+      json
+      |> dynamic.decode2(
+        DataAttribute,
+        dynamic.field("name", dynamic.string),
+        dynamic.field("value", dynamic.string),
+      )
+    _ ->
+      Error([
+        DecodeError(
+          expected: "'Global' | 'Class' | 'DataAttribute'",
+          found: kind,
+          path: ["kind"],
+        ),
+      ])
+  }
+}
+
+fn fonts_decoder(json: Dynamic) -> Result(Fonts, List(DecodeError)) {
+  dynamic.decode3(
+    Fonts,
+    dynamic.field("heading", dynamic.string),
+    dynamic.field("body", dynamic.string),
+    dynamic.field("code", dynamic.string),
+  )(json)
+}
+
+fn sizes_decoder(json: Dynamic) -> Result(SizeScale, List(DecodeError)) {
+  dynamic.decode7(
+    SizeScale,
+    dynamic.field("xs", dynamic.float),
+    dynamic.field("sm", dynamic.float),
+    dynamic.field("md", dynamic.float),
+    dynamic.field("lg", dynamic.float),
+    dynamic.field("xl", dynamic.float),
+    dynamic.field("xl-2", dynamic.float),
+    dynamic.field("xl-3", dynamic.float),
+  )(json)
+}
+
 // THEME TOKENS ---------------------------------------------------------------
 
 ///
@@ -732,9 +875,9 @@ pub const primary = ColourScaleVariables(
   text_subtle: "rgb(var(--lustre-ui-primary-text_subtle))",
 )
 
-/// A record that lets you access theme tokens for the primary colour scale of
+/// A record that lets you access theme tokens for the secondary colour scale of
 /// the theme. The secondary colour scale is typically used as an accent or
-/// compliment to your
+/// compliment to your primary colour.
 ///
 pub const secondary = ColourScaleVariables(
   bg: "rgb(var(--lustre-ui-secondary-bg))",
@@ -753,6 +896,10 @@ pub const secondary = ColourScaleVariables(
   text_subtle: "rgb(var(--lustre-ui-secondary-text_subtle))",
 )
 
+/// A record that lets you access theme tokens for the success colour scale of
+/// the theme. The success colour scale is typically used in parts of your UI
+/// that indicate an action was successful.
+///
 pub const success = ColourScaleVariables(
   bg: "rgb(var(--lustre-ui-success-bg))",
   bg_subtle: "rgb(var(--lustre-ui-success-bg-subtle))",
@@ -770,6 +917,11 @@ pub const success = ColourScaleVariables(
   text_subtle: "rgb(var(--lustre-ui-success-text_subtle))",
 )
 
+/// A record that lets you access theme tokens for the warning colour scale of
+/// the theme. The warning colour scale is typically used in parts of your UI
+/// to indicate non-critical information or notify users that an action may have
+/// non-destructive consequences.
+///
 pub const warning = ColourScaleVariables(
   bg: "rgb(var(--lustre-ui-warning-bg))",
   bg_subtle: "rgb(var(--lustre-ui-warning-bg-subtle))",
@@ -787,6 +939,11 @@ pub const warning = ColourScaleVariables(
   text_subtle: "rgb(var(--lustre-ui-warning-text_subtle))",
 )
 
+/// A record that lets you access theme tokens for the danger colour scale of
+/// the theme. The danger colour scale is typically used in parts of your UI
+/// that indicate critical information or notify users that an action will have
+/// destructive consequences.
+///
 pub const danger = ColourScaleVariables(
   bg: "rgb(var(--lustre-ui-danger-bg))",
   bg_subtle: "rgb(var(--lustre-ui-danger-bg-subtle))",
