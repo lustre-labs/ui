@@ -1,9 +1,26 @@
 // IMPORTS ---------------------------------------------------------------------
-
+import gleam/dynamic.{type DecodeError, type Dynamic}
+import gleam/json.{type Json}
+import gleam/result.{try}
 import gleam_community/colour.{type Colour}
 
 // TYPES -----------------------------------------------------------------------
 
+///
+///
+pub type ColourPalette {
+  ColourPalette(
+    base: ColourScale,
+    primary: ColourScale,
+    secondary: ColourScale,
+    success: ColourScale,
+    warning: ColourScale,
+    danger: ColourScale,
+  )
+}
+
+///
+///
 pub type ColourScale {
   ColourScale(
     bg: Colour,
@@ -27,7 +44,124 @@ pub type ColourScale {
   )
 }
 
-// CONSTRUCTORS ----------------------------------------------------------------
+// COLOUR PALETTES -------------------------------------------------------------
+
+/// Lustre UI's default light colour palette. You can use this if you don't have
+/// any strict requirements around colours and you want to start building your
+/// app straight away.
+///
+/// This is the light mode palette used by the [default theme](./theme.html#default).
+///
+pub fn default_light_palette() -> ColourPalette {
+  ColourPalette(
+    base: slate(),
+    primary: pink(),
+    secondary: cyan(),
+    success: green(),
+    warning: yellow(),
+    danger: red(),
+  )
+}
+
+/// Lustre UI's default dark colour palette. You can use this if you don't have
+/// any strict requirements around colours and you want to start building your
+/// app straight away.
+///
+/// This is the dark mode palette used by the [default theme](./theme.html#default),
+/// but it is not required to _only_ use this palette for dark mode!
+///
+pub fn default_dark_palette() -> ColourPalette {
+  ColourPalette(
+    base: slate_dark(),
+    primary: pink_dark(),
+    secondary: cyan_dark(),
+    success: green_dark(),
+    warning: yellow_dark(),
+    danger: red_dark(),
+  )
+}
+
+// JSON ------------------------------------------------------------------------
+
+pub fn encode(scale: ColourScale) -> Json {
+  json.object([
+    #("bg", colour.encode(scale.bg)),
+    #("bg_subtle", colour.encode(scale.bg_subtle)),
+    #("tint", colour.encode(scale.tint)),
+    #("tint_subtle", colour.encode(scale.tint_subtle)),
+    #("tint_strong", colour.encode(scale.tint_strong)),
+    #("accent", colour.encode(scale.accent)),
+    #("accent_subtle", colour.encode(scale.accent_subtle)),
+    #("accent_strong", colour.encode(scale.accent_strong)),
+    #("solid", colour.encode(scale.solid)),
+    #("solid_subtle", colour.encode(scale.solid_subtle)),
+    #("solid_strong", colour.encode(scale.solid_strong)),
+    #("solid_text", colour.encode(scale.solid_text)),
+    #("text", colour.encode(scale.text)),
+    #("text_subtle", colour.encode(scale.text_subtle)),
+  ])
+}
+
+pub fn encode_palette(palette: ColourPalette) -> Json {
+  json.object([
+    #("base", encode(palette.base)),
+    #("primary", encode(palette.primary)),
+    #("secondary", encode(palette.secondary)),
+    #("success", encode(palette.success)),
+    #("warning", encode(palette.warning)),
+    #("danger", encode(palette.danger)),
+  ])
+}
+
+pub fn decoder(json: Dynamic) -> Result(ColourScale, List(DecodeError)) {
+  use bg <- try(dynamic.field("bg", colour.decoder)(json))
+  use bg_subtle <- try(dynamic.field("bg_subtle", colour.decoder)(json))
+  use tint <- try(dynamic.field("tint", colour.decoder)(json))
+  use tint_subtle <- try(dynamic.field("tint_subtle", colour.decoder)(json))
+  use tint_strong <- try(dynamic.field("tint_strong", colour.decoder)(json))
+  use accent <- try(dynamic.field("accent", colour.decoder)(json))
+  use accent_subtle <- try(dynamic.field("accent_subtle", colour.decoder)(json))
+  use accent_strong <- try(dynamic.field("accent_strong", colour.decoder)(json))
+  use solid <- try(dynamic.field("solid", colour.decoder)(json))
+  use solid_subtle <- try(dynamic.field("solid_subtle", colour.decoder)(json))
+  use solid_strong <- try(dynamic.field("solid_strong", colour.decoder)(json))
+  use solid_text <- try(dynamic.field("solid_text", colour.decoder)(json))
+  use text <- try(dynamic.field("text", colour.decoder)(json))
+  use text_subtle <- try(dynamic.field("text_subtle", colour.decoder)(json))
+
+  Ok(ColourScale(
+    bg,
+    bg_subtle,
+    tint,
+    tint_subtle,
+    tint_strong,
+    accent,
+    accent_subtle,
+    accent_strong,
+    solid,
+    solid_subtle,
+    solid_strong,
+    solid_text,
+    text,
+    text_subtle,
+  ))
+}
+
+pub fn palette_decoder(
+  json: Dynamic,
+) -> Result(ColourPalette, List(DecodeError)) {
+  dynamic.decode6(
+    ColourPalette,
+    dynamic.field("base", decoder),
+    dynamic.field("primary", decoder),
+    dynamic.field("secondary", decoder),
+    dynamic.field("success", decoder),
+    dynamic.field("warning", decoder),
+    dynamic.field("danger", decoder),
+  )(json)
+}
+
+// RADIX UI --------------------------------------------------------------------
 
 pub fn gray() -> ColourScale {
   let assert Ok(bg) = colour.from_rgb255(252, 252, 252)
@@ -2136,3 +2270,4 @@ pub fn orange_dark() -> ColourScale {
     text_subtle,
   )
 }
+// CONVERSIONS -----------------------------------------------------------------

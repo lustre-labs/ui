@@ -21,3 +21,4 @@ lustre = "~> 4.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"
+glailglind = ">= 1.1.2 and < 2.0.0"
