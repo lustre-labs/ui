@@ -4,8 +4,6 @@ import decipher
 import gleam/dict.{type Dict}
 import gleam/dynamic.{type Decoder, dynamic}
 import gleam/int
-import gleam/io
-import gleam/json
 import gleam/list
 import gleam/option.{type Option}
 import gleam/result
@@ -84,7 +82,7 @@ type Msg {
 }
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
-  case io.debug(msg) {
+  case msg {
     ParentSetOptions(options) -> {
       let active = case model.active {
         option.Some(n) if n >= options -> option.None
