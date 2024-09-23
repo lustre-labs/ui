@@ -10,7 +10,7 @@ links = [
     { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
 ]
 
-internal_modules = ["internals/*", "lustre/ui/internals/*"]
+internal_modules = ["lustre/ui/internals", "lustre/ui/internals/*"]
 
 [dependencies]
 gleam_community_colour = ">= 1.4.0 and < 2.0.0"
@@ -23,3 +23,4 @@ lustre = ">= 4.0.0 and < 5.0.0"
 birdie = ">= 1.1.6 and < 2.0.0"
 glailglind = ">= 1.1.2 and < 2.0.0"
 gleeunit = "~> 1.0"
+lustre_dev_tools = ">= 1.5.4 and < 2.0.0"
