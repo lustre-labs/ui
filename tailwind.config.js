@@ -1,4 +1,4 @@
 module.exports = {
-  content: ["./src/lustre/ui/**/*.{js,gleam}"],
+  content: ["./src/**/*.{js,gleam}"],
   plugins: [require("./priv/static/tw.js")],
 };
