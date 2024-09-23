@@ -5,6 +5,7 @@ packages = [
   { name = "argv", version = "1.0.2", build_tools = ["gleam"], requirements = [], otp_app = "argv", source = "hex", outer_checksum = "BA1FF0929525DEBA1CE67256E5ADF77A7CDDFE729E3E3F57A5BDCAA031DED09D" },
   { name = "birdie", version = "1.2.3", build_tools = ["gleam"], requirements = ["argv", "edit_distance", "filepath", "glance", "gleam_community_ansi", "gleam_erlang", "gleam_stdlib", "justin", "rank", "simplifile", "trie_again"], otp_app = "birdie", source = "hex", outer_checksum = "AE1207210E9CC8F4170BCE3FB3C23932F314C352C3FD1BCEA44CF4BF8CF60F93" },
   { name = "birl", version = "1.7.1", build_tools = ["gleam"], requirements = ["gleam_stdlib", "ranger"], otp_app = "birl", source = "hex", outer_checksum = "5C66647D62BCB11FE327E7A6024907C4A17954EF22865FE0940B54A852446D01" },
+  { name = "decipher", version = "1.2.0", build_tools = ["gleam"], requirements = ["birl", "gleam_json", "gleam_stdlib", "stoiridh_version"], otp_app = "decipher", source = "hex", outer_checksum = "9F1B5C6FF0D798046E4E0EF87D09DD729324CB72BD7F0D4152B797324D51223E" },
   { name = "directories", version = "1.1.0", build_tools = ["gleam"], requirements = ["envoy", "gleam_stdlib", "platform", "simplifile"], otp_app = "directories", source = "hex", outer_checksum = "BDA521A4EB9EE3A7894F0DC863797878E91FF5C7826F7084B2E731E208BDB076" },
   { name = "edit_distance", version = "2.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "edit_distance", source = "hex", outer_checksum = "A1E485C69A70210223E46E63985FA1008B8B2DDA9848B7897469171B29020C05" },
   { name = "envoy", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "envoy", source = "hex", outer_checksum = "CFAACCCFC47654F7E8B75E614746ED924C65BD08B1DE21101548AC314A8B6A41" },
@@ -45,6 +46,7 @@ packages = [
   { name = "simplifile", version = "2.1.0", build_tools = ["gleam"], requirements = ["filepath", "gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "BDD04F5D31D6D34E2EDFAEF0B68A6297AEC939888C3BFCE61133DE13857F6DA2" },
   { name = "snag", version = "0.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "snag", source = "hex", outer_checksum = "54D32E16E33655346AA3E66CBA7E191DE0A8793D2C05284E3EFB90AD2CE92BCC" },
   { name = "spinner", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_community_ansi", "gleam_erlang", "gleam_stdlib", "glearray", "repeatedly"], otp_app = "spinner", source = "hex", outer_checksum = "200BA3D4A04D468898E63C0D316E23F526E02514BC46454091975CB5BAE41E8F" },
+  { name = "stoiridh_version", version = "0.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "stoiridh_version", source = "hex", outer_checksum = "EEF8ADAB9755BD33EB202F169376F1A7797AEF90823FDCA671D8590D04FBF56B" },
   { name = "telemetry", version = "1.3.0", build_tools = ["rebar3"], requirements = [], otp_app = "telemetry", source = "hex", outer_checksum = "7015FC8919DBE63764F4B4B87A95B7C0996BD539E0D499BE6EC9D7F3875B79E6" },
   { name = "term_size", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "term_size", source = "hex", outer_checksum = "D00BD2BC8FB3EBB7E6AE076F3F1FF2AC9D5ED1805F004D0896C784D06C6645F1" },
   { name = "thoas", version = "1.2.1", build_tools = ["rebar3"], requirements = [], otp_app = "thoas", source = "hex", outer_checksum = "E38697EDFFD6E91BD12CEA41B155115282630075C2A727E7A6B2947F5408B86A" },
@@ -55,10 +57,11 @@ packages = [
 
 [requirements]
 birdie = { version = ">= 1.1.6 and < 2.0.0" }
+decipher = { version = ">= 1.2.0 and < 2.0.0" }
 glailglind = { version = ">= 1.1.2 and < 2.0.0" }
 gleam_community_colour = { version = ">= 1.4.0 and < 2.0.0" }
 gleam_community_maths = { version = ">= 1.1.1 and < 2.0.0" }
-gleam_json = { version = ">= 1.0.1 and < 2.0.0 or >= 2.0.0 and < 3.0.0" }
+gleam_json = { version = ">= 1.0.1 and < 2.0.0" }
 gleam_stdlib = { version = ">= 0.40.0 and < 2.0.0" }
 gleeunit = { version = "~> 1.0" }
 lustre = { version = ">= 4.0.0 and < 5.0.0" }

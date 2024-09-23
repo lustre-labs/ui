@@ -15,9 +15,10 @@ internal_modules = ["lustre/ui/internals", "lustre/ui/internals/*"]
 [dependencies]
 gleam_community_colour = ">= 1.4.0 and < 2.0.0"
 gleam_community_maths = ">= 1.1.1 and < 2.0.0"
-gleam_json = ">= 1.0.1 and < 2.0.0 or >= 2.0.0 and < 3.0.0"
+gleam_json = ">= 1.0.1 and < 2.0.0"
 gleam_stdlib = ">= 0.40.0 and < 2.0.0"
 lustre = ">= 4.0.0 and < 5.0.0"
+decipher = ">= 1.2.0 and < 2.0.0"
 
 [dev-dependencies]
 birdie = ">= 1.1.6 and < 2.0.0"
