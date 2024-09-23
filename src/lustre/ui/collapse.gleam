@@ -100,6 +100,11 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
+  let height = case model.open {
+    True -> float.to_string(model.height) <> "px"
+    False -> "0px"
+  }
+
   element.fragment([
     html.slot([attribute.name("trigger"), event.on("click", handle_click)]),
     html.div(
@@ -107,10 +112,7 @@ fn view(model: Model) -> Element(Msg) {
         attribute.class("transition-height overflow-y-hidden"),
         attribute.style([
           #("transition-duration", "inherit"),
-          #("height", case model.open {
-            True -> float.to_string(model.height) <> "px"
-            False -> "0px"
-          }),
+          #("height", height),
         ]),
       ],
       [
