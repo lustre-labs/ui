@@ -554,12 +554,28 @@ fn to_css_variables(theme: Theme) -> String {
 fn to_color_palette_variables(palette: ColourPalette, scheme: String) -> String {
   string.concat([
     to_css_variable("color-scheme", scheme),
+    //
     to_colour_scale_variables(palette.base, "base"),
     to_colour_scale_variables(palette.primary, "primary"),
     to_colour_scale_variables(palette.secondary, "secondary"),
     to_colour_scale_variables(palette.success, "success"),
     to_colour_scale_variables(palette.warning, "warning"),
     to_colour_scale_variables(palette.danger, "danger"),
+    //
+    "--lustre-ui-bg: var(--lustre-ui-base-bg);",
+    "--lustre-ui-bg-subtle: var(--lustre-ui-base-bg-subtle);",
+    "--lustre-ui-tint: var(--lustre-ui-base-tint);",
+    "--lustre-ui-tint-subtle: var(--lustre-ui-base-tint-subtle);",
+    "--lustre-ui-tint-strong: var(--lustre-ui-base-tint-strong);",
+    "--lustre-ui-accent: var(--lustre-ui-base-accent);",
+    "--lustre-ui-accent-subtle: var(--lustre-ui-base-accent-subtle);",
+    "--lustre-ui-accent-strong: var(--lustre-ui-base-accent-strong);",
+    "--lustre-ui-solid: var(--lustre-ui-base-solid);",
+    "--lustre-ui-solid-subtle: var(--lustre-ui-base-solid-subtle);",
+    "--lustre-ui-solid-strong: var(--lustre-ui-base-solid-strong);",
+    "--lustre-ui-solid-text: var(--lustre-ui-base-solid-text);",
+    "--lustre-ui-text: var(--lustre-ui-base-text);",
+    "--lustre-ui-text-subtle: var(--lustre-ui-base-text-subtle);",
   ])
 }
 
