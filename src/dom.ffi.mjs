@@ -1,6 +1,11 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import { List, Ok, Error } from "../prelude.mjs";
+import {
+  ComponentAlreadyRegistered,
+  NotABrowser,
+  is_browser,
+} from "../lustre/lustre.mjs";
 
 // TYPES -----------------------------------------------------------------------
 
@@ -42,45 +47,56 @@ export const animation_time = () => {
 
 // COMPONENTS ------------------------------------------------------------------
 
-customElements.define(
-  "lustre-ui-intersection-observer",
-  class LustreUiIntersectionObserver extends HTMLElement {
-    constructor() {
-      super();
-      this.observer = null;
-    }
+export const register_intersection_observer = () => {
+  if (!is_browser()) return new Error(new NotABrowser());
+  if (window.customElements.get("lustre-ui-intersection-observer")) {
+    return new Error(
+      new ComponentAlreadyRegistered("lustre-ui-intersection-observer"),
+    );
+  }
 
-    connectedCallback() {
-      const options = {
-        root: null,
-        rootMargin: "0px",
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-      };
-
-      this.observer = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          const intersectionEvent = new CustomEvent("intersection", {
-            detail: {
-              target: entry.target,
-              isIntersecting: entry.isIntersecting,
-              intersectionRatio: entry.intersectionRatio,
-            },
-            bubbles: true,
-            composed: true,
-          });
-
-          this.dispatchEvent(intersectionEvent);
-        }
-      }, options);
-
-      // Observe self
-      this.observer.observe(this);
-    }
-
-    disconnectedCallback() {
-      if (this.observer) {
-        this.observer.disconnect();
+  customElements.define(
+    "lustre-ui-intersection-observer",
+    class LustreUiIntersectionObserver extends HTMLElement {
+      constructor() {
+        super();
+        this.observer = null;
       }
-    }
-  },
-);
+
+      connectedCallback() {
+        const options = {
+          root: null,
+          rootMargin: "0px",
+          threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        };
+
+        this.observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            const intersectionEvent = new CustomEvent("intersection", {
+              detail: {
+                target: entry.target,
+                isIntersecting: entry.isIntersecting,
+                intersectionRatio: entry.intersectionRatio,
+              },
+              bubbles: true,
+              composed: true,
+            });
+
+            this.dispatchEvent(intersectionEvent);
+          }
+        }, options);
+
+        // Observe self
+        this.observer.observe(this);
+      }
+
+      disconnectedCallback() {
+        if (this.observer) {
+          this.observer.disconnect();
+        }
+      }
+    },
+  );
+
+  return new Ok(undefined);
+};
