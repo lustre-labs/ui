@@ -10,13 +10,13 @@ module.exports = plugin(
       [`.bg-lui`]: {
         backgroundColor: colour(`bg`),
       },
-      [`.bg-lui-subtle`]: {
+      [`.bg-w-subtle`]: {
         backgroundColor: colour(`bg-subtle`),
       },
       [`.text-lui`]: {
         color: colour(`text`),
       },
-      [`.text-lui-subtle`]: {
+      [`.text-w-subtle`]: {
         color: colour(`text-subtle`),
       },
 
@@ -31,7 +31,7 @@ module.exports = plugin(
             "--lustre-ui-tint": $(`${scale}-tint`),
             "--lustre-ui-tint-subtle": $(`${scale}-tint-subtle`),
             "--lustre-ui-tint-strong": $(`${scale}-tint-strong`),
-            "--lustre-ui-accent": $(`--lustre-ui-${scale}-accent`),
+            "--lustre-ui-accent": $(`${scale}-accent`),
             "--lustre-ui-accent-subtle": $(`${scale}-accent-subtle`),
             "--lustre-ui-accent-strong": $(`${scale}-accent-strong`),
             "--lustre-ui-solid": $(`${scale}-solid`),
@@ -50,7 +50,7 @@ module.exports = plugin(
             "--lustre-ui-tint": $(`${scale}-tint`),
             "--lustre-ui-tint-subtle": $(`${scale}-tint-subtle`),
             "--lustre-ui-tint-strong": $(`${scale}-tint-strong`),
-            "--lustre-ui-accent": $(`--lustre-ui-${scale}-accent`),
+            "--lustre-ui-accent": $(`${scale}-accent`),
             "--lustre-ui-accent-subtle": $(`${scale}-accent-subtle`),
             "--lustre-ui-accent-strong": $(`${scale}-accent-strong`),
             "--lustre-ui-solid": $(`${scale}-solid`),
@@ -66,16 +66,16 @@ module.exports = plugin(
           // colour to the primary background colour indicated in the theme,
           // you would have to write `bg-primary-bg`. These utility classes
           // make it so you can instead write `bg-primary`.
-          [`.bg-lui-${scale}`]: {
+          [`.bg-w-${scale}`]: {
             backgroundColor: colour(`${scale}-bg`),
           },
-          [`.bg-lui-${scale}-subtle`]: {
+          [`.bg-w-${scale}-subtle`]: {
             backgroundColor: colour(`${scale}-bg-subtle`),
           },
-          [`.text-lui-${scale}`]: {
+          [`.text-w-${scale}`]: {
             color: colour(`${scale}-text`),
           },
-          [`.text-lui-${scale}-subtle`]: {
+          [`.text-w-${scale}-subtle`]: {
             color: colour(`${scale}-text-subtle`),
           },
         }),
@@ -87,19 +87,19 @@ module.exports = plugin(
     theme: {
       extend: {
         borderRadius: {
-          "lui-xs": $("radius-xs"),
-          "lui-sm": $("radius-sm"),
-          "lui-md": $("radius-md"),
-          "lui-lg": $("radius-lg"),
-          "lui-xl": $("radius-xl"),
-          "lui-xl2": $("radius-xl_2"),
-          "lui-xl3": $("radius-xl_3"),
+          "w-xs": $("radius-xs"),
+          "w-sm": $("radius-sm"),
+          "w-md": $("radius-md"),
+          "w-lg": $("radius-lg"),
+          "w-xl": $("radius-xl"),
+          "w-xl2": $("radius-xl-2"),
+          "w-xl3": $("radius-xl-3"),
         },
 
         colors: {
           // Register a 'lustre-ui' colour palette in the user's tailwind theme
           // that can be used to access the currently-inherited colour palette.
-          ["lui"]: {
+          ["w"]: {
             bg: colour("bg"),
             "bg-subtle": colour("bg-subtle"),
             tint: colour("tint"),
@@ -121,7 +121,7 @@ module.exports = plugin(
           ...SCALES.reduce(
             (obj, scale) => ({
               ...obj,
-              [`lui-${scale}`]: {
+              [`w-${scale}`]: {
                 bg: colour(`${scale}-bg`),
                 "bg-subtle": colour(`${scale}-bg-subtle`),
                 tint: colour(`${scale}-tint`),
@@ -143,19 +143,19 @@ module.exports = plugin(
         },
 
         fontFamily: {
-          "lui-heading": $("font-heading"),
-          "lui-body": $("font-body"),
-          "lui-code": $("font-code"),
+          "w-heading": $("font-heading"),
+          "w-body": $("font-body"),
+          "w-code": $("font-code"),
         },
 
         spacing: {
-          "lui-xs": $("spacing-xs"),
-          "lui-sm": $("spacing-sm"),
-          "lui-md": $("spacing-md"),
-          "lui-lg": $("spacing-lg"),
-          "lui-xl": $("spacing-xl"),
-          "lui-xl2": $("spacing-xl_2"),
-          "lui-xl3": $("spacing-xl_3"),
+          "w-xs": $("spacing-xs"),
+          "w-sm": $("spacing-sm"),
+          "w-md": $("spacing-md"),
+          "w-lg": $("spacing-lg"),
+          "w-xl": $("spacing-xl"),
+          "w-xl2": $("spacing-xl-2"),
+          "w-xl3": $("spacing-xl-3"),
         },
       },
     },
