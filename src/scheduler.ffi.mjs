@@ -6,7 +6,8 @@ export const before_paint = (k) => {
 };
 
 /**
- * @param {() => void} k - A callback to schedule after the DOM has been painted.
+ * @param {(timestamp: number) => void} k - A callback to schedule after the DOM
+ * has been painted.
  */
 export const after_paint = (k) => {
   window.requestAnimationFrame(k);
