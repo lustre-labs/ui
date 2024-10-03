@@ -125,8 +125,8 @@ pub fn maximum_contrast(base: Colour, options: List(Colour)) -> Colour {
 pub fn default_light_palette() -> ColourPalette {
   ColourPalette(
     base: slate(),
-    primary: pink(),
-    secondary: cyan(),
+    primary: blue(),
+    secondary: plum(),
     success: green(),
     warning: yellow(),
     danger: red(),
@@ -143,8 +143,8 @@ pub fn default_light_palette() -> ColourPalette {
 pub fn default_dark_palette() -> ColourPalette {
   ColourPalette(
     base: slate_dark(),
-    primary: pink_dark(),
-    secondary: cyan_dark(),
+    primary: blue_dark(),
+    secondary: plum_dark(),
     success: green_dark(),
     warning: yellow_dark(),
     danger: red_dark(),
