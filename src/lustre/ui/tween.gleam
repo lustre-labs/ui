@@ -489,6 +489,81 @@ fn bounce_in_out(t: Float, b: Float, c: Float, d: Float) -> Float {
   }
 }
 
+// CONVERSIONS -----------------------------------------------------------------
+
+pub fn to_string(function: Function) -> String {
+  case function {
+    Linear -> "linear"
+    Sine(In) -> "sine-in"
+    Sine(Out) -> "sine-out"
+    Sine(InOut) -> "sine-in-out"
+    Quadratic(In) -> "quadratic-in"
+    Quadratic(Out) -> "quadratic-out"
+    Quadratic(InOut) -> "quadratic-in-out"
+    Cubic(In) -> "cubic-in"
+    Cubic(Out) -> "cubic-out"
+    Cubic(InOut) -> "cubic-in-out"
+    Quartic(In) -> "quartic-in"
+    Quartic(Out) -> "quartic-out"
+    Quartic(InOut) -> "quartic-in-out"
+    Quintic(In) -> "quintic-in"
+    Quintic(Out) -> "quintic-out"
+    Quintic(InOut) -> "quintic-in-out"
+    Exponential(In) -> "exponential-in"
+    Exponential(Out) -> "exponential-out"
+    Exponential(InOut) -> "exponential-in-out"
+    Circular(In) -> "circular-in"
+    Circular(Out) -> "circular-out"
+    Circular(InOut) -> "circular-in-out"
+    Elastic(In) -> "elastic-in"
+    Elastic(Out) -> "elastic-out"
+    Elastic(InOut) -> "elastic-in-out"
+    Back(In) -> "back-in"
+    Back(Out) -> "back-out"
+    Back(InOut) -> "back-in-out"
+    Bounce(In) -> "bounce-in"
+    Bounce(Out) -> "bounce-out"
+    Bounce(InOut) -> "bounce-in-out"
+  }
+}
+
+pub fn from_string(function: String) -> Result(Function, Nil) {
+  case function {
+    "linear" -> Ok(Linear)
+    "sine-in" -> Ok(Sine(In))
+    "sine-out" -> Ok(Sine(Out))
+    "sine-in-out" -> Ok(Sine(InOut))
+    "quadratic-in" -> Ok(Quadratic(In))
+    "quadratic-out" -> Ok(Quadratic(Out))
+    "quadratic-in-out" -> Ok(Quadratic(InOut))
+    "cubic-in" -> Ok(Cubic(In))
+    "cubic-out" -> Ok(Cubic(Out))
+    "cubic-in-out" -> Ok(Cubic(InOut))
+    "quartic-in" -> Ok(Quartic(In))
+    "quartic-out" -> Ok(Quartic(Out))
+    "quartic-in-out" -> Ok(Quartic(InOut))
+    "quintic-in" -> Ok(Quintic(In))
+    "quintic-out" -> Ok(Quintic(Out))
+    "quintic-in-out" -> Ok(Quintic(InOut))
+    "exponential-in" -> Ok(Exponential(In))
+    "exponential-out" -> Ok(Exponential(Out))
+    "exponential-in-out" -> Ok(Exponential(InOut))
+    "circular-in" -> Ok(Circular(In))
+    "circular-out" -> Ok(Circular(Out))
+    "circular-in-out" -> Ok(Circular(InOut))
+    "elastic-in" -> Ok(Elastic(In))
+    "elastic-out" -> Ok(Elastic(Out))
+    "elastic-in-out" -> Ok(Elastic(InOut))
+    "back-in" -> Ok(Back(In))
+    "back-out" -> Ok(Back(Out))
+    "back-in-out" -> Ok(Back(InOut))
+    "bounce-in" -> Ok(Bounce(In))
+    "bounce-out" -> Ok(Bounce(Out))
+    "bounce-in-out" -> Ok(Bounce(InOut))
+    _ -> Error(Nil)
+  }
+}
+
 // UTILS -----------------------------------------------------------------------
 
 fn pow(base: Float, exponent: Float) -> Float {
