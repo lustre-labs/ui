@@ -6,43 +6,23 @@ import lustre/element/html
 
 // CONSTANTS -------------------------------------------------------------------
 
-const base_classes = "min-h-8 inline-flex items-center justify-center whitespace-nowrap translate-y-0"
+const base_classes = "inline-flex items-center px-w-sm py-w-xs text-xs font-semibold"
 
-const focus_classes = "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+const focus_classes = "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
 
-const active_classes = "active:translate-y-px"
-
-const disabled_classes = "disabled:pointer-events-none disabled:opacity-50"
+const empty_classes = "[&:empty]:p-0 [&:empty]:rounded-full"
 
 // ELEMENTS --------------------------------------------------------------------
 
-fn button(
+fn badge(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.button(
+  html.div(
     [
       attribute.class(base_classes),
-      attribute.class(disabled_classes),
       attribute.class(focus_classes),
-      attribute.class(active_classes),
-      ..attributes
-    ],
-    children,
-  )
-}
-
-pub fn clear(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  let colour_classes = "bg-transparent"
-  let hover_classes = "hover:bg-w-tint"
-
-  button(
-    [
-      attribute.class(colour_classes),
-      attribute.class(hover_classes),
+      attribute.class(empty_classes),
       ..attributes
     ],
     children,
@@ -53,10 +33,10 @@ pub fn outline(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  let colour_classes = "bg-transparent border border-w-solid"
-  let hover_classes = "hover:border-w-solid-subtle"
+  let colour_classes = "border border-w-accent text-w-text"
+  let hover_classes = "hover:border-w-accent-strong"
 
-  button(
+  badge(
     [
       attribute.class(colour_classes),
       attribute.class(hover_classes),
@@ -70,10 +50,10 @@ pub fn soft(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  let colour_classes = "bg-w-tint-subtle"
-  let hover_classes = "hover:bg-w-tint"
+  let colour_classes = "bg-w-tint text-w-text"
+  let hover_classes = "hover:bg-w-tint-strong"
 
-  button(
+  badge(
     [
       attribute.class(colour_classes),
       attribute.class(hover_classes),
@@ -88,9 +68,9 @@ pub fn solid(
   children: List(Element(msg)),
 ) -> Element(msg) {
   let colour_classes = "bg-w-solid text-w-solid-text"
-  let hover_classes = "hover:bg-w-solid-subtle"
+  let hover_classes = "hover:bg-w-solid/80"
 
-  button(
+  badge(
     [
       attribute.class(colour_classes),
       attribute.class(hover_classes),
@@ -101,7 +81,6 @@ pub fn solid(
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
-// BORDER RADIUS
 
 pub fn square() -> Attribute(msg) {
   attribute.class("rounded-none")
@@ -114,26 +93,6 @@ pub fn round() -> Attribute(msg) {
 pub fn pill() -> Attribute(msg) {
   attribute.class("rounded-w-xl")
 }
-
-// SIZE
-
-pub fn icon() -> Attribute(msg) {
-  attribute.class("size-9")
-}
-
-pub fn small() -> Attribute(msg) {
-  attribute.class("h-8 px-w-sm")
-}
-
-pub fn medium() -> Attribute(msg) {
-  attribute.class("h-9 px-w-md py-w-sm")
-}
-
-pub fn large() -> Attribute(msg) {
-  attribute.class("h-10 px-w-lg")
-}
-
-// COLOURS
 
 pub fn base() -> Attribute(msg) {
   attribute.class("base")
