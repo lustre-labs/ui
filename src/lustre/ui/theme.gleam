@@ -453,12 +453,18 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
 const stylesheet_global_light_no_dark = "
 body {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 "
 
 const stylesheet_global_light_global_dark = "
 body {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -471,6 +477,9 @@ body {
 const stylesheet_global_light_scoped_dark = "
 body {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 
 body${dark_selector}, body ${dark_selector} {
@@ -487,12 +496,18 @@ body${dark_selector}, body ${dark_selector} {
 const stylesheet_scoped_light_no_dark = "
 ${selector} {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 "
 
 const stylesheet_scoped_light_global_dark = "
 ${selector} {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -505,6 +520,9 @@ ${selector} {
 const stylesheet_scoped_light_scoped_dark = "
 ${selector} {
   ${rules}
+
+  background-color: rgb(var(--lustre-ui-bg));
+  color: rgb(var(--lustre-ui-text));
 }
 
 ${selector}${dark_selector}, ${selector} ${dark_selector} {
