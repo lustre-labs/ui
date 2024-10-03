@@ -17,11 +17,11 @@ gleam_community_colour = ">= 1.4.0 and < 2.0.0"
 gleam_community_maths = ">= 1.1.1 and < 2.0.0"
 gleam_json = ">= 1.0.1 and < 2.0.0"
 gleam_stdlib = ">= 0.40.0 and < 2.0.0"
-lustre = ">= 4.0.0 and < 5.0.0"
+lustre = ">= 4.5.0 and < 5.0.0"
 decipher = ">= 1.2.0 and < 2.0.0"
 
 [dev-dependencies]
 birdie = ">= 1.1.6 and < 2.0.0"
 glailglind = ">= 1.1.2 and < 2.0.0"
 gleeunit = "~> 1.0"
-lustre_dev_tools = ">= 1.5.4 and < 2.0.0"
+lustre_dev_tools = ">= 1.5.7 and < 2.0.0"
