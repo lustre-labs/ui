@@ -88,3 +88,10 @@ around two jobs. If you'd like to support my work, you can [sponsor me on GitHub
 
 Contributions are also very welcome! If you've spotted a bug, or would like to
 suggest a feature, please open an issue or a pull request.
+
+## Reads
+
+- https://www.aha.io/engineering/articles/web-components-and-implicit-slot-names
+- https://www.abeautifulsite.net/posts/dynamic-slots/
+- https://thomaswilburn.github.io/wc-book/sd-slots.html
+- https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/
