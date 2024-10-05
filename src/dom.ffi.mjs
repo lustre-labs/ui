@@ -26,7 +26,7 @@ import {
  *
  * @param {HTMLSlotElement} slot
  *
- * @returns {Result<List<Element>, List<never>>} A decoded list of elements. If
+ * @returns {Result<List<HTMLElement>, List<never>>} A decoded list of elements. If
  * the slot is not an instance of `HTMLSlotElement`, an empty list of decode
  * errors is returned.
  */
@@ -43,6 +43,53 @@ export const assigned_elements = (slot) => {
  */
 export const animation_time = () => {
   return window.document.timeline.currentTime;
+};
+
+/**
+ * @param {string} name
+ *
+ * @returns {(element: HTMLElement) => Result<string, List<never>>}
+ */
+export const get_attribute = (name) => (element) => {
+  if (!(element instanceof HTMLElement)) {
+    return new Error(List.fromArray([]));
+  }
+
+  if (element.hasAttribute(name)) {
+    return new Ok(element.getAttribute(name));
+  } else {
+    return new Error(List.fromArray([]));
+  }
+};
+
+/**
+ * @param {string} name
+ *
+ * @returns {(element: HTMLElement) => Result<HTMLElement, List<never>>}
+ */
+export const get_element = (selector) => (element) => {
+  if (!(element instanceof HTMLElement)) {
+    return new Error(List.fromArray([]));
+  }
+
+  const result = element.querySelector(selector);
+
+  if (result) {
+    return new Ok(result);
+  } else {
+    return new Error(List.fromArray([]));
+  }
+};
+
+// EFFECTS ---------------------------------------------------------------------
+
+/**
+ * @param {HTMLElement} element
+ */
+export const focus = (element) => {
+  console.log(element);
+  element.click();
+  element.focus();
 };
 
 // COMPONENTS ------------------------------------------------------------------
