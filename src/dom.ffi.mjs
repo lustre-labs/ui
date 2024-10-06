@@ -68,7 +68,7 @@ export const get_attribute = (name) => (element) => {
  * @returns {(element: HTMLElement) => Result<HTMLElement, List<never>>}
  */
 export const get_element = (selector) => (element) => {
-  if (!(element instanceof HTMLElement)) {
+  if (!("querySelector" in element)) {
     return new Error(List.fromArray([]));
   }
 
@@ -81,13 +81,25 @@ export const get_element = (selector) => (element) => {
   }
 };
 
+/**
+ * @param {HTMLElement} element
+ *
+ * @returns {Result<HTMLElement, List<never>>}
+ */
+export const get_root = (element) => {
+  if (!(element instanceof HTMLElement)) {
+    return new Error(List.fromArray([]));
+  }
+
+  return new Ok(element.getRootNode());
+};
+
 // EFFECTS ---------------------------------------------------------------------
 
 /**
  * @param {HTMLElement} element
  */
 export const focus = (element) => {
-  console.log(element);
   element.click();
   element.focus();
 };
