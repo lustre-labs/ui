@@ -167,11 +167,21 @@ fn view_trigger() -> Element(Msg) {
   ])
 }
 
+fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
+  use key <- result.try(dynamic.field("key", dynamic.string)(event))
+
+  case key {
+    "Enter" | " " -> Ok(UserPressedTrigger)
+    _ -> Error([])
+  }
+}
+
 fn view_menu(model: Model) -> Element(Msg) {
   use <- bool.guard(model == Collapsed, html.text(""))
 
   html.div(
     [
+      event.on("transitionend", handle_transitionend),
       attribute.class("absolute left-0 right-0 transition"),
       attribute.class(case model {
         WillExpand -> "block opacity-0 -translate-y-4"
@@ -185,13 +195,6 @@ fn view_menu(model: Model) -> Element(Msg) {
   )
 }
 
-// EVENT HANDLERS --------------------------------------------------------------
-
-fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  use key <- result.try(dynamic.field("key", dynamic.string)(event))
-
-  case key {
-    "Enter" | " " -> Ok(UserPressedTrigger)
-    _ -> Error([])
-  }
+fn handle_transitionend(_: Dynamic) -> Result(Msg, List(DecodeError)) {
+  Ok(TransitionDidEnd)
 }
