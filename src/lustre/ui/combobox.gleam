@@ -471,7 +471,7 @@ fn view_trigger(value: String, expanded: Bool, options: Options) -> Element(Msg)
           ),
         ],
         [
-          icon.chevron_up([
+          icon.chevron_down([
             attribute.class("size-6 p-1"),
             attribute.class("transition-transform"),
             attribute.class(case expanded {
@@ -567,7 +567,7 @@ fn view_options(
   value: String,
   intent: Option(String),
 ) -> Element(Msg) {
-  element.keyed(html.ul([attribute.class("space-y-w-  xs")], _), {
+  element.keyed(html.ul([], _), {
     use option <- list.map(options.filtered)
     let html = view_option(option, value, intent)
 
