@@ -613,6 +613,22 @@ fn to_colour_scale_variables(scale: ColourScale, name: String) -> String {
     to_css_variable(name <> "-solid-text", to_css_rgb(scale.solid_text)),
     to_css_variable(name <> "-text", to_css_rgb(scale.text)),
     to_css_variable(name <> "-text-subtle", to_css_rgb(scale.text_subtle)),
+    "& ." <> name <> ", [data-scale=\"" <> name <> "\"] {",
+    "--lustre-ui-bg: var(--lustre-ui-" <> name <> "-bg);",
+    "--lustre-ui-bg-subtle: var(--lustre-ui-" <> name <> "-bg-subtle);",
+    "--lustre-ui-tint: var(--lustre-ui-" <> name <> "-tint);",
+    "--lustre-ui-tint-subtle: var(--lustre-ui-" <> name <> "-tint-subtle);",
+    "--lustre-ui-tint-strong: var(--lustre-ui-" <> name <> "-tint-strong);",
+    "--lustre-ui-accent: var(--lustre-ui-" <> name <> "-accent);",
+    "--lustre-ui-accent-subtle: var(--lustre-ui-" <> name <> "-accent-subtle);",
+    "--lustre-ui-accent-strong: var(--lustre-ui-" <> name <> "-accent-strong);",
+    "--lustre-ui-solid: var(--lustre-ui-" <> name <> "-solid);",
+    "--lustre-ui-solid-subtle: var(--lustre-ui-" <> name <> "-solid-subtle);",
+    "--lustre-ui-solid-strong: var(--lustre-ui-" <> name <> "-solid-strong);",
+    "--lustre-ui-solid-text: var(--lustre-ui-" <> name <> "-solid-text);",
+    "--lustre-ui-text: var(--lustre-ui-" <> name <> "-text);",
+    "--lustre-ui-text-subtle: var(--lustre-ui-" <> name <> "-text-subtle);",
+    "}",
   ])
 }
 
