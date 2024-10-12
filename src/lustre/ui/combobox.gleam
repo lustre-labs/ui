@@ -1,6 +1,5 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import decipher
 import gleam/bool
 import gleam/dict.{type Dict}
 import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic, dynamic}
@@ -8,6 +7,7 @@ import gleam/int
 import gleam/io
 import gleam/json
 import gleam/list
+
 import gleam/option.{type Option}
 import gleam/order
 import gleam/pair
@@ -22,14 +22,15 @@ import lustre/element/html
 import lustre/event
 import lustre/ui/data/bidict.{type Bidict}
 import lustre/ui/icon
-import lustre/ui/primitives/menu.{menu}
+import lustre/ui/input.{input}
+import lustre/ui/primitives/popover.{popover}
 
 // ELEMENTS --------------------------------------------------------------------
 
 pub const name: String = "lustre-ui-combobox"
 
 pub fn register() -> Result(Nil, lustre.Error) {
-  case menu.register() {
+  case popover.register() {
     Ok(Nil) | Error(lustre.ComponentAlreadyRegistered(_)) -> {
       let app = lustre.component(init, update, view, on_attribute_change())
       lustre.register(app, name)
@@ -338,20 +339,20 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
 fn view(model: Model) -> Element(Msg) {
   element.fragment([
     html.slot([event.on("slotchange", handle_slot_change)]),
-    menu(
+    popover(
       [
-        menu.open(model.expanded),
-        menu.on_open(UserOpenedMenu),
-        menu.on_close(UserClosedMenu),
-        // Some browsers will not consider the custom events emit by the menu
+        popover.open(model.expanded),
+        popover.on_open(UserOpenedMenu),
+        popover.on_close(UserClosedMenu),
+        // Some browsers will not consider the custom events emit by the popover
         // component as user-generated events and so won't let us manually focus
         // the input in response.
         //
         // To handle those, we instead listen for explicit interaction events and
         // trigger the focus from them. These events will never produce a message.
         //
-        event.on("click", handle_menu_click(_, !model.expanded)),
-        event.on("keydown", handle_menu_keydown(_, !model.expanded)),
+        event.on("click", handle_popover_click(_, !model.expanded)),
+        event.on("keydown", handle_popover_keydown(_, !model.expanded)),
       ],
       trigger: view_trigger(model.value, model.expanded, model.options),
       content: html.div(
@@ -399,7 +400,7 @@ fn assigned_elements(_slot: Dynamic) -> Result(Dynamic, List(DecodeError))
 @external(javascript, "../../dom.ffi.mjs", "get_attribute")
 fn get_attribute(name: String) -> Decoder(String)
 
-fn handle_menu_click(
+fn handle_popover_click(
   event: Dynamic,
   will_open: Bool,
 ) -> Result(Msg, List(DecodeError)) {
@@ -414,7 +415,7 @@ fn handle_menu_click(
   Error([])
 }
 
-fn handle_menu_keydown(
+fn handle_popover_keydown(
   event: Dynamic,
   will_open: Bool,
 ) -> Result(Msg, List(DecodeError)) {
@@ -488,26 +489,16 @@ fn view_trigger(value: String, expanded: Bool, options: Options) -> Element(Msg)
 // VIEW INPUT ------------------------------------------------------------------
 
 fn view_input(query: String) -> Element(Msg) {
-  html.div(
-    [
-      attribute.class("relative flex items-center gap-w-xs"),
-      attribute.class("-mx-w-xs -mt-w-xs"),
-      attribute.class("border-b border-w-accent"),
-    ],
-    [
-      icon.magnifying_glass([attribute.class("absolute left-2 size-4")]),
-      html.input([
-        attribute.class("w-full p-w-sm pl-8 bg-transparent rounded-t-sm"),
-        attribute.class(
-          "focus:outline outline-1 outline-w-primary-solid outline-offset-0",
-        ),
-        attribute.autocomplete("off"),
-        event.on_input(UserChangedQuery),
-        event.on("keydown", handle_input_keydown),
-        attribute.value(query),
-      ]),
-    ],
-  )
+  input.container([attribute.class("-m-w-xs mb-0 border-b border-w-accent")], [
+    input.icon(icon.magnifying_glass([])),
+    input([
+      attribute.class("bg-transparent w-full !rounded-b-none"),
+      attribute.autocomplete("off"),
+      event.on_input(UserChangedQuery),
+      event.on("keydown", handle_input_keydown),
+      attribute.value(query),
+    ]),
+  ])
 }
 
 fn handle_input_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
