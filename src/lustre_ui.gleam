@@ -2,8 +2,10 @@ import lustre
 import lustre/attribute.{attribute}
 import lustre/element
 import lustre/element/html
+import lustre/ui/badge
 import lustre/ui/button
 import lustre/ui/card
+import lustre/ui/divider
 import lustre/ui/primitives/collapse.{collapse}
 import lustre/ui/theme
 
@@ -16,6 +18,66 @@ pub fn main() {
     lustre.simple(fn(_) { False }, fn(_, expanded) { expanded }, fn(expanded) {
       element.fragment([
         theme.to_style(theme),
+        html.div(
+          [
+            attribute.class(
+              "flex items-center gap-w-sm max-w-5xl mx-auto p-w-lg",
+            ),
+          ],
+          [badge.solid([], [html.text("hello")])],
+        ),
+        // ---------------------------------------------------------------------
+        // Divider
+        // ---------------------------------------------------------------------
+
+        divider.divider([], []),
+        html.div([attribute.class("p-w-lg flex items-center")], [
+          html.div([attribute.class("grow")], [
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("hayleigh"),
+            ]),
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("and georges"),
+            ]),
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("sitting on a tree"),
+            ]),
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("fighting over api's"),
+            ]),
+            divider.divider([divider.margin(theme.spacing.md), divider.thin()], [
+              html.span([attribute.class("text-w-text-subtle italic")], [
+                html.text("this actually rhymes in portuguese"),
+              ]),
+            ]),
+          ]),
+          divider.divider(
+            [divider.vertical(), divider.margin(theme.spacing.md)],
+            [html.text("or")],
+          ),
+          html.div([attribute.class("grow")], [
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("how to stop worrying"),
+            ]),
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("and love"),
+            ]),
+            divider.divider(
+              [divider.margin(theme.spacing.md), divider.colour("#FF10F0")],
+              [
+                html.span([attribute.class("text-w-text-subtle italic")], [
+                  html.text("niamh and janine"),
+                ]),
+              ],
+            ),
+            divider.divider([divider.margin(theme.spacing.md)], [
+              html.text("as they are wise and beautiful"),
+            ]),
+          ]),
+        ]),
+        divider.divider([], []),
+        // ---------------------------------------------------------------------
+
         html.div(
           [
             attribute.class(
