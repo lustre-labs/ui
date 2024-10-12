@@ -18,7 +18,7 @@ import lustre/event
 
 // ELEMENTS --------------------------------------------------------------------
 
-pub const name: String = "lustre-ui-menu"
+pub const name: String = "lustre-ui-popover"
 
 pub fn register() -> Result(Nil, lustre.Error) {
   let app = lustre.component(init, update, view, on_attribute_change())
@@ -26,14 +26,14 @@ pub fn register() -> Result(Nil, lustre.Error) {
   lustre.register(app, name)
 }
 
-pub fn menu(
+pub fn popover(
   attributes: List(Attribute(msg)),
   trigger trigger: Element(msg),
   content content: Element(msg),
 ) -> Element(msg) {
   element(name, attributes, [
     html.div([attribute("slot", "trigger")], [trigger]),
-    html.div([attribute("slot", "menu")], [content]),
+    html.div([attribute("slot", "popover")], [content]),
   ])
 }
 
@@ -154,7 +154,7 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
-  html.div([attribute.class("relative")], [view_trigger(), view_menu(model)])
+  html.div([attribute.class("relative")], [view_trigger(), view_popover(model)])
 }
 
 fn view_trigger() -> Element(Msg) {
@@ -176,7 +176,7 @@ fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
   }
 }
 
-fn view_menu(model: Model) -> Element(Msg) {
+fn view_popover(model: Model) -> Element(Msg) {
   use <- bool.guard(model == Collapsed, html.text(""))
 
   html.div(
@@ -191,7 +191,7 @@ fn view_menu(model: Model) -> Element(Msg) {
         Collapsed -> "hidden"
       }),
     ],
-    [html.slot([attribute.name("menu")])],
+    [html.slot([attribute.name("popover")])],
   )
 }
 
