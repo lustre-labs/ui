@@ -143,7 +143,10 @@ pub fn of(
 /// <!-- @element -->
 ///
 pub fn indicator(icon: Element(msg)) -> Element(msg) {
-  html.span([attribute.class("alert-indicator")], [icon])
+  html.span(
+    [attribute.class("alert-indicator"), attribute.role("presentation")],
+    [icon],
+  )
 }
 
 /// The `title` element is a concise summary of the alert's content or message.
