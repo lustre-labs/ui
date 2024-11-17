@@ -143,7 +143,7 @@ pub fn of(
 /// <!-- @element -->
 ///
 pub fn indicator(icon: Element(msg)) -> Element(msg) {
-  html.span([attribute.class("indicator")], [icon])
+  html.span([attribute.class("alert-indicator")], [icon])
 }
 
 /// The `title` element is a concise summary of the alert's content or message.
@@ -160,7 +160,7 @@ pub fn title(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.header([attribute.class("title"), ..attributes], children)
+  html.header([attribute.class("alert-title"), ..attributes], children)
 }
 
 ///
@@ -171,7 +171,7 @@ pub fn content(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.section([attribute.class("content"), ..attributes], children)
+  html.section([attribute.class("alert-content"), ..attributes], children)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------

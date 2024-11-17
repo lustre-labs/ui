@@ -25,13 +25,13 @@
 
     /* CHILDREN ------------------------------------------------------------- */
 
-    & > .indicator {
+    & > .alert-indicator {
         position: absolute;
         width: var(--indicator-size);
         height: var(--indicator-size);
     }
 
-    & > .title {
+    & > .alert-title {
         font-weight: var(--title-weight);
         margin-block-end: var(--title-margin);
         overflow: clip;
@@ -43,7 +43,7 @@
         we calculate padding on these elements to push them further to the right
         by an amount based on the the indicator's size.
     */
-    &:has(.indicator) > :not(.indicator) {
+    &:has(.alert-indicator) > :not(.alert-indicator) {
         padding-inline-start: calc(var(--indicator-size) + var(--padding-x));
     }
 }
