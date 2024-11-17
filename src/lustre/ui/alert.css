@@ -1,0 +1,49 @@
+.lustre-ui-alert {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: rgb(var(--lustre-ui-bg));
+    --border: rgb(var(--lustre-ui-accent));
+    --indicator-size: 16px;
+    --padding-x: var(--lustre-ui-spacing-lg);
+    --padding-y: var(--lustre-ui-spacing-md);
+    --radius: 0;
+    --text: rgb(var(--lustre-ui-text));
+    --title-margin: var(--padding-y);
+    --title-weight: 500;
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: var(--padding-y) var(--padding-x);
+    position: relative;
+    width: full;
+
+    /* CHILDREN ------------------------------------------------------------- */
+
+    & > .indicator {
+        position: absolute;
+        width: var(--indicator-size);
+        height: var(--indicator-size);
+    }
+
+    & > .title {
+        font-weight: var(--title-weight);
+        margin-block-end: var(--title-margin);
+        overflow: clip;
+        text-overflow: ellipsis;
+    }
+
+    /*  If an indicator is present, it's important it doesn't end up placed over
+        the top of any content we have. To make sure things are placed correctly,
+        we calculate padding on these elements to push them further to the right
+        by an amount based on the the indicator's size.
+    */
+    &:has(.indicator) > :not(.indicator) {
+        padding-inline-start: calc(var(--indicator-size) + var(--padding-x));
+    }
+}
