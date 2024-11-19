@@ -100,8 +100,21 @@ export const get_root = (element) => {
  * @param {HTMLElement} element
  */
 export const focus = (element) => {
-  element.click();
   element.focus();
+};
+
+export const set_state = (value, shadow_root) => {
+  if (!(shadow_root instanceof ShadowRoot)) return;
+  if (!(shadow_root.host.internals instanceof ElementInternals)) return;
+
+  shadow_root.host.internals.states.add(value);
+};
+
+export const remove_state = (value, shadow_root) => {
+  if (!(shadow_root instanceof ShadowRoot)) return;
+  if (!(shadow_root.host.internals instanceof ElementInternals)) return;
+
+  shadow_root.host.internals.states.delete(value);
 };
 
 // COMPONENTS ------------------------------------------------------------------
@@ -129,6 +142,7 @@ export const register_intersection_observer = () => {
           threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
         };
 
+        this.style.display = "contents";
         this.observer = new IntersectionObserver((entries) => {
           for (const entry of entries) {
             const intersectionEvent = new CustomEvent("intersection", {
