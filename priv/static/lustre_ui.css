@@ -1,100 +1,699 @@
-/*
-! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com
-*/
+@layer reset, primitives, components;
 
-/*
-1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
-2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+@layer components { .lustre-ui-input {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --border: rgb(var(--lustre-ui-accent));
+    --border-focus: rgb(var(--lustre-ui-primary-solid));
+    --border-width: 1px;
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --radius: var(--lustre-ui-radius-sm);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    background-color: rgb(var(--lustre-ui-base-bg-subtle));
+    padding: var(--padding-y);
+    outline-offset: 0;
+    border-radius: var(--radius);
+    outline: var(--border-width) solid var(--border);
+
+    &:focus {
+        outline-color: var(--border-focus);
+    }
+
+    &:invalid {
+        outline-color: rgb(var(--lustre-ui-danger-solid));
+    }
+}
+
+.lustre-ui-input-container {
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    /*  */
+
+    &:has(* + input) > input {
+        padding-left: 2rem;
+    }
+
+    &:has(input + *) > input {
+        padding-right: 2rem;
+    }
+
+    &:has(* + input) > :not(input) {
+        left: 0.5rem;
+    }
+
+    & > input + * {
+        left: unset !important;
+        right: 0.5rem;
+    }
+
+    & > :not(input) {
+        position: absolute;
+        pointer-events: none;
+        width: 1rem;
+        height: 1rem;
+    }
+}
+ }
+
+@layer components { :where(.lustre-ui-icon) {
+    width: 1rem;
+    height: 1rem;
+}
+ }
+
+@layer components { .lustre-ui-divider {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --colour: rgb(var(--lustre-ui-accent));
+    --gap: var(--lustre-ui-spacing-sm);
+    --margin: 0;
+    --size-x: 2px;
+    --size-y: 0;
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    &:empty {
+        align-self: stretch;
+        border-color: var(--colour);
+        border-right-width: var(--size-y);
+        border-style: solid;
+        border-top-width: var(--size-x);
+        margin: var(--margin) 0;
+    }
+
+    &:not(:empty) {
+        align-items: center;
+        align-self: stretch;
+        display: flex;
+        gap: var(--gap);
+        justify-items: center;
+        margin: var(--margin) 0;
+
+        &::before,
+        &::after {
+            background-color: var(--colour);
+            content: "";
+            display: block;
+            flex-grow: 1;
+            height: var(--size-x);
+            width: var(--size-y);
+        }
+    }
+}
+ }
+
+@layer components { lustre-ui-combobox {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --border-width: 1px;
+    --radius: var(--lustre-ui-radius-sm);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    display: inline-block;
+
+    &::part(combobox-trigger) {
+        align-items: center;
+        border-radius: var(--radius);
+        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+        color: rgb(var(--lustre-ui-text));
+        display: flex;
+        gap: var(--padding-x);
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        padding: var(--padding-y) var(--padding-x);
+        width: 100%;
+    }
+
+    &:state(trigger-focus)::part(combobox-trigger) {
+        border-color: rgb(var(--lustre-ui-primary-solid));
+    }
+
+    &:state(empty)::part(combobox-trigger) {
+        color: rgb(var(--lustre-ui-text-subtle));
+    }
+
+    &::part(combobox-trigger-label) {
+        flex: 1 1 0%;
+        text-align: left;
+    }
+
+    &::part(combobox-trigger-icon) {
+        border-radius: var(--radius);
+        height: 1.5rem;
+        padding: 0.25rem;
+        transform: rotate(0deg);
+        transition-duration: 150ms;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        width: 1.5rem;
+    }
+
+    &:state(expanded)::part(combobox-trigger-icon) {
+        transform: rotate(-180deg);
+    }
+
+    &:is(:hover, :state(trigger-focus), :state(expanded))::part(
+            combobox-trigger-icon
+        ) {
+        background-color: rgb(var(--lustre-ui-tint-subtle));
+    }
+
+    &::part(combobox-options) {
+        background-color: rgb(var(--lustre-ui-bg));
+        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+        border-radius: var(--radius);
+    }
+
+    &::part(combobox-input) {
+        border: none;
+    }
+
+    &::part(combobox-option) {
+        align-items: baseline;
+        cursor: pointer;
+        display: flex;
+        padding: var(--padding-y) var(--padding-x);
+        gap: var(--padding-x);
+    }
+
+    &::part(combobox-option last) {
+        border-bottom-left-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+    }
+
+    &::part(combobox-option intent) {
+        background-color: rgb(var(--lustre-ui-tint-subtle));
+    }
+}
+ }
+
+@layer components { .lustre-ui-checkbox {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: transparent;
+    --background-hover: transparent;
+    --border: rgb(var(--lustre-ui-accent));
+    --border-hover: rgb(var(--lustre-ui-accent-strong));
+    --border-width: 1px;
+    --size: 1rem;
+    --check-color: rgb(var(--lustre-ui-solid-text));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    appearance: none;
+    background-color: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--lustre-ui-radius-sm);
+    cursor: pointer;
+    display: grid;
+    height: var(--size);
+    margin: 0;
+    place-content: center;
+    width: var(--size);
+
+    &::before {
+        background-color: var(--check-color);
+        clip-path: polygon(
+            16% 44%,
+            10% 55%,
+            45% 90%,
+            90% 16%,
+            80% 10%,
+            45% 60%
+        );
+        content: "";
+        height: calc(var(--size) * 0.6);
+        transform: scale(0);
+        transform-origin: center;
+        transition: 150ms transform cubic-bezier(0.4, 0, 0.2, 1);
+        width: calc(var(--size) * 0.6);
+    }
+
+    &:checked {
+        background-color: rgb(var(--lustre-ui-solid));
+        border-color: transparent;
+    }
+
+    &:checked::before {
+        transform: scale(1);
+    }
+}
+ }
+
+@layer components { .lustre-ui-card {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: rgb(var(--lustre-ui-bg));
+    --border: rgb(var(--lustre-ui-accent-subtle));
+    --border-width: 1px;
+    --padding-x: var(--lustre-ui-spacing-xl);
+    --padding-y: var(--lustre-ui-spacing-xl);
+    --radius: var(--lustre-ui-radius-md);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    background: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+
+    & > * {
+        padding-top: 0;
+        padding: var(--padding-y) var(--padding-x);
+    }
+
+    & > .card-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & > .card-footer {
+        align-items: center;
+        display: flex;
+    }
+}
+ }
+
+@layer components { .lustre-ui-button {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: rgb(var(--lustre-ui-tint));
+    --background-hover: rgb(var(--lustre-ui-tint-strong));
+    --border: transparent;
+    --border-hover: transparent;
+    --border-width: 1px;
+    --height: 2rem;
+    --height-min: 2rem;
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --radius: var(--lustre-ui-radius-sm);
+    --text: rgb(var(--lustre-ui-text));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    align-items: center;
+    background-color: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    display: inline-flex;
+    gap: var(--padding-x);
+    justify-content: center;
+    min-height: var(--height-min);
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
+    white-space: nowrap;
+
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &:hover,
+    &:focus {
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        background-color: var(--background-hover);
+        border-color: var(--border-hover);
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:is(a) {
+        text-decoration: none;
+
+        &:visited {
+            color: var(--text);
+        }
+    }
+
+    /* SIZE VARIANTS -------------------------------------------------------- */
+
+    &.button-icon {
+        --height: 2rem;
+        width: var(--height);
+
+        & > svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &.button-small {
+        --height: 2rem;
+        --padding-x: var(--lustre-ui-spacing-sm);
+    }
+
+    &.button-medium {
+        --height: 2.25rem;
+        --padding-x: var(--lustre-ui-spacing-md);
+    }
+
+    &.button-large {
+        --height: 2.5rem;
+        --padding-x: var(--lustre-ui-spacing-lg);
+    }
+
+    /* COLOUR VARIANTS ------------------------------------------------------ */
+
+    &.button-clear {
+        --background: transparent;
+        --background-hover: rgb(var(--lustre-ui-tint));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-outline {
+        --background: transparent;
+        --background-hover: transparent;
+        --border: rgb(var(--lustre-ui-accent));
+        --border-hover: rgb(var(--lustre-ui-accent-strong));
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-soft {
+        --background: rgb(var(--lustre-ui-tint));
+        --background-hover: rgb(var(--lustre-ui-tint-strong));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-solid {
+        --background: rgb(var(--lustre-ui-solid));
+        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-solid-text));
+    }
+
+    /* CHILDREN ------------------------------------------------------------- */
+
+    & .button-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.625em;
+        border: 1px solid var(--text);
+        border-radius: var(--radius);
+        padding: 0 1ch;
+        margin: 0 calc(-1 * var(--padding-x) / 2);
+
+        & .key + .key::before {
+            content: var(--separator, "");
+        }
+
+        & .icon {
+            width: 1em;
+            height: 1em;
+        }
+    }
+}
+ }
+
+@layer components { .lustre-ui-breadcrumb {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --gap: var(--lustre-ui-spacing-xs);
+    --text-hover: rgb(var(--lustre-ui-text));
+    --text: rgb(var(--lustre-ui-text-subtle));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    align-items: center;
+    color: var(--text);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+
+    /* CHILDREN ------------------------------------------------------------- */
+
+    & > .breadcrumb-item {
+        align-items: center;
+        display: inline-flex;
+        gap: var(--gap);
+
+        &:hover {
+            color: var(--text-hover);
+        }
+    }
+
+    & > .breadcrumb-current {
+        color: var(--text-hover);
+    }
+
+    & > .breadcrumb-separator {
+        user-select: none;
+
+        & > svg {
+            height: 1rem;
+            width: 1rem;
+        }
+    }
+
+    & > .breadcrumb-ellipsis {
+        align-items: center;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        user-select: none;
+        width: 2rem;
+
+        & > svg {
+            height: 1rem;
+            width: 1rem;
+        }
+
+        & > *:not(svg) {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    }
+}
+ }
+
+@layer components { .lustre-ui-badge {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: transparent;
+    --background-hover: transparent;
+    --border: rgb(var(--lustre-ui-accent));
+    --border-hover: rgb(var(--lustre-ui-accent-strong));
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-xs);
+    --radius: var(--lustre-ui-radius-sm);
+    --text: rgb(var(--lustre-ui-text));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--background);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    padding: var(--padding-y) var(--padding-x);
+
+    /*  Badges that can be interacted with receive additional visual styles to
+        indicate that to the user.
+    */
+    &:is(a, button, [tabindex]):is(:hover, :focus) {
+        background-color: var(--background-hover);
+        border-color: var(--border-hover);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:empty {
+        padding: max(var(--padding-y), var(--padding-x));
+        border-radius: 100%;
+    }
+
+    /* VARIANTS ------------------------------------------------------------- */
+
+    &.badge-outline {
+        --background: transparent;
+        --background-hover: transparent;
+        --border: rgb(var(--lustre-ui-accent));
+        --border-hover: rgb(var(--lustre-ui-accent-strong));
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.badge-soft {
+        --background: rgb(var(--lustre-ui-tint));
+        --background-hover: rgb(var(--lustre-ui-tint-strong));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.badge-solid {
+        --background: rgb(var(--lustre-ui-solid));
+        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-solid-text));
+    }
+}
+ }
+
+@layer components { .lustre-ui-alert {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: rgb(var(--lustre-ui-bg));
+    --border: rgb(var(--lustre-ui-accent));
+    --indicator-size: 16px;
+    --padding-x: var(--lustre-ui-spacing-lg);
+    --padding-y: var(--lustre-ui-spacing-md);
+    --radius: 0;
+    --text: rgb(var(--lustre-ui-text));
+    --title-margin: var(--padding-y);
+    --title-weight: 500;
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: var(--padding-y) var(--padding-x);
+    position: relative;
+    width: full;
+
+    /* CHILDREN ------------------------------------------------------------- */
+
+    & > .alert-indicator {
+        position: absolute;
+        width: var(--indicator-size);
+        height: var(--indicator-size);
+    }
+
+    & > .alert-title {
+        font-weight: var(--title-weight);
+        margin-block-end: var(--title-margin);
+        overflow: clip;
+        text-overflow: ellipsis;
+    }
+
+    /*  If an indicator is present, it's important it doesn't end up placed over
+        the top of any content we have. To make sure things are placed correctly,
+        we calculate padding on these elements to push them further to the right
+        by an amount based on the the indicator's size.
+    */
+    &:has(.alert-indicator) > :not(.alert-indicator) {
+        padding-inline-start: calc(var(--indicator-size) + var(--padding-x));
+    }
+}
+ }
+
+@layer components { lustre-ui-accordion {
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --border-width: 1px;
+
+    &::part(accordion-trigger) {
+        align-items: center;
+        border-bottom: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+        color: rgb(var(--lustre-ui-text));
+        display: flex;
+        gap: var(--padding-x);
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        padding: var(--padding-y) var(--padding-x);
+        width: 100%;
+    }
+
+    &::part(accordion-trigger):focus {
+        border-color: rgb(var(--lustre-ui-primary-solid));
+    }
+
+    &::part(accordion-trigger-label) {
+        flex: 1 1 0%;
+        text-align: left;
+    }
+
+    &::part(accordion-trigger-icon) {
+        border-radius: var(--radius);
+        height: 1.5rem;
+        padding: 0.25rem;
+        transform: rotate(0deg);
+        transition-duration: 150ms;
+        transition-property: color transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        width: 1.5rem;
+    }
+
+    &::part(accordion-trigger-icon expanded) {
+        transform: rotate(-180deg);
+    }
+
+    &::part(accordion-content) {
+        display: block;
+        padding: var(--padding-y) var(--padding-x);
+    }
+}
+ }
+
+@layer reset { /*
+! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
 */
 
 *,
-::before,
-::after {
-  box-sizing: border-box;
-  /* 1 */
-  border-width: 0;
-  /* 2 */
-  border-style: solid;
-  /* 2 */
-  border-color: #e5e7eb;
-  /* 2 */
+:after,
+:before {
+    box-sizing: border-box;
+    border: 0 solid #e2e8f0;
 }
 
-::before,
-::after {
-  --tw-content: '';
+:host,
+html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    -webkit-tap-highlight-color: transparent;
 }
-
-/*
-1. Use a consistent sensible line-height in all browsers.
-2. Prevent adjustments of font size after orientation changes in iOS.
-3. Use a more readable tab size.
-4. Use the user's configured `sans` font-family by default.
-5. Use the user's configured `sans` font-feature-settings by default.
-6. Use the user's configured `sans` font-variation-settings by default.
-7. Disable tap highlights on iOS
-*/
-
-html,
-:host {
-  line-height: 1.5;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-  -moz-tab-size: 4;
-  /* 3 */
-  -o-tab-size: 4;
-     tab-size: 4;
-  /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* 4 */
-  font-feature-settings: normal;
-  /* 5 */
-  font-variation-settings: normal;
-  /* 6 */
-  -webkit-tap-highlight-color: transparent;
-  /* 7 */
-}
-
-/*
-1. Remove the margin in all browsers.
-2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
-*/
 
 body {
-  margin: 0;
-  /* 1 */
-  line-height: inherit;
-  /* 2 */
+    margin: 0;
+    line-height: inherit;
 }
-
-/*
-1. Add the correct height in Firefox.
-2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
-3. Ensure horizontal rules are visible by default.
-*/
 
 hr {
-  height: 0;
-  /* 1 */
-  color: inherit;
-  /* 2 */
-  border-top-width: 1px;
-  /* 3 */
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
 }
-
-/*
-Add the correct text decoration in Chrome, Edge, and Safari.
-*/
 
 abbr:where([title]) {
-  -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
 }
-
-/*
-Remove the default font size and weight for headings.
-*/
 
 h1,
 h2,
@@ -102,229 +701,134 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: inherit;
-  font-weight: inherit;
+    font-size: inherit;
+    font-weight: inherit;
 }
-
-/*
-Reset links to optimize for opt-in styling instead of opt-out.
-*/
 
 a {
-  color: inherit;
-  text-decoration: inherit;
+    color: inherit;
+    text-decoration: inherit;
 }
-
-/*
-Add the correct font weight in Edge and Safari.
-*/
 
 b,
 strong {
-  font-weight: bolder;
+    font-weight: bolder;
 }
-
-/*
-1. Use the user's configured `mono` font-family by default.
-2. Use the user's configured `mono` font-feature-settings by default.
-3. Use the user's configured `mono` font-variation-settings by default.
-4. Correct the odd `em` font sizing in all browsers.
-*/
 
 code,
 kbd,
-samp,
-pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  /* 1 */
-  font-feature-settings: normal;
-  /* 2 */
-  font-variation-settings: normal;
-  /* 3 */
-  font-size: 1em;
-  /* 4 */
+pre,
+samp {
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        Liberation Mono,
+        Courier New,
+        monospace;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    font-size: 1em;
 }
-
-/*
-Add the correct font size in all browsers.
-*/
 
 small {
-  font-size: 80%;
+    font-size: 80%;
 }
-
-/*
-Prevent `sub` and `sup` elements from affecting the line height in all browsers.
-*/
 
 sub,
 sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
 }
 
 sub {
-  bottom: -0.25em;
+    bottom: -0.25em;
 }
 
 sup {
-  top: -0.5em;
+    top: -0.5em;
 }
-
-/*
-1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
-2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
-3. Remove gaps between table borders by default.
-*/
 
 table {
-  text-indent: 0;
-  /* 1 */
-  border-color: inherit;
-  /* 2 */
-  border-collapse: collapse;
-  /* 3 */
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
 }
-
-/*
-1. Change the font styles in all browsers.
-2. Remove the margin in Firefox and Safari.
-3. Remove default padding in all browsers.
-*/
 
 button,
 input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
-  /* 1 */
-  font-feature-settings: inherit;
-  /* 1 */
-  font-variation-settings: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  font-weight: inherit;
-  /* 1 */
-  line-height: inherit;
-  /* 1 */
-  color: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */
-  padding: 0;
-  /* 3 */
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
 }
-
-/*
-Remove the inheritance of text transform in Edge and Firefox.
-*/
 
 button,
 select {
-  text-transform: none;
+    text-transform: none;
 }
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Remove default button styles.
-*/
 
 button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
-  -webkit-appearance: button;
-  /* 1 */
-  background-color: transparent;
-  /* 2 */
-  background-image: none;
-  /* 2 */
+input:where([type="button"]),
+input:where([type="reset"]),
+input:where([type="submit"]) {
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
 }
-
-/*
-Use the modern Firefox focus style for all focusable elements.
-*/
 
 :-moz-focusring {
-  outline: auto;
+    outline: auto;
 }
-
-/*
-Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
-*/
 
 :-moz-ui-invalid {
-  box-shadow: none;
+    box-shadow: none;
 }
-
-/*
-Add the correct vertical alignment in Chrome and Firefox.
-*/
 
 progress {
-  vertical-align: baseline;
+    vertical-align: baseline;
 }
-
-/*
-Correct the cursor style of increment and decrement buttons in Safari.
-*/
 
 ::-webkit-inner-spin-button,
 ::-webkit-outer-spin-button {
-  height: auto;
+    height: auto;
 }
 
-/*
-1. Correct the odd appearance in Chrome and Safari.
-2. Correct the outline style in Safari.
-*/
-
-[type='search'] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */
+[type="search"] {
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
 }
-
-/*
-Remove the inner padding in Chrome and Safari on macOS.
-*/
 
 ::-webkit-search-decoration {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Change font properties to `inherit` in Safari.
-*/
 
 ::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */
+    -webkit-appearance: button;
+    font: inherit;
 }
-
-/*
-Add the correct display in Chrome and Safari.
-*/
 
 summary {
-  display: list-item;
+    display: list-item;
 }
 
-/*
-Removes the default spacing and border for appropriate elements.
-*/
-
 blockquote,
-dl,
 dd,
+dl,
+figure,
 h1,
 h2,
 h3,
@@ -332,222 +836,271 @@ h4,
 h5,
 h6,
 hr,
-figure,
 p,
 pre {
-  margin: 0;
+    margin: 0;
 }
 
 fieldset {
-  margin: 0;
-  padding: 0;
+    margin: 0;
 }
 
+fieldset,
 legend {
-  padding: 0;
+    padding: 0;
 }
 
+menu,
 ol,
-ul,
-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
-
-/*
-Reset default styling for dialogs.
-*/
 
 dialog {
-  padding: 0;
+    padding: 0;
 }
-
-/*
-Prevent resizing textareas horizontally by default.
-*/
 
 textarea {
-  resize: vertical;
+    resize: vertical;
 }
 
-/*
-1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
-2. Set the default placeholder color to the user's configured gray 400 color.
-*/
-
-input::-moz-placeholder, textarea::-moz-placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    opacity: 1;
+    color: #94a3b8;
 }
 
 input::placeholder,
 textarea::placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
+    opacity: 1;
+    color: #94a3b8;
 }
 
-/*
-Set the default cursor for buttons.
-*/
-
-button,
-[role="button"] {
-  cursor: pointer;
+[role="button"],
+button {
+    cursor: pointer;
 }
-
-/*
-Make sure disabled buttons don't get the pointer cursor.
-*/
 
 :disabled {
-  cursor: default;
+    cursor: default;
 }
 
-/*
-1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
-2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
-   This can trigger a poorly considered lint error in some tools but is included by design.
-*/
-
-img,
-svg,
-video,
-canvas,
 audio,
-iframe,
+canvas,
 embed,
-object {
-  display: block;
-  /* 1 */
-  vertical-align: middle;
-  /* 2 */
+iframe,
+img,
+object,
+svg,
+video {
+    display: block;
+    vertical-align: middle;
 }
-
-/*
-Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
-*/
 
 img,
 video {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
-/* Make elements with the HTML hidden attribute stay hidden by default */
-
-[hidden] {
-  display: none;
+[hidden]:where(:not([hidden="until-found"])) {
+    display: none;
 }
+ }
 
-*, ::before, ::after {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
-}
+@layer primitives { lustre-ui-popover {
+    --gap: var(--lustre-ui-spacing-sm);
 
-::backdrop {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
-}
+    position: relative;
 
-.border {
-  border-width: 1px;
-}
+    & > [slot] {
+        display: contents;
+    }
 
-.filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+    &::part(popover-content) {
+        left: 0;
+        top: 0;
+        display: block;
+        position: absolute;
+        transition-duration: 150ms;
+        transition-property: opacity, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+    }
+
+    &[anchor|="top"] {
+        --translate-x: 0;
+
+        &::part(popover-content) {
+            padding-bottom: var(--gap);
+            transform: translate(var(--translate-x), -100%);
+        }
+
+        &[equal-width]::part(popover-content) {
+            --translate-x: 0 !important;
+
+            left: 0 !important;
+            right: 0;
+        }
+
+        &[anchor="top-left"]::part(popover-content) {
+            left: 0;
+        }
+
+        &[anchor="top-middle"]::part(popover-content) {
+            --translate-x: -50%;
+            left: 50%;
+        }
+
+        &[anchor="top-right"]::part(popover-content) {
+            --translate-x: -100%;
+            left: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(var(--translate-x), -90%);
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(var(--translate-x), -90%);
+        }
+    }
+
+    &[anchor|="right"] {
+        --translate-y: 0;
+
+        &::part(popover-content) {
+            padding-left: var(--gap);
+            left: 100%;
+            transform: translate(0, var(--translate-y));
+        }
+
+        &[anchor="right-top"]::part(popover-content) {
+            top: 0;
+        }
+
+        &[anchor="right-middle"]::part(popover-content) {
+            --translate-y: -50%;
+            top: 50%;
+        }
+
+        &[anchor="right-bottom"]::part(popover-content) {
+            --translate-y: -100%;
+            top: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(-10%, var(--translate-y));
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(-10%, var(--translate-y));
+        }
+    }
+
+    &[anchor|="bottom"] {
+        --translate-x: 0;
+
+        &::part(popover-content) {
+            top: unset;
+            padding-top: var(--gap);
+            transform: translate(var(--translate-x), 0);
+        }
+
+        &[equal-width]::part(popover-content) {
+            --translate-x: 0 !important;
+
+            left: 0 !important;
+            right: 0;
+        }
+
+        &[anchor="bottom-left"]::part(popover-content) {
+            left: 0;
+        }
+
+        &[anchor="bottom-middle"]::part(popover-content) {
+            --translate-x: -50%;
+            left: 50%;
+        }
+
+        &[anchor="bottom-right"]::part(popover-content) {
+            --translate-x: -100%;
+            left: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(var(--translate-x), -10%);
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(var(--translate-x), -10%);
+        }
+    }
+
+    &[anchor|="left"] {
+        --translate-y: 0;
+
+        &::part(popover-content) {
+            padding-right: var(--gap);
+            transform: translate(-100%, var(--translate-y));
+        }
+
+        &[anchor="left-top"]::part(popover-content) {
+            top: 0;
+        }
+
+        &[anchor="left-middle"]::part(popover-content) {
+            --translate-y: -50%;
+            top: 50%;
+        }
+
+        &[anchor="left-bottom"]::part(popover-content) {
+            --translate-y: -100%;
+            top: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(-90%, var(--translate-y));
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(-90%, var(--translate-y));
+        }
+    }
+
+    &:state(will-expand)::part(popover-content) {
+        opacity: 0;
+    }
+
+    &:state(expanded)::part(popover-content) {
+        opacity: 100;
+    }
+
+    &:state(will-collapse)::part(popover-content) {
+        opacity: 100;
+    }
+
+    &:state(collapsing)::part(popover-content) {
+        opacity: 0;
+    }
+
+    &:state(collapsed)::part(popover-content) {
+        display: none;
+    }
 }
+ }
+
+@layer primitives { lustre-ui-collapse {
+    --duration: 150ms;
+
+    &::part(collapse-content) {
+        transition-duration: var(--duration);
+        transition-property: height;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: hidden;
+    }
+}
+ }
+
