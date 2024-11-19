@@ -9,7 +9,7 @@ import gleam/pair
 import gleam/result
 import gleam/string
 import gleam_community/colour.{type Colour} as gleam_community_colour
-import lustre/attribute.{attribute}
+import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/ui/colour.{type ColourPalette, type ColourScale, ColourPalette}
@@ -110,8 +110,8 @@ const code = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberatio
 ///
 pub fn new(id: String, selector: Selector) -> Theme {
   let font = Fonts(heading: sans, body: sans, code: code)
-  let radius = SizeScale(0.125, 0.25, 0.375, 0.5, 0.75, 1.0, 1.5)
-  let space = SizeScale(0.25, 0.5, 0.75, 1.0, 1.5, 2.5, 4.0)
+  let radius = perfect_fifth(0.75)
+  let space = golden_ratio(0.75)
 
   let light =
     ColourPalette(
@@ -152,8 +152,8 @@ pub fn new(id: String, selector: Selector) -> Theme {
 pub fn default() -> Theme {
   let id = "lustre-ui-default"
   let font = Fonts(heading: sans, body: sans, code: code)
-  let radius = SizeScale(0.125, 0.25, 0.375, 0.5, 0.75, 1.0, 1.5)
-  let space = SizeScale(0.25, 0.5, 0.75, 1.0, 1.5, 2.5, 4.0)
+  let radius = perfect_fifth(0.75)
+  let space = golden_ratio(0.75)
 
   let light = colour.default_light_palette()
   let dark = colour.default_dark_palette()
@@ -166,6 +166,54 @@ pub fn default() -> Theme {
     space: space,
     light: light,
     dark: Some(#(Class("dark"), dark)),
+  )
+}
+
+pub fn perfect_fourth(base: Float) -> SizeScale {
+  SizeScale(
+    xs: base /. 1.333 /. 1.333 /. 1.333,
+    sm: base /. 1.333 /. 1.333,
+    md: base,
+    lg: base *. 1.333,
+    xl: base *. 1.333 *. 1.333,
+    xl_2: base *. 1.333 *. 1.333 *. 1.333,
+    xl_3: base *. 1.333 *. 1.333 *. 1.333 *. 1.333,
+  )
+}
+
+pub fn augmented_forth(base: Float) -> SizeScale {
+  SizeScale(
+    xs: base /. 1.414 /. 1.414 /. 1.414,
+    sm: base /. 1.414 /. 1.414,
+    md: base,
+    lg: base *. 1.414,
+    xl: base *. 1.414 *. 1.414,
+    xl_2: base *. 1.414 *. 1.414 *. 1.414,
+    xl_3: base *. 1.414 *. 1.414 *. 1.414 *. 1.414,
+  )
+}
+
+pub fn perfect_fifth(base: Float) -> SizeScale {
+  SizeScale(
+    xs: base /. 1.5 /. 1.5 /. 1.5,
+    sm: base /. 1.5 /. 1.5,
+    md: base,
+    lg: base *. 1.5,
+    xl: base *. 1.5 *. 1.5,
+    xl_2: base *. 1.5 *. 1.5 *. 1.5,
+    xl_3: base *. 1.5 *. 1.5 *. 1.5 *. 1.5,
+  )
+}
+
+pub fn golden_ratio(base: Float) -> SizeScale {
+  SizeScale(
+    xs: base /. 1.618 /. 1.618 /. 1.618,
+    sm: base /. 1.618 /. 1.618,
+    md: base,
+    lg: base *. 1.618,
+    xl: base *. 1.618 *. 1.618,
+    xl_2: base *. 1.618 *. 1.618 *. 1.618,
+    xl_3: base *. 1.618 *. 1.618 *. 1.618 *. 1.618,
   )
 }
 
@@ -389,7 +437,39 @@ pub fn with_dark_danger_scale(theme: Theme, scale: ColourScale) -> Theme {
   )
 }
 
+// ATTRIBUTES ------------------------------------------------------------------
+
+pub fn use_base() -> Attribute(msg) {
+  attribute.class("base")
+}
+
+pub fn use_primary() -> Attribute(msg) {
+  attribute.class("primary")
+}
+
+pub fn use_secondary() -> Attribute(msg) {
+  attribute.class("secondary")
+}
+
+pub fn use_success() -> Attribute(msg) {
+  attribute.class("success")
+}
+
+pub fn use_warning() -> Attribute(msg) {
+  attribute.class("warning")
+}
+
+pub fn use_danger() -> Attribute(msg) {
+  attribute.class("danger")
+}
+
 // CONVERSIONS -----------------------------------------------------------------
+
+///
+///
+pub fn inject(theme: Theme, view: fn() -> Element(msg)) -> Element(msg) {
+  element.fragment([to_style(theme), view()])
+}
 
 /// Render a `Theme` as a `<style>` tag.
 ///
@@ -400,6 +480,9 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
     Global, None ->
       stylesheet_global_light_no_dark
       |> string.replace("${rules}", to_css_variables(theme))
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
 
     Global, Some(#(Global, dark_palette)) ->
@@ -409,6 +492,9 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
         "${dark_rules}",
         to_color_palette_variables(dark_palette, "dark"),
       )
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
 
     Global, Some(#(dark_selector, dark_palette)) ->
@@ -419,12 +505,18 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
         "${dark_rules}",
         to_color_palette_variables(dark_palette, "dark"),
       )
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
 
     selector, None ->
       stylesheet_scoped_light_no_dark
       |> string.replace("${selector}", to_css_selector(selector))
       |> string.replace("${rules}", to_css_variables(theme))
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
 
     selector, Some(#(Global, dark_palette)) ->
@@ -435,6 +527,9 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
         "${dark_rules}",
         to_color_palette_variables(dark_palette, "dark"),
       )
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
 
     selector, Some(#(dark_selector, dark_palette)) ->
@@ -446,6 +541,9 @@ pub fn to_style(theme theme: Theme) -> Element(msg) {
         "${dark_rules}",
         to_color_palette_variables(dark_palette, "dark"),
       )
+      |> string.replace("${fonts.heading}", theme.font.heading)
+      |> string.replace("${fonts.body}", theme.font.body)
+      |> string.replace("${fonts.code}", theme.font.code)
       |> html.style([data_attr], _)
   }
 }
@@ -456,6 +554,15 @@ body {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: ${fonts.heading}
+}
+
+pre, code, kbd, samp {
+  font-family: ${fonts.code}
 }
 "
 
@@ -465,6 +572,15 @@ body {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: ${fonts.heading}
+}
+
+pre, code, kbd, samp {
+  font-family: ${fonts.code}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -480,6 +596,15 @@ body {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: ${fonts.heading}
+}
+
+pre, code, kbd, samp {
+  font-family: ${fonts.code}
 }
 
 body${dark_selector}, body ${dark_selector} {
@@ -499,6 +624,15 @@ ${selector} {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+${selector} :is(h1, h2, h3, h4, h5, h6) {
+  font-family: ${fonts.heading}
+}
+
+${selector} :is(pre, code, kbd, samp) {
+  font-family: ${fonts.code}
 }
 "
 
@@ -508,6 +642,15 @@ ${selector} {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+${selector} :is(h1, h2, h3, h4, h5, h6) {
+  font-family: ${fonts.heading}
+}
+
+${selector} :is(pre, code, kbd, samp) {
+  font-family: ${fonts.code}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -523,6 +666,15 @@ ${selector} {
 
   background-color: rgb(var(--lustre-ui-bg));
   color: rgb(var(--lustre-ui-text));
+  font-family: ${fonts.body}
+}
+
+${selector} :is(h1, h2, h3, h4, h5, h6) {
+  font-family: ${fonts.heading}
+}
+
+${selector} :is(pre, code, kbd, samp) {
+  font-family: ${fonts.code}
 }
 
 ${selector}${dark_selector}, ${selector} ${dark_selector} {
@@ -840,8 +992,8 @@ pub const spacing = SizeVariables(
   md: "var(--lustre-ui-spacing-md)",
   lg: "var(--lustre-ui-spacing-lg)",
   xl: "var(--lustre-ui-spacing-xl)",
-  xl_2: "var(--lustre-ui-spacing-xl_2)",
-  xl_3: "var(--lustre-ui-spacing-xl_3)",
+  xl_2: "var(--lustre-ui-spacing-xl-2)",
+  xl_3: "var(--lustre-ui-spacing-xl-3)",
 )
 
 /// A record that lets you access theme tokens related to border radius. You
@@ -858,8 +1010,8 @@ pub const radius = SizeVariables(
   md: "var(--lustre-ui-radius-md)",
   lg: "var(--lustre-ui-radius-lg)",
   xl: "var(--lustre-ui-radius-xl)",
-  xl_2: "var(--lustre-ui-radius-xl_2)",
-  xl_3: "var(--lustre-ui-radius-xl_3)",
+  xl_2: "var(--lustre-ui-radius-xl-2)",
+  xl_3: "var(--lustre-ui-radius-xl-3)",
 )
 
 /// A record that lets you access theme tokens related to the current colour
