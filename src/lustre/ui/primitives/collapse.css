@@ -1,0 +1,12 @@
+lustre-ui-collapse {
+    --duration: 150ms;
+
+    display: block;
+
+    &::part(collapse-content) {
+        transition-duration: var(--duration);
+        transition-property: height;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: hidden;
+    }
+}

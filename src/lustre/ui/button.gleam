@@ -1,160 +1,192 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import lustre/attribute.{type Attribute}
+import gleam/int
+import gleam/list
+import gleam/string
+import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-
-// CONSTANTS -------------------------------------------------------------------
-
-const base_classes = "min-h-8 inline-flex items-center justify-center whitespace-nowrap translate-y-0"
-
-const focus_classes = "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-
-const active_classes = "active:translate-y-px"
-
-const disabled_classes = "disabled:pointer-events-none disabled:opacity-50"
+import lustre/ui/theme
 
 // ELEMENTS --------------------------------------------------------------------
 
-fn button(
+pub fn button(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.button(
+  of(html.button, [attribute("tabindex", "0"), ..attributes], children)
+}
+
+pub fn link(
+  attributes: List(Attribute(msg)),
+  children: List(Element(msg)),
+) -> Element(msg) {
+  of(html.a, attributes, children)
+}
+
+pub fn of(
+  element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
+  attributes: List(Attribute(msg)),
+  children: List(Element(msg)),
+) -> Element(msg) {
+  element([attribute.class("lustre-ui-button"), ..attributes], children)
+}
+
+// CHILDREN --------------------------------------------------------------------
+
+pub fn shortcut_badge(
+  attributes: List(Attribute(msg)),
+  chord: List(String),
+) -> Element(msg) {
+  html.span(
     [
-      attribute.class(base_classes),
-      attribute.class(disabled_classes),
-      attribute.class(focus_classes),
-      attribute.class(active_classes),
+      attribute.class("button-badge"),
+      attribute.title(string.join(chord, "+")),
       ..attributes
     ],
-    children,
+    {
+      use key <- list.map(chord)
+
+      html.span([attribute.class("key")], [html.text(key)])
+    },
   )
 }
 
-pub fn clear(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  let colour_classes = "bg-transparent"
-  let hover_classes = "hover:bg-w-tint"
-
-  button(
-    [
-      attribute.class(colour_classes),
-      attribute.class(hover_classes),
-      ..attributes
-    ],
-    children,
-  )
-}
-
-pub fn outline(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  let colour_classes = "bg-transparent border border-w-solid"
-  let hover_classes = "hover:border-w-solid-subtle"
-
-  button(
-    [
-      attribute.class(colour_classes),
-      attribute.class(hover_classes),
-      ..attributes
-    ],
-    children,
-  )
-}
-
-pub fn soft(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  let colour_classes = "bg-w-tint-subtle"
-  let hover_classes = "hover:bg-w-tint"
-
-  button(
-    [
-      attribute.class(colour_classes),
-      attribute.class(hover_classes),
-      ..attributes
-    ],
-    children,
-  )
-}
-
-pub fn solid(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  let colour_classes = "bg-w-solid text-w-solid-text"
-  let hover_classes = "hover:bg-w-solid-subtle"
-
-  button(
-    [
-      attribute.class(colour_classes),
-      attribute.class(hover_classes),
-      ..attributes
-    ],
-    children,
-  )
+pub fn count_badge(attributes: List(Attribute(msg)), count: Int) -> Element(msg) {
+  html.span([attribute.class("button-badge"), ..attributes], [
+    html.text(case count < 100 {
+      True -> int.to_string(count)
+      False -> "99+"
+    }),
+  ])
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
-// BORDER RADIUS
 
+///
+///
+pub fn clear() -> Attribute(msg) {
+  attribute.class("button-clear")
+}
+
+///
+///
+pub fn outline() -> Attribute(msg) {
+  attribute.class("button-outline")
+}
+
+///
+///
+pub fn soft() -> Attribute(msg) {
+  attribute.class("button-soft")
+}
+
+///
+///
+pub fn solid() -> Attribute(msg) {
+  attribute.class("button-solid")
+}
+
+///
+///
 pub fn square() -> Attribute(msg) {
-  attribute.class("rounded-none")
+  radius("0")
 }
 
+///
+///
 pub fn round() -> Attribute(msg) {
-  attribute.class("rounded-w-sm")
+  radius(theme.radius.md)
 }
 
+///
+///
 pub fn pill() -> Attribute(msg) {
-  attribute.class("rounded-w-xl")
+  radius(theme.radius.xl)
 }
 
-// SIZE
-
+///
+///
 pub fn icon() -> Attribute(msg) {
-  attribute.class("size-9")
+  attribute.class("button-icon")
 }
 
+///
+///
 pub fn small() -> Attribute(msg) {
-  attribute.class("h-8 px-w-sm")
+  attribute.class("button-small")
 }
 
+///
+///
 pub fn medium() -> Attribute(msg) {
-  attribute.class("h-9 px-w-md py-w-sm")
+  attribute.class("button-medium")
 }
 
+///
+///
 pub fn large() -> Attribute(msg) {
-  attribute.class("h-10 px-w-lg")
+  attribute.class("button-large")
 }
 
-// COLOURS
+// CSS VARIABLES ---------------------------------------------------------------
 
-pub fn base() -> Attribute(msg) {
-  attribute.class("base")
+///
+///
+pub fn background(value: String) -> Attribute(msg) {
+  attribute.style([#("--background", value)])
 }
 
-pub fn primary() -> Attribute(msg) {
-  attribute.class("primary")
+///
+///
+pub fn background_hover(value: String) -> Attribute(msg) {
+  attribute.style([#("--background-hover", value)])
 }
 
-pub fn secondary() -> Attribute(msg) {
-  attribute.class("secondary")
+///
+///
+pub fn border(value: String) -> Attribute(msg) {
+  attribute.style([#("--border", value)])
 }
 
-pub fn success() -> Attribute(msg) {
-  attribute.class("success")
+///
+///
+pub fn border_hover(value: String) -> Attribute(msg) {
+  attribute.style([#("--border-hover", value)])
 }
 
-pub fn warning() -> Attribute(msg) {
-  attribute.class("warning")
+///
+///
+pub fn border_width(value: String) -> Attribute(msg) {
+  attribute.style([#("--border-width", value)])
 }
 
-pub fn danger() -> Attribute(msg) {
-  attribute.class("danger")
+///
+///
+pub fn height(value: String) -> Attribute(msg) {
+  attribute.style([#("--height", value)])
+}
+
+///
+///
+pub fn min_height(value: String) -> Attribute(msg) {
+  attribute.style([#("--min-height", value)])
+}
+
+///
+///
+pub fn padding_x(value: String) -> Attribute(msg) {
+  attribute.style([#("--padding-x", value)])
+}
+
+///
+///
+pub fn radius(value: String) -> Attribute(msg) {
+  attribute.style([#("--radius", value)])
+}
+
+///
+///
+pub fn text(value: String) -> Attribute(msg) {
+  attribute.style([#("--text", value)])
 }

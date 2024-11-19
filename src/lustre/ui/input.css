@@ -1,0 +1,59 @@
+.lustre-ui-input {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --border: rgb(var(--lustre-ui-accent));
+    --border-focus: rgb(var(--lustre-ui-primary-solid));
+    --border-width: 1px;
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --radius: var(--lustre-ui-radius-sm);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    background-color: rgb(var(--lustre-ui-base-bg-subtle));
+    padding: var(--padding-y);
+    outline-offset: 0;
+    border-radius: var(--radius);
+    outline: var(--border-width) solid var(--border);
+
+    &:focus {
+        outline-color: var(--border-focus);
+    }
+
+    &:invalid {
+        outline-color: rgb(var(--lustre-ui-danger-solid));
+    }
+}
+
+.lustre-ui-input-container {
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    /*  */
+
+    &:has(* + input) > input {
+        padding-left: 2rem;
+    }
+
+    &:has(input + *) > input {
+        padding-right: 2rem;
+    }
+
+    &:has(* + input) > :not(input) {
+        left: 0.5rem;
+    }
+
+    & > input + * {
+        left: unset !important;
+        right: 0.5rem;
+    }
+
+    & > :not(input) {
+        position: absolute;
+        pointer-events: none;
+        width: 1rem;
+        height: 1rem;
+    }
+}

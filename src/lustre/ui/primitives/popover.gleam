@@ -5,6 +5,7 @@ import gleam/bool
 import gleam/dict.{type Dict}
 import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic}
 import gleam/json
+import gleam/list
 import gleam/result
 import gleam/string
 import lustre
@@ -14,7 +15,22 @@ import lustre/element.{type Element, element}
 import lustre/element/html
 import lustre/event
 
-// PUBLIC API ------------------------------------------------------------------
+// TYPES -----------------------------------------------------------------------
+
+pub type Anchor {
+  TopLeft
+  TopMiddle
+  TopRight
+  RightTop
+  RightMiddle
+  RightBottom
+  BottomLeft
+  BottomMiddle
+  BottomRight
+  LeftTop
+  LeftMiddle
+  LeftBottom
+}
 
 // ELEMENTS --------------------------------------------------------------------
 
@@ -39,8 +55,53 @@ pub fn popover(
 
 // ATTRIBUTES ------------------------------------------------------------------
 
+/// The `popover` primitive is a "controlled" component. That means it doesn't
+/// manage its own state but instead relies on a parent component to manage the
+/// open/closed state.
+///
 pub fn open(is_open: Bool) -> Attribute(msg) {
   attribute("aria-expanded", bool.to_string(is_open) |> string.lowercase)
+}
+
+///
+///
+pub fn anchor(direction: Anchor) -> Attribute(msg) {
+  attribute("anchor", case direction {
+    TopLeft -> "top-left"
+    TopMiddle -> "top-middle"
+    TopRight -> "top-right"
+    RightTop -> "right-top"
+    RightMiddle -> "right-middle"
+    RightBottom -> "right-bottom"
+    BottomLeft -> "bottom-left"
+    BottomMiddle -> "bottom-middle"
+    BottomRight -> "bottom-right"
+    LeftTop -> "left-top"
+    LeftMiddle -> "left-middle"
+    LeftBottom -> "left-bottom"
+  })
+}
+
+/// By default, the popover's content is sized intrinsically. This means the content
+/// can be smaller or larger than the trigger element based on what's inside it.
+///
+/// Setting the `equal_width` attribute will make the popover's content match the
+/// width of the trigger element. This is useful for elements like comboboxes and
+/// selects where the user typically expects the popover to be the same width as
+/// the trigger.
+///
+pub fn equal_width() -> Attribute(msg) {
+  attribute("equal-width", "")
+}
+
+// STYLES ----------------------------------------------------------------------
+
+/// By default, the `popover` primitive has a small gap between the trigger and
+/// the popover content based on your theme configuration. You can use this function
+/// to override that gap, or remove it entirely.
+///
+pub fn gap(value: String) -> Attribute(msg) {
+  attribute.style([#("--gap", value)])
 }
 
 // EVENTS ----------------------------------------------------------------------
@@ -64,8 +125,6 @@ pub fn on_close(handler: msg) -> Attribute(msg) {
   Ok(handler)
 }
 
-// INTERNALS -------------------------------------------------------------------
-
 // MODEL -----------------------------------------------------------------------
 
 type Model {
@@ -78,7 +137,7 @@ type Model {
 
 fn init(_) -> #(Model, Effect(Msg)) {
   let model = Collapsed
-  let effect = effect.none()
+  let effect = effect.batch([set_state("collapsed")])
 
   #(model, effect)
 }
@@ -86,6 +145,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Msg {
+
   ParentSetOpen(Bool)
   SchedulerDidTick
   TransitionDidEnd
@@ -96,23 +156,22 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   case msg, model {
     ParentSetOpen(True), WillCollapse | ParentSetOpen(True), Collapsed -> #(
       WillExpand,
-      tick(),
+      effect.batch([tick(), set_state("will-expand")]),
     )
     ParentSetOpen(True), _ -> #(model, effect.none())
     ParentSetOpen(False), WillExpand | ParentSetOpen(False), Expanded -> #(
       WillCollapse,
-      tick(),
+      effect.batch([tick(), set_state("will-collapse")]),
     )
     ParentSetOpen(False), _ -> #(model, effect.none())
-    SchedulerDidTick, WillExpand -> #(Expanded, effect.none())
-    SchedulerDidTick, WillCollapse -> #(Collapsing, effect.none())
+    SchedulerDidTick, WillExpand -> #(Expanded, set_state("expanded"))
+    SchedulerDidTick, WillCollapse -> #(Collapsing, set_state("collapsing"))
     SchedulerDidTick, _ -> #(model, effect.none())
-    TransitionDidEnd, Collapsing -> #(Collapsed, effect.none())
+    TransitionDidEnd, Collapsing -> #(Collapsed, set_state("collapsed"))
     TransitionDidEnd, _ -> #(model, effect.none())
     UserPressedTrigger, WillExpand | UserPressedTrigger, Expanded -> #(
-      WillCollapse,
+      model,
       effect.batch([
-        tick(),
         event.emit("close", json.null()),
         event.emit("change", json.object([#("open", json.bool(False))])),
       ]),
@@ -121,25 +180,14 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     | UserPressedTrigger, Collapsing
     | UserPressedTrigger, Collapsed
     -> #(
-      WillExpand,
+      model,
       effect.batch([
-        tick(),
         event.emit("open", json.null()),
         event.emit("change", json.object([#("open", json.bool(True))])),
       ]),
     )
   }
 }
-
-fn tick() -> Effect(Msg) {
-  use dispatch <- effect.from
-  use <- after_paint
-
-  dispatch(SchedulerDidTick)
-}
-
-@external(javascript, "../../../scheduler.ffi.mjs", "after_paint")
-fn after_paint(k: fn() -> Nil) -> Nil
 
 fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
   dict.from_list([
@@ -151,17 +199,48 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
   ])
 }
 
+// EFFECTS ---------------------------------------------------------------------
+
+fn set_state(value: String) -> Effect(msg) {
+  use _, root <- element.get_root
+  use state <- list.each([
+    "will-expand", "expanded", "will-collapse", "collapsing", "collapsed",
+  ])
+
+  case state == value {
+    True -> do_set_state(value, root)
+    False -> do_remove_state(state, root)
+  }
+}
+
+@external(javascript, "../../../dom.ffi.mjs", "set_state")
+fn do_set_state(value: String, root: Dynamic) -> Nil
+
+@external(javascript, "../../../dom.ffi.mjs", "remove_state")
+fn do_remove_state(value: String, root: Dynamic) -> Nil
+
+fn tick() -> Effect(Msg) {
+  use dispatch <- effect.from
+  use <- after_paint
+
+  dispatch(SchedulerDidTick)
+}
+
+@external(javascript, "../../../scheduler.ffi.mjs", "after_paint")
+fn after_paint(k: fn() -> Nil) -> Nil
+
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
-  html.div([attribute.class("relative")], [view_trigger(), view_popover(model)])
+  html.div([attribute.style([#("position", "relative")])], [
+    view_trigger(),
+    view_popover(model),
+  ])
 }
 
 fn view_trigger() -> Element(Msg) {
   html.slot([
-    attribute.class("block cursor-pointer"),
     attribute.name("trigger"),
-    attribute("tabindex", "0"),
     event.on_click(UserPressedTrigger),
     event.on("keydown", handle_keydown),
   ])
@@ -171,7 +250,10 @@ fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
   use key <- result.try(dynamic.field("key", dynamic.string)(event))
 
   case key {
-    "Enter" | " " -> Ok(UserPressedTrigger)
+    "Enter" | " " -> {
+      event.prevent_default(event)
+      Ok(UserPressedTrigger)
+    }
     _ -> Error([])
   }
 }
@@ -181,15 +263,8 @@ fn view_popover(model: Model) -> Element(Msg) {
 
   html.div(
     [
+      attribute("part", "popover-content"),
       event.on("transitionend", handle_transitionend),
-      attribute.class("absolute left-0 right-0 transition"),
-      attribute.class(case model {
-        WillExpand -> "block opacity-0 -translate-y-4"
-        Expanded -> "block opacity-100 translate-y-0"
-        WillCollapse -> "block opacity-100 translate-y-0"
-        Collapsing -> "block opacity-0 -translate-y-4"
-        Collapsed -> "hidden"
-      }),
     ],
     [html.slot([attribute.name("popover")])],
   )

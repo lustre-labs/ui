@@ -1,0 +1,86 @@
+lustre-ui-combobox {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --border-width: 1px;
+    --radius: var(--lustre-ui-radius-sm);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    display: inline-block;
+
+    &::part(combobox-trigger) {
+        align-items: center;
+        border-radius: var(--radius);
+        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+        color: rgb(var(--lustre-ui-text));
+        display: flex;
+        gap: var(--padding-x);
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        padding: var(--padding-y) var(--padding-x);
+        width: 100%;
+    }
+
+    &:state(trigger-focus)::part(combobox-trigger) {
+        border-color: rgb(var(--lustre-ui-primary-solid));
+    }
+
+    &:state(empty)::part(combobox-trigger) {
+        color: rgb(var(--lustre-ui-text-subtle));
+    }
+
+    &::part(combobox-trigger-label) {
+        flex: 1 1 0%;
+        text-align: left;
+    }
+
+    &::part(combobox-trigger-icon) {
+        border-radius: var(--radius);
+        height: 1.5rem;
+        padding: 0.25rem;
+        transform: rotate(0deg);
+        transition-duration: 150ms;
+        transition-property: transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        width: 1.5rem;
+    }
+
+    &:state(expanded)::part(combobox-trigger-icon) {
+        transform: rotate(-180deg);
+    }
+
+    &:is(:hover, :state(trigger-focus), :state(expanded))::part(
+            combobox-trigger-icon
+        ) {
+        background-color: rgb(var(--lustre-ui-tint-subtle));
+    }
+
+    &::part(combobox-options) {
+        background-color: rgb(var(--lustre-ui-bg));
+        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+        border-radius: var(--radius);
+    }
+
+    &::part(combobox-input) {
+        border: none;
+    }
+
+    &::part(combobox-option) {
+        align-items: baseline;
+        cursor: pointer;
+        display: flex;
+        padding: var(--padding-y) var(--padding-x);
+        gap: var(--padding-x);
+    }
+
+    &::part(combobox-option last) {
+        border-bottom-left-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+    }
+
+    &::part(combobox-option intent) {
+        background-color: rgb(var(--lustre-ui-tint-subtle));
+    }
+}

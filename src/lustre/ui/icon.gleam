@@ -22,7 +22,12 @@ import lustre/element/svg
 
 fn icon(attrs: List(Attribute(msg)), path: String) -> Element(msg) {
   html.svg(
-    [attribute("viewBox", "0 0 15 15"), attribute("fill", "none"), ..attrs],
+    [
+      attribute("viewBox", "0 0 15 15"),
+      attribute("fill", "none"),
+      attribute.class("lustre-ui-icon"),
+      ..attrs
+    ],
     [
       svg.path([
         attribute("d", path),

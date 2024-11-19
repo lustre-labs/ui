@@ -1,141 +1,102 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import gleam/list
 import lustre/attribute.{type Attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-
-// CONSTANTS -------------------------------------------------------------------
-
-const card_base_classes = "border border-w-accent-subtle bg-w-bg-subtle [&>*+*]:pt-0"
-
-const card_header_classes = "flex flex-col space-y-w-xs p-w-xl"
-
-const card_title_classes = "font-semibold leading-none tracking-tight"
-
-const card_description_classes = "text-w-text-subtle"
-
-const card_content_classes = "p-w-xl"
-
-const card_footer_classes = "flex items-center p-w-xl"
+import lustre/ui/theme
 
 // ELEMENTS --------------------------------------------------------------------
 
-pub fn simple(
-  attributes: List(Attribute(msg)),
-  content content_children: List(Element(msg)),
-) -> Element(msg) {
-  custom(attributes, [content([], content_children)])
-}
-
-pub fn with_header(
-  attributes: List(Attribute(msg)),
-  header header_children: List(Element(msg)),
-  content content_children: List(Element(msg)),
-) -> Element(msg) {
-  custom(attributes, [
-    header([], header_children),
-    content([], content_children),
-  ])
-}
-
-pub fn with_footer(
-  attributes: List(Attribute(msg)),
-  content content_children: List(Element(msg)),
-  footer footer_children: List(Element(msg)),
-) -> Element(msg) {
-  custom(attributes, [
-    content([], content_children),
-    footer([], footer_children),
-  ])
-}
-
-pub fn custom(
+pub fn card(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.article([attribute.class(card_base_classes), ..attributes], children)
-  // [
-  //   case list.is_empty(header_children) {
-  //     True -> html.text("")
-  //     False -> header([], header_children)
-  //   },
-  //   content([], content_children),
-  //   case list.is_empty(footer_children) {
-  //     True -> html.text("")
-  //     False -> footer([], footer_children)
-  //   },
-  // ])
+  of(html.article, attributes, children)
+}
+
+pub fn of(
+  element: fn(List(Attribute(msg)), List(Element(msg))) -> Element(msg),
+  attributes: List(Attribute(msg)),
+  children: List(Element(msg)),
+) -> Element(msg) {
+  element([attribute.class("lustre-ui-card"), ..attributes], children)
 }
 
 pub fn header(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.header([attribute.class(card_header_classes), ..attributes], children)
-}
-
-pub fn title(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  html.h3([attribute.class(card_title_classes), ..attributes], children)
-}
-
-pub fn description(
-  attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
-) -> Element(msg) {
-  html.p([attribute.class(card_description_classes), ..attributes], children)
+  html.header([attribute.class("card-header"), ..attributes], children)
 }
 
 pub fn content(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.main([attribute.class(card_content_classes), ..attributes], children)
+  html.main([attribute.class("card-content"), ..attributes], children)
 }
 
 pub fn footer(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  html.footer([attribute.class(card_footer_classes), ..attributes], children)
+  html.footer([attribute.class("card-footer"), ..attributes], children)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
-// BORDER RADIUS
 
+///
+///
 pub fn square() -> Attribute(msg) {
-  attribute.class("rounded-none")
+  radius("0")
 }
 
+///
+///
 pub fn round() -> Attribute(msg) {
-  attribute.class("rounded-w-sm")
+  radius(theme.radius.md)
 }
 
-// COLOURS
+// CSS VARIABLES ---------------------------------------------------------------
 
-pub fn base() -> Attribute(msg) {
-  attribute.class("base")
+///
+///
+pub fn background(value: String) -> Attribute(msg) {
+  attribute.style([#("--background", value)])
 }
 
-pub fn primary() -> Attribute(msg) {
-  attribute.class("primary")
+///
+///
+pub fn border(value: String) -> Attribute(msg) {
+  attribute.style([#("--border", value)])
 }
 
-pub fn secondary() -> Attribute(msg) {
-  attribute.class("secondary")
+///
+///
+pub fn border_width(value: String) -> Attribute(msg) {
+  attribute.style([#("--border-width", value)])
 }
 
-pub fn success() -> Attribute(msg) {
-  attribute.class("success")
+///
+///
+pub fn padding(x: String, y: String) -> Attribute(msg) {
+  attribute.style([#("--padding-x", x), #("--padding-y", y)])
 }
 
-pub fn warning() -> Attribute(msg) {
-  attribute.class("warning")
+///
+///
+pub fn padding_x(value: String) -> Attribute(msg) {
+  attribute.style([#("--padding-x", value)])
 }
 
-pub fn danger() -> Attribute(msg) {
-  attribute.class("danger")
+///
+///
+pub fn padding_y(value: String) -> Attribute(msg) {
+  attribute.style([#("--padding-y", value)])
+}
+
+///
+///
+pub fn radius(value: String) -> Attribute(msg) {
+  attribute.style([#("--radius", value)])
 }

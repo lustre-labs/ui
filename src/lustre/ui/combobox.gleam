@@ -4,11 +4,9 @@ import gleam/bool
 import gleam/dict.{type Dict}
 import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic, dynamic}
 import gleam/int
-import gleam/io
 import gleam/json
 import gleam/list
-
-import gleam/option.{type Option}
+import gleam/option
 import gleam/order
 import gleam/pair
 import gleam/result
@@ -25,9 +23,19 @@ import lustre/ui/icon
 import lustre/ui/input.{input}
 import lustre/ui/primitives/popover.{popover}
 
+// TYPES -----------------------------------------------------------------------
+
+pub opaque type Item {
+  Item(value: String, label: String)
+}
+
 // ELEMENTS --------------------------------------------------------------------
 
 pub const name: String = "lustre-ui-combobox"
+
+pub fn component() -> lustre.App(Nil, Model, Msg) {
+  lustre.component(init, update, view, on_attribute_change())
+}
 
 pub fn register() -> Result(Nil, lustre.Error) {
   case popover.register() {
@@ -41,19 +49,31 @@ pub fn register() -> Result(Nil, lustre.Error) {
 
 pub fn combobox(
   attributes: List(Attribute(msg)),
-  children: List(Element(msg)),
+  children: List(Item),
 ) -> Element(msg) {
-  element(name, attributes, children)
+  element(
+    name,
+    attributes,
+    list.map(children, fn(item) {
+      element("lustre-ui-combobox-option", [attribute.value(item.value)], [
+        html.text(item.label),
+      ])
+    }),
+  )
 }
 
-pub fn option(value value: String, label label: String) -> Element(msg) {
-  html.option([attribute.value(value)], label)
+pub fn option(value value: String, label label: String) -> Item {
+  Item(value:, label:)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
 
 pub fn value(value: String) -> Attribute(msg) {
   attribute.value(value)
+}
+
+pub fn placeholder(value: String) -> Attribute(msg) {
+  attribute("placeholder", value)
 }
 
 // EVENTS ----------------------------------------------------------------------
@@ -68,12 +88,16 @@ pub fn on_change(handler: fn(String) -> msg) -> Attribute(msg) {
 
 // MODEL -----------------------------------------------------------------------
 
-type Model {
+pub opaque type Model {
   Model(
     expanded: Bool,
     value: String,
+    /// A placeholder to fall back to if the current value is `""`.
+    placeholder: String,
+    /// What the user has currently typed into the search box.
     query: String,
-    intent: Option(String),
+    ///
+    intent: option.Option(String),
     intent_strategy: Strategy,
     options: Options,
   )
@@ -86,8 +110,8 @@ type Strategy {
 
 type Options {
   Options(
-    all: List(#(String, String)),
-    filtered: List(#(String, String)),
+    all: List(Item),
+    filtered: List(Item),
     lookup_label: Bidict(String, String),
     lookup_index: Bidict(String, Int),
   )
@@ -98,6 +122,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
     Model(
       expanded: False,
       value: "",
+      placeholder: "Select an option...",
       query: "",
       intent: option.None,
       intent_strategy: ByIndex,
@@ -108,15 +133,18 @@ fn init(_) -> #(Model, Effect(Msg)) {
         lookup_index: bidict.new(),
       ),
     )
-  let effect = effect.none()
+  let effect = effect.batch([set_state("empty")])
 
   #(model, effect)
 }
 
 // UPDATE ----------------------------------------------------------------------
 
-type Msg {
-  ParentChangedChildren(List(#(String, String)))
+pub opaque type Msg {
+  DomBlurredTrigger
+  DomFocusedTrigger
+  ParentChangedChildren(List(Item))
+  ParentSetPlaceholder(String)
   ParentSetStrategy(Strategy)
   ParentSetValue(String)
   UserChangedQuery(String)
@@ -134,21 +162,31 @@ type Msg {
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   case msg {
+    DomBlurredTrigger -> #(model, remove_state("trigger-focus"))
+
+    DomFocusedTrigger -> #(model, set_state("trigger-focus"))
+
     ParentChangedChildren(all) -> {
-      let lookup_label = bidict.from_list(all)
-      let lookup_index = bidict.indexed(list.map(all, pair.first))
+      let lookup_label =
+        bidict.from_list(list.map(all, fn(item) { #(item.value, item.label) }))
+      let lookup_index = bidict.indexed(list.map(all, fn(item) { item.value }))
       let filtered =
         list.filter(all, fn(option) {
-          string.lowercase(option.0)
+          string.lowercase(option.label)
           |> string.contains(string.lowercase(model.query))
         })
       let options = Options(all:, filtered:, lookup_label:, lookup_index:)
       let intent = option.None
-      let model = Model(..model, options:, intent:, options:)
+      let model = Model(..model, options:, intent:)
       let effect = effect.none()
 
       #(model, effect)
     }
+
+    ParentSetPlaceholder(placeholder) -> #(
+      Model(..model, placeholder:),
+      effect.none(),
+    )
 
     ParentSetStrategy(strategy) -> #(
       Model(..model, intent_strategy: strategy),
@@ -157,7 +195,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     ParentSetValue(value) -> {
       let model = Model(..model, value:, intent: option.Some(value))
-      let effect = effect.none()
+      let effect = case value {
+        "" -> set_state("empty")
+        _ -> remove_state("empty")
+      }
 
       #(model, effect)
     }
@@ -165,7 +206,7 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     UserChangedQuery(query) -> {
       let filtered =
         list.filter(model.options.all, fn(option) {
-          string.lowercase(option.0)
+          string.lowercase(option.label)
           |> string.contains(string.lowercase(query))
         })
       let options = Options(..model.options, filtered:)
@@ -177,17 +218,24 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       #(model, effect)
     }
 
-    UserClosedMenu -> #(
-      Model(..model, expanded: False, intent: option.None),
-      effect.none(),
-    )
+    UserClosedMenu -> {
+      let model = Model(..model, expanded: False, intent: option.None)
+      let effect = remove_state("expanded")
+
+      #(model, effect)
+    }
 
     UserHoveredOption(intent) -> #(
       Model(..model, intent: option.Some(intent)),
       effect.none(),
     )
 
-    UserOpenedMenu -> #(Model(..model, expanded: True), effect.none())
+    UserOpenedMenu -> {
+      let model = Model(..model, expanded: True)
+      let effect = set_state("expanded")
+
+      #(model, effect)
+    }
 
     UserPressedDown -> {
       let intent = case model.intent {
@@ -229,7 +277,7 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     UserPressedEscape -> {
       let model = Model(..model, expanded: False, intent: option.None)
-      let effect = effect.none()
+      let effect = remove_state("expanded")
 
       #(model, effect)
     }
@@ -265,7 +313,6 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     UserSelectedOption(value) -> {
       let intent =
         value
-        |> io.debug
         |> bidict.get(model.options.lookup_label, _)
         |> option.from_result
       let model = Model(..model, intent:)
@@ -281,24 +328,24 @@ fn intent_from_query(
   query: String,
   strategy: Strategy,
   options: Options,
-) -> Option(String) {
+) -> option.Option(String) {
   use <- bool.guard(query == "", option.None)
   let query = string.lowercase(query)
   let matches =
     list.filter(options.all, fn(option) {
-      option.1 |> string.lowercase |> string.contains(query)
+      option.label |> string.lowercase |> string.contains(query)
     })
 
   let sorted =
     list.sort(matches, fn(a, b) {
-      let a_label = string.lowercase(a.1)
-      let b_label = string.lowercase(b.1)
+      let a_label = string.lowercase(a.label)
+      let b_label = string.lowercase(b.label)
 
       let a_starts_with_query = string.starts_with(a_label, query)
       let b_starts_with_query = string.starts_with(b_label, query)
 
-      let assert Ok(a_index) = bidict.get(options.lookup_index, a.0)
-      let assert Ok(b_index) = bidict.get(options.lookup_index, b.0)
+      let assert Ok(a_index) = bidict.get(options.lookup_index, a.value)
+      let assert Ok(b_index) = bidict.get(options.lookup_index, b.value)
 
       let a_length = string.length(a_label)
       let b_length = string.length(b_label)
@@ -313,7 +360,7 @@ fn intent_from_query(
 
   sorted
   |> list.first
-  |> result.map(pair.first)
+  |> result.map(fn(option) { option.value })
   |> option.from_result
 }
 
@@ -323,6 +370,11 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
       value
       |> dynamic.string
       |> result.map(ParentSetValue)
+    }),
+    #("placeholder", fn(value) {
+      value
+      |> dynamic.string
+      |> result.map(ParentSetPlaceholder)
     }),
     #("strategy", fn(value) {
       case dynamic.string(value) {
@@ -334,16 +386,42 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
   ])
 }
 
+// EFFECTS ---------------------------------------------------------------------
+
+fn set_state(value: String) -> Effect(msg) {
+  use _, root <- element.get_root
+
+  do_set_state(value, root)
+}
+
+@external(javascript, "../../dom.ffi.mjs", "set_state")
+fn do_set_state(value: String, root: Dynamic) -> Nil
+
+fn remove_state(value: String) -> Effect(msg) {
+  use _, root <- element.get_root
+
+  do_remove_state(value, root)
+}
+
+@external(javascript, "../../dom.ffi.mjs", "remove_state")
+fn do_remove_state(value: String, root: Dynamic) -> Nil
+
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
   element.fragment([
-    html.slot([event.on("slotchange", handle_slot_change)]),
+    html.slot([
+      attribute.style([#("display", "none")]),
+      event.on("slotchange", handle_slot_change),
+    ]),
     popover(
       [
-        popover.open(model.expanded),
-        popover.on_open(UserOpenedMenu),
+        popover.anchor(popover.BottomMiddle),
+        popover.equal_width(),
+        popover.gap("var(--padding-y)"),
         popover.on_close(UserClosedMenu),
+        popover.on_open(UserOpenedMenu),
+        popover.open(model.expanded),
         // Some browsers will not consider the custom events emit by the popover
         // component as user-generated events and so won't let us manually focus
         // the input in response.
@@ -354,17 +432,16 @@ fn view(model: Model) -> Element(Msg) {
         event.on("click", handle_popover_click(_, !model.expanded)),
         event.on("keydown", handle_popover_keydown(_, !model.expanded)),
       ],
-      trigger: view_trigger(model.value, model.expanded, model.options),
-      content: html.div(
-        [
-          attribute.class("bg-w-bg border border-w-accent rounded-w-sm "),
-          attribute.class("mt-w-xs p-w-xs space-y-w-xs"),
-        ],
-        [
-          view_input(model.query),
-          view_options(model.options, model.value, model.intent),
-        ],
+      trigger: view_trigger(
+        model.value,
+        model.placeholder,
+        model.expanded,
+        model.options,
       ),
+      content: html.div([attribute("part", "combobox-options")], [
+        view_input(model.query),
+        view_options(model.options, model.value, model.intent),
+      ]),
     ),
   ])
 }
@@ -373,8 +450,9 @@ fn handle_slot_change(event: Dynamic) -> Result(Msg, List(DecodeError)) {
   use children <- result.try(dynamic.field("target", assigned_elements)(event))
   use options <- result.try(
     dynamic.list(fn(el) {
-      dynamic.decode2(
-        pair.new,
+      dynamic.decode3(
+        fn(tag, value, label) { #(tag, value, label) },
+        dynamic.field("tagName", dynamic.string),
         get_attribute("value"),
         dynamic.field("textContent", dynamic.string),
       )(el)
@@ -383,9 +461,12 @@ fn handle_slot_change(event: Dynamic) -> Result(Msg, List(DecodeError)) {
 
   options
   |> list.fold_right(#([], set.new()), fn(acc, option) {
-    use <- bool.guard(set.contains(acc.1, option.0), acc)
-    let seen = set.insert(acc.1, option.0)
-    let options = [option, ..acc.0]
+    let #(tag, value, label) = option
+
+    use <- bool.guard(tag != "LUSTRE-UI-COMBOBOX-OPTION", acc)
+    use <- bool.guard(set.contains(acc.1, value), acc)
+    let seen = set.insert(acc.1, value)
+    let options = [Item(value:, label:), ..acc.0]
 
     #(options, seen)
   })
@@ -424,11 +505,12 @@ fn handle_popover_keydown(
   use input <- result.try(get_element("input")(target))
 
   case key {
-    "Enter" | " " if will_open -> after_paint(fn() { focus(input) })
-    _ -> Nil
+    "Enter" | " " if will_open -> {
+      after_paint(fn() { focus(input) })
+      Error([])
+    }
+    _ -> Error([])
   }
-
-  Error([])
 }
 
 @external(javascript, "../../dom.ffi.mjs", "get_element")
@@ -442,46 +524,36 @@ fn after_paint(k: fn() -> Nil) -> Nil
 
 // VIEW TRIGGER ----------------------------------------------------------------
 
-fn view_trigger(value: String, expanded: Bool, options: Options) -> Element(Msg) {
-  let border = "border border-w-accent rounded-w-sm"
-  let focus = "focus:outline outline-1 outline-w-primary-solid outline-offset-0"
-  let text = case value {
-    "" -> "text-w-text-subtle"
-    _ -> ""
-  }
+fn view_trigger(
+  value: String,
+  placeholder: String,
+  expanded: Bool,
+  options: Options,
+) -> Element(Msg) {
+  let label =
+    value
+    |> bidict.get(options.lookup_label, _)
+    |> result.unwrap(placeholder)
 
   html.button(
     [
-      attribute.class("group w-full flex items-center gap-w-xs p-w-sm"),
-      attribute.class(text),
-      attribute.class(border),
-      attribute.class(focus),
+      attribute("part", "combobox-trigger"),
+      attribute("tabindex", "0"),
+      event.on_focus(DomFocusedTrigger),
+      event.on_blur(DomBlurredTrigger),
     ],
     [
-      html.span([attribute.class("flex-1 text-left")], [
-        html.text(
-          value
-          |> bidict.get(options.lookup_label, _)
-          |> result.unwrap("Select an option..."),
-        ),
-      ]),
       html.span(
         [
-          attribute.class(
-            "rounded-w-sm transition-colors group-hover:bg-w-tint-subtle",
-          ),
+          attribute("part", "combobox-trigger-label"),
+          attribute.class(case label {
+            "" -> "empty"
+            _ -> ""
+          }),
         ],
-        [
-          icon.chevron_down([
-            attribute.class("size-6 p-1"),
-            attribute.class("transition-transform"),
-            attribute.class(case expanded {
-              True -> "transform rotate-180"
-              False -> "transform rotate-0"
-            }),
-          ]),
-        ],
+        [html.text(label)],
       ),
+      icon.chevron_down([attribute("part", "combobox-trigger-icon")]),
     ],
   )
 }
@@ -489,10 +561,14 @@ fn view_trigger(value: String, expanded: Bool, options: Options) -> Element(Msg)
 // VIEW INPUT ------------------------------------------------------------------
 
 fn view_input(query: String) -> Element(Msg) {
-  input.container([attribute.class("-m-w-xs mb-0 border-b border-w-accent")], [
-    input.icon(icon.magnifying_glass([])),
+  input.container([attribute("part", "combobox-input")], [
+    icon.magnifying_glass([]),
     input([
-      attribute.class("bg-transparent w-full !rounded-b-none"),
+      attribute.style([
+        #("width", "100%"),
+        #("border-bottom-left-radius", "0px"),
+        #("border-bottom-right-radius", "0px"),
+      ]),
       attribute.autocomplete("off"),
       event.on_input(UserChangedQuery),
       event.on("keydown", handle_input_keydown),
@@ -556,43 +632,69 @@ fn get_root(element: Dynamic) -> Result(Dynamic, List(DecodeError))
 fn view_options(
   options: Options,
   value: String,
-  intent: Option(String),
+  intent: option.Option(String),
 ) -> Element(Msg) {
-  element.keyed(html.ul([], _), {
-    use option <- list.map(options.filtered)
-    let html = view_option(option, value, intent)
+  element.keyed(
+    html.ul([], _),
+    do_view_options(options.filtered, value, intent),
+  )
+}
 
-    #(option.0, html)
-  })
+fn do_view_options(
+  options: List(Item),
+  value: String,
+  intent: option.Option(String),
+) -> List(#(String, Element(Msg))) {
+  case options {
+    [] -> []
+    [option] -> [#(option.value, view_option(option, value, intent, True))]
+    [option, ..rest] -> [
+      #(option.label, view_option(option, value, intent, False)),
+      ..do_view_options(rest, value, intent)
+    ]
+  }
 }
 
 fn view_option(
-  option: #(String, String),
+  option: Item,
   value: String,
-  intent: Option(String),
+  intent: option.Option(String),
+  last: Bool,
 ) -> Element(Msg) {
-  let is_selected = option.0 == value
-  let is_intent = option.Some(option.0) == intent
-  let colours = case is_intent {
-    True -> "bg-w-tint-subtle"
-    False -> ""
+  let is_selected = option.value == value
+  let is_intent = option.Some(option.value) == intent
+
+  let icon = case is_selected {
+    True -> icon.check(_)
+    False -> html.span(_, [])
   }
+
+  let parts = [
+    "combobox-option",
+    case is_intent {
+      True -> "intent"
+      False -> ""
+    },
+    case last {
+      True -> "last"
+      False -> ""
+    },
+  ]
 
   html.li(
     [
-      attribute.class("flex items-center gap-w-xs p-w-xs cursor-pointer"),
-      attribute.class("rounded-w-sm"),
-      attribute.class(colours),
-      attribute.value(option.0),
-      event.on_mouse_over(UserHoveredOption(option.0)),
-      event.on_mouse_down(UserSelectedOption(option.0)),
+      attribute("part", string.join(parts, " ")),
+      attribute("value", option.value),
+      event.on_mouse_over(UserHoveredOption(option.value)),
+      event.on_mouse_down(UserSelectedOption(option.value)),
     ],
     [
-      case is_selected {
-        True -> icon.check([attribute.class("size-4")])
-        False -> html.span([attribute.class("size-4")], [])
-      },
-      html.span([attribute.class("flex-1")], [html.text(option.1)]),
+      icon([attribute.style([#("height", "1rem"), #("width", "1rem")])]),
+      html.span([attribute.style([#("flex", "1 1 0%")])], [
+        element("slot", [attribute.name("option-" <> option.value)], [
+          html.text(option.label),
+        ]),
+      ]),
     ],
   )
 }

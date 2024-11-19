@@ -16,10 +16,6 @@ import lustre/element.{type Element, element}
 import lustre/element/html
 import lustre/event
 
-//                                                                            //
-// PUBLIC API ------------------------------------------------------------------
-//                                                                            //
-
 // ELEMENTS --------------------------------------------------------------------
 
 // The name of the custom element as rendered in the DOM: "lustre-ui-collapse".
@@ -93,10 +89,6 @@ pub fn on_collapse(handler: msg) -> Attribute(msg) {
   Ok(handler)
 }
 
-//                                                                            --
-// INTERNALS -------------------------------------------------------------------
-//                                                                            --
-
 // MODEL -----------------------------------------------------------------------
 
 type Model {
@@ -149,7 +141,9 @@ fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
     #("aria-expanded", fn(value) {
       value
       |> decipher.bool_string
-      |> result.map(ParentSetExpanded)
+      |> result.unwrap(False)
+      |> ParentSetExpanded
+      |> Ok
     }),
   ])
 }
@@ -166,13 +160,9 @@ fn view(model: Model) -> Element(Msg) {
 }
 
 fn view_trigger() -> Element(Msg) {
-  let outline = "focus:outline outline-1 outline-w-accent outline-offset-4"
-
   html.slot([
-    attribute.class("block cursor-pointer rounded"),
-    attribute.class(outline),
+    attribute("part", "collapse-trigger"),
     attribute.name("trigger"),
-    attribute("tabindex", "0"),
     event.on("click", handle_click),
     event.on("keydown", handle_keydown),
   ])
@@ -181,7 +171,7 @@ fn view_trigger() -> Element(Msg) {
 fn view_content(height: String) -> Element(Msg) {
   html.div(
     [
-      attribute.class("transition-height overflow-y-hidden"),
+      attribute("part", "collapse-content"),
       attribute.style([#("transition-duration", "inherit"), #("height", height)]),
     ],
     [html.slot([event.on("slotchange", handle_slot_change)])],
@@ -206,6 +196,7 @@ fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
       let path = ["currentTarget", "nextElementSibling", "firstElementChild"]
       use slot <- result.try(decipher.at(path, dynamic)(event))
       use height <- result.try(calculate_slot_height(slot))
+      event.prevent_default(event)
 
       Ok(UserPressedTrigger(height))
     }
