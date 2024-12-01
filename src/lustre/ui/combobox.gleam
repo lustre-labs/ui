@@ -51,15 +51,15 @@ pub fn combobox(
   attributes: List(Attribute(msg)),
   children: List(Item),
 ) -> Element(msg) {
-  element(
-    name,
-    attributes,
-    list.map(children, fn(item) {
+  element.keyed(element(name, attributes, _), {
+    use item <- list.map(children)
+    let el =
       element("lustre-ui-combobox-option", [attribute.value(item.value)], [
         html.text(item.label),
       ])
-    }),
-  )
+
+    #(item.value, el)
+  })
 }
 
 pub fn option(value value: String, label label: String) -> Item {
