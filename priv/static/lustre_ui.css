@@ -1,1115 +1,1130 @@
 @layer reset, primitives, components;
 
-@layer components { .lustre-ui-input {
-    /* VARIABLES ------------------------------------------------------------ */
+@layer components {
+    .lustre-ui-input {
+        /* VARIABLES ------------------------------------------------------------ */
 
-    --border: rgb(var(--lustre-ui-accent));
-    --border-focus: rgb(var(--lustre-ui-primary-solid));
-    --border-width: 1px;
-    --padding-y: var(--lustre-ui-spacing-sm);
-    --radius: var(--lustre-ui-radius-sm);
+        --border: rgb(var(--lustre-ui-accent));
+        --border-focus: rgb(var(--lustre-ui-primary-solid));
+        --border-width: 1px;
+        --padding-y: var(--lustre-ui-spacing-sm);
+        --radius: var(--lustre-ui-radius-sm);
 
-    /* BASE STYLES ---------------------------------------------------------- */
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    background-color: rgb(var(--lustre-ui-base-bg-subtle));
-    padding: var(--padding-y);
-    outline-offset: 0;
-    border-radius: var(--radius);
-    outline: var(--border-width) solid var(--border);
+        background-color: rgb(var(--lustre-ui-base-bg-subtle));
+        padding: var(--padding-y);
+        outline-offset: 0;
+        border-radius: var(--radius);
+        outline: var(--border-width) solid var(--border);
 
-    &:focus {
-        outline-color: var(--border-focus);
-    }
-
-    &:invalid {
-        outline-color: rgb(var(--lustre-ui-danger-solid));
-    }
-}
-
-.lustre-ui-input-container {
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    position: relative;
-    display: flex;
-    align-items: center;
-
-    /*  */
-
-    &:has(* + input) > input {
-        padding-left: 2rem;
-    }
-
-    &:has(input + *) > input {
-        padding-right: 2rem;
-    }
-
-    &:has(* + input) > :not(input) {
-        left: 0.5rem;
-    }
-
-    & > input + * {
-        left: unset !important;
-        right: 0.5rem;
-    }
-
-    & > :not(input) {
-        position: absolute;
-        pointer-events: none;
-        width: 1rem;
-        height: 1rem;
-    }
-}
- }
-
-@layer components { :where(.lustre-ui-icon) {
-    width: 1rem;
-    height: 1rem;
-}
- }
-
-@layer components { .lustre-ui-divider {
-    /* VARIABLES ------------------------------------------------------------ */
-
-    --colour: rgb(var(--lustre-ui-accent));
-    --gap: var(--lustre-ui-spacing-sm);
-    --margin: 0;
-    --size-x: 2px;
-    --size-y: 0;
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    &:empty {
-        align-self: stretch;
-        border-color: var(--colour);
-        border-right-width: var(--size-y);
-        border-style: solid;
-        border-top-width: var(--size-x);
-        margin: var(--margin) 0;
-    }
-
-    &:not(:empty) {
-        align-items: center;
-        align-self: stretch;
-        display: flex;
-        gap: var(--gap);
-        justify-items: center;
-        margin: var(--margin) 0;
-
-        &::before,
-        &::after {
-            background-color: var(--colour);
-            content: "";
-            display: block;
-            flex-grow: 1;
-            height: var(--size-x);
-            width: var(--size-y);
+        &:focus {
+            outline-color: var(--border-focus);
         }
-    }
-}
- }
 
-@layer components { lustre-ui-combobox {
-    /* VARIABLES ------------------------------------------------------------ */
-
-    --padding-x: var(--lustre-ui-spacing-sm);
-    --padding-y: var(--lustre-ui-spacing-sm);
-    --border-width: 1px;
-    --radius: var(--lustre-ui-radius-sm);
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    display: inline-block;
-
-    &::part(combobox-trigger) {
-        align-items: center;
-        border-radius: var(--radius);
-        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
-        color: rgb(var(--lustre-ui-text));
-        display: flex;
-        gap: var(--padding-x);
-        outline-offset: 2px;
-        outline: 2px solid transparent;
-        padding: var(--padding-y) var(--padding-x);
-        width: 100%;
-    }
-
-    &:state(trigger-focus)::part(combobox-trigger) {
-        border-color: rgb(var(--lustre-ui-primary-solid));
-    }
-
-    &:state(empty)::part(combobox-trigger) {
-        color: rgb(var(--lustre-ui-text-subtle));
-    }
-
-    &::part(combobox-trigger-label) {
-        flex: 1 1 0%;
-        text-align: left;
-    }
-
-    &::part(combobox-trigger-icon) {
-        border-radius: var(--radius);
-        height: 1.5rem;
-        padding: 0.25rem;
-        transform: rotate(0deg);
-        transition-duration: 150ms;
-        transition-property: transform;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        width: 1.5rem;
-    }
-
-    &:state(expanded)::part(combobox-trigger-icon) {
-        transform: rotate(-180deg);
-    }
-
-    &:is(:hover, :state(trigger-focus), :state(expanded))::part(
-            combobox-trigger-icon
-        ) {
-        background-color: rgb(var(--lustre-ui-tint-subtle));
-    }
-
-    &::part(combobox-options) {
-        background-color: rgb(var(--lustre-ui-bg));
-        border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
-        border-radius: var(--radius);
-    }
-
-    &::part(combobox-input) {
-        border: none;
-    }
-
-    &::part(combobox-option) {
-        align-items: baseline;
-        cursor: pointer;
-        display: flex;
-        padding: var(--padding-y) var(--padding-x);
-        gap: var(--padding-x);
-    }
-
-    &::part(combobox-option last) {
-        border-bottom-left-radius: var(--radius);
-        border-bottom-right-radius: var(--radius);
-    }
-
-    &::part(combobox-option intent) {
-        background-color: rgb(var(--lustre-ui-tint-subtle));
-    }
-}
- }
-
-@layer components { .lustre-ui-checkbox {
-    /* VARIABLES ------------------------------------------------------------ */
-
-    --background: transparent;
-    --background-hover: transparent;
-    --border: rgb(var(--lustre-ui-accent));
-    --border-hover: rgb(var(--lustre-ui-accent-strong));
-    --border-width: 1px;
-    --size: 1rem;
-    --check-color: rgb(var(--lustre-ui-solid-text));
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    appearance: none;
-    background-color: var(--background);
-    border: var(--border-width) solid var(--border);
-    border-radius: var(--lustre-ui-radius-sm);
-    cursor: pointer;
-    display: grid;
-    height: var(--size);
-    margin: 0;
-    place-content: center;
-    width: var(--size);
-
-    &::before {
-        background-color: var(--check-color);
-        clip-path: polygon(
-            16% 44%,
-            10% 55%,
-            45% 90%,
-            90% 16%,
-            80% 10%,
-            45% 60%
-        );
-        content: "";
-        height: calc(var(--size) * 0.6);
-        transform: scale(0);
-        transform-origin: center;
-        transition: 150ms transform cubic-bezier(0.4, 0, 0.2, 1);
-        width: calc(var(--size) * 0.6);
-    }
-
-    &:checked {
-        background-color: rgb(var(--lustre-ui-solid));
-        border-color: transparent;
-    }
-
-    &:checked::before {
-        transform: scale(1);
-    }
-}
- }
-
-@layer components { .lustre-ui-card {
-    /* VARIABLES ------------------------------------------------------------ */
-
-    --background: rgb(var(--lustre-ui-bg));
-    --border: rgb(var(--lustre-ui-accent-subtle));
-    --border-width: 1px;
-    --padding-x: var(--lustre-ui-spacing-xl);
-    --padding-y: var(--lustre-ui-spacing-xl);
-    --radius: var(--lustre-ui-radius-md);
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    background: var(--background);
-    border: var(--border-width) solid var(--border);
-    border-radius: var(--radius);
-
-    & > * {
-        padding-top: 0;
-        padding: var(--padding-y) var(--padding-x);
-    }
-
-    & > .card-header {
-        display: flex;
-        flex-direction: column;
-    }
-
-    & > .card-footer {
-        align-items: center;
-        display: flex;
-    }
-}
- }
-
-@layer components { .lustre-ui-button {
-    /* VARIABLES ------------------------------------------------------------ */
-
-    --background: rgb(var(--lustre-ui-tint));
-    --background-hover: rgb(var(--lustre-ui-tint-strong));
-    --border: transparent;
-    --border-hover: transparent;
-    --border-width: 1px;
-    --height: 2rem;
-    --height-min: 2rem;
-    --padding-x: var(--lustre-ui-spacing-sm);
-    --radius: var(--lustre-ui-radius-sm);
-    --text: rgb(var(--lustre-ui-text));
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    align-items: center;
-    background-color: var(--background);
-    border: var(--border-width) solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    display: inline-flex;
-    gap: var(--padding-x);
-    justify-content: center;
-    min-height: var(--height-min);
-    padding-left: var(--padding-x);
-    padding-right: var(--padding-x);
-    white-space: nowrap;
-
-    &:disabled {
-        pointer-events: none;
-        opacity: 0.5;
-        cursor: default;
-    }
-
-    &:hover,
-    &:focus {
-        outline-offset: 2px;
-        outline: 2px solid transparent;
-        background-color: var(--background-hover);
-        border-color: var(--border-hover);
-    }
-
-    &:active {
-        transform: translateY(1px);
-    }
-
-    &:is(a) {
-        text-decoration: none;
-
-        &:visited {
-            color: var(--text);
+        &:invalid {
+            outline-color: rgb(var(--lustre-ui-danger-solid));
         }
     }
 
-    /* SIZE VARIANTS -------------------------------------------------------- */
+    .lustre-ui-input-container {
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    &.button-icon {
-        --height: 2rem;
-        width: var(--height);
+        position: relative;
+        display: flex;
+        align-items: center;
 
-        & > svg {
-            height: 100%;
+        /*  */
+
+        &:has(* + input) > input {
+            padding-left: 2rem;
+        }
+
+        &:has(input + *) > input {
+            padding-right: 2rem;
+        }
+
+        &:has(* + input) > :not(input) {
+            left: 0.5rem;
+        }
+
+        & > input + * {
+            left: unset !important;
+            right: 0.5rem;
+        }
+
+        & > :not(input) {
+            position: absolute;
+            pointer-events: none;
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+}
+
+@layer components {
+    .lustre-ui-divider {
+        /* VARIABLES ------------------------------------------------------------ */
+
+        --colour: rgb(var(--lustre-ui-accent));
+        --gap: var(--lustre-ui-spacing-sm);
+        --margin: 0;
+        --size-x: 2px;
+        --size-y: 0;
+
+        /* BASE STYLES ---------------------------------------------------------- */
+
+        &:empty {
+            align-self: stretch;
+            border-color: var(--colour);
+            border-right-width: var(--size-y);
+            border-style: solid;
+            border-top-width: var(--size-x);
+            margin: var(--margin) 0;
+        }
+
+        &:not(:empty) {
+            align-items: center;
+            align-self: stretch;
+            display: flex;
+            gap: var(--gap);
+            justify-items: center;
+            margin: var(--margin) 0;
+
+            &::before,
+            &::after {
+                background-color: var(--colour);
+                content: "";
+                display: block;
+                flex-grow: 1;
+                height: var(--size-x);
+                width: var(--size-y);
+            }
+        }
+    }
+}
+
+@layer components {
+    lustre-ui-combobox {
+        /* VARIABLES ------------------------------------------------------------ */
+
+        --padding-x: var(--lustre-ui-spacing-sm);
+        --padding-y: var(--lustre-ui-spacing-sm);
+        --border-width: 1px;
+        --radius: var(--lustre-ui-radius-sm);
+
+        /* BASE STYLES ---------------------------------------------------------- */
+
+        display: inline-block;
+
+        &::part(combobox-trigger) {
+            align-items: center;
+            border-radius: var(--radius);
+            border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+            color: rgb(var(--lustre-ui-text));
+            display: flex;
+            gap: var(--padding-x);
+            outline-offset: 2px;
+            outline: 2px solid transparent;
+            padding: var(--padding-y) var(--padding-x);
             width: 100%;
         }
+
+        &:state(trigger-focus)::part(combobox-trigger) {
+            border-color: rgb(var(--lustre-ui-primary-solid));
+        }
+
+        &:state(empty)::part(combobox-trigger) {
+            color: rgb(var(--lustre-ui-text-subtle));
+        }
+
+        &::part(combobox-trigger-label) {
+            flex: 1 1 0%;
+            text-align: left;
+        }
+
+        &::part(combobox-trigger-icon) {
+            border-radius: var(--radius);
+            height: 1.5rem;
+            padding: 0.25rem;
+            transform: rotate(0deg);
+            transition-duration: 150ms;
+            transition-property: transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            width: 1.5rem;
+        }
+
+        &:state(expanded)::part(combobox-trigger-icon) {
+            transform: rotate(-180deg);
+        }
+
+        &:is(:hover, :state(trigger-focus), :state(expanded))::part(
+                combobox-trigger-icon
+            ) {
+            background-color: rgb(var(--lustre-ui-tint-subtle));
+        }
+
+        &::part(combobox-options) {
+            background-color: rgb(var(--lustre-ui-bg));
+            border: rgb(var(--lustre-ui-accent)) solid var(--border-width);
+            border-radius: var(--radius);
+        }
+
+        &::part(combobox-input) {
+            border: none;
+        }
+
+        &::part(combobox-option) {
+            align-items: baseline;
+            cursor: pointer;
+            display: flex;
+            padding: var(--padding-y) var(--padding-x);
+            gap: var(--padding-x);
+        }
+
+        &::part(combobox-option last) {
+            border-bottom-left-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+        }
+
+        &::part(combobox-option intent) {
+            background-color: rgb(var(--lustre-ui-tint-subtle));
+        }
     }
+}
 
-    &.button-small {
-        --height: 2rem;
-        --padding-x: var(--lustre-ui-spacing-sm);
-    }
+@layer components {
+    .lustre-ui-checkbox {
+        /* VARIABLES ------------------------------------------------------------ */
 
-    &.button-medium {
-        --height: 2.25rem;
-        --padding-x: var(--lustre-ui-spacing-md);
-    }
-
-    &.button-large {
-        --height: 2.5rem;
-        --padding-x: var(--lustre-ui-spacing-lg);
-    }
-
-    /* COLOUR VARIANTS ------------------------------------------------------ */
-
-    &.button-clear {
-        --background: transparent;
-        --background-hover: rgb(var(--lustre-ui-tint));
-        --border: transparent;
-        --border-hover: transparent;
-        --text: rgb(var(--lustre-ui-text));
-    }
-
-    &.button-outline {
         --background: transparent;
         --background-hover: transparent;
         --border: rgb(var(--lustre-ui-accent));
         --border-hover: rgb(var(--lustre-ui-accent-strong));
-        --text: rgb(var(--lustre-ui-text));
-    }
+        --border-width: 1px;
+        --size: 1rem;
+        --check-color: rgb(var(--lustre-ui-solid-text));
 
-    &.button-soft {
+        /* BASE STYLES ---------------------------------------------------------- */
+
+        appearance: none;
+        background-color: var(--background);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--lustre-ui-radius-sm);
+        cursor: pointer;
+        display: grid;
+        height: var(--size);
+        margin: 0;
+        place-content: center;
+        width: var(--size);
+
+        &::before {
+            background-color: var(--check-color);
+            clip-path: polygon(
+                16% 44%,
+                10% 55%,
+                45% 90%,
+                90% 16%,
+                80% 10%,
+                45% 60%
+            );
+            content: "";
+            height: calc(var(--size) * 0.6);
+            transform: scale(0);
+            transform-origin: center;
+            transition: 150ms transform cubic-bezier(0.4, 0, 0.2, 1);
+            width: calc(var(--size) * 0.6);
+        }
+
+        &:checked {
+            background-color: rgb(var(--lustre-ui-solid));
+            border-color: transparent;
+        }
+
+        &:checked::before {
+            transform: scale(1);
+        }
+    }
+}
+
+@layer components {
+    .lustre-ui-card {
+        /* VARIABLES ------------------------------------------------------------ */
+
+        --background: rgb(var(--lustre-ui-bg));
+        --border: rgb(var(--lustre-ui-accent-subtle));
+        --border-width: 1px;
+        --padding-x: var(--lustre-ui-spacing-xl);
+        --padding-y: var(--lustre-ui-spacing-xl);
+        --radius: var(--lustre-ui-radius-md);
+
+        /* BASE STYLES ---------------------------------------------------------- */
+
+        background: var(--background);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius);
+
+        & > * {
+            padding-top: 0;
+            padding: var(--padding-y) var(--padding-x);
+        }
+
+        & > .card-header {
+            display: flex;
+            flex-direction: column;
+        }
+
+        & > .card-footer {
+            align-items: center;
+            display: flex;
+        }
+    }
+}
+
+@layer components {
+    .lustre-ui-button {
+        /* VARIABLES ------------------------------------------------------------ */
+
         --background: rgb(var(--lustre-ui-tint));
         --background-hover: rgb(var(--lustre-ui-tint-strong));
         --border: transparent;
         --border-hover: transparent;
+        --border-width: 1px;
+        --height: 2rem;
+        --height-min: 2rem;
+        --padding-x: var(--lustre-ui-spacing-sm);
+        --radius: var(--lustre-ui-radius-sm);
         --text: rgb(var(--lustre-ui-text));
-    }
 
-    &.button-solid {
-        --background: rgb(var(--lustre-ui-solid));
-        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
-        --border: transparent;
-        --border-hover: transparent;
-        --text: rgb(var(--lustre-ui-solid-text));
-    }
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    /* CHILDREN ------------------------------------------------------------- */
-
-    & .button-badge {
-        display: inline-flex;
         align-items: center;
-        font-size: 0.625em;
-        border: 1px solid var(--text);
+        background-color: var(--background);
+        border: var(--border-width) solid var(--border);
         border-radius: var(--radius);
-        padding: 0 1ch;
-        margin: 0 calc(-1 * var(--padding-x) / 2);
+        color: var(--text);
+        display: inline-flex;
+        gap: var(--padding-x);
+        justify-content: center;
+        min-height: var(--height-min);
+        padding-left: var(--padding-x);
+        padding-right: var(--padding-x);
+        white-space: nowrap;
 
-        & .key + .key::before {
-            content: var(--separator, "");
+        &:disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: default;
         }
 
-        & .icon {
-            width: 1em;
-            height: 1em;
+        &:hover,
+        &:focus {
+            outline-offset: 2px;
+            outline: 2px solid transparent;
+            background-color: var(--background-hover);
+            border-color: var(--border-hover);
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:is(a) {
+            text-decoration: none;
+
+            &:visited {
+                color: var(--text);
+            }
+        }
+
+        /* SIZE VARIANTS -------------------------------------------------------- */
+
+        &.button-icon {
+            --height: 2rem;
+            width: var(--height);
+
+            & > svg {
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &.button-small {
+            --height: 2rem;
+            --padding-x: var(--lustre-ui-spacing-sm);
+        }
+
+        &.button-medium {
+            --height: 2.25rem;
+            --padding-x: var(--lustre-ui-spacing-md);
+        }
+
+        &.button-large {
+            --height: 2.5rem;
+            --padding-x: var(--lustre-ui-spacing-lg);
+        }
+
+        /* COLOUR VARIANTS ------------------------------------------------------ */
+
+        &.button-clear {
+            --background: transparent;
+            --background-hover: rgb(var(--lustre-ui-tint));
+            --border: transparent;
+            --border-hover: transparent;
+            --text: rgb(var(--lustre-ui-text));
+        }
+
+        &.button-outline {
+            --background: transparent;
+            --background-hover: transparent;
+            --border: rgb(var(--lustre-ui-accent));
+            --border-hover: rgb(var(--lustre-ui-accent-strong));
+            --text: rgb(var(--lustre-ui-text));
+        }
+
+        &.button-soft {
+            --background: rgb(var(--lustre-ui-tint));
+            --background-hover: rgb(var(--lustre-ui-tint-strong));
+            --border: transparent;
+            --border-hover: transparent;
+            --text: rgb(var(--lustre-ui-text));
+        }
+
+        &.button-solid {
+            --background: rgb(var(--lustre-ui-solid));
+            --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+            --border: transparent;
+            --border-hover: transparent;
+            --text: rgb(var(--lustre-ui-solid-text));
+        }
+
+        /* CHILDREN ------------------------------------------------------------- */
+
+        & .button-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.625em;
+            border: 1px solid var(--text);
+            border-radius: var(--radius);
+            padding: 0 1ch;
+            margin: 0 calc(-1 * var(--padding-x) / 2);
+
+            & .key + .key::before {
+                content: var(--separator, "");
+            }
+
+            & .icon {
+                width: 1em;
+                height: 1em;
+            }
         }
     }
 }
- }
 
-@layer components { .lustre-ui-breadcrumb {
-    /* VARIABLES ------------------------------------------------------------ */
+@layer components {
+    .lustre-ui-breadcrumb {
+        /* VARIABLES ------------------------------------------------------------ */
 
-    --gap: var(--lustre-ui-spacing-xs);
-    --text-hover: rgb(var(--lustre-ui-text));
-    --text: rgb(var(--lustre-ui-text-subtle));
+        --gap: var(--lustre-ui-spacing-xs);
+        --text-hover: rgb(var(--lustre-ui-text));
+        --text: rgb(var(--lustre-ui-text-subtle));
 
-    /* BASE STYLES ---------------------------------------------------------- */
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    align-items: center;
-    color: var(--text);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap);
-
-    /* CHILDREN ------------------------------------------------------------- */
-
-    & > .breadcrumb-item {
         align-items: center;
-        display: inline-flex;
+        color: var(--text);
+        display: flex;
+        flex-wrap: wrap;
         gap: var(--gap);
 
-        &[aria-current="page"] {
-            color: var(--text-hover);
+        /* CHILDREN ------------------------------------------------------------- */
+
+        & > .breadcrumb-item {
+            align-items: center;
+            display: inline-flex;
+            gap: var(--gap);
+
+            &[aria-current="page"] {
+                color: var(--text-hover);
+            }
+
+            &:hover {
+                color: var(--text-hover);
+            }
         }
 
-        &:hover {
-            color: var(--text-hover);
-        }
-    }
+        & > .breadcrumb-separator {
+            user-select: none;
+            pointer-events: none;
 
-    & > .breadcrumb-separator {
-        user-select: none;
-        pointer-events: none;
-
-        & > svg {
-            height: 1rem;
-            width: 1rem;
-        }
-    }
-
-    & > .breadcrumb-ellipsis {
-        align-items: center;
-        display: flex;
-        height: 2rem;
-        justify-content: center;
-        user-select: none;
-        width: 2rem;
-
-        & > svg {
-            height: 1rem;
-            width: 1rem;
+            & > svg {
+                height: 1rem;
+                width: 1rem;
+            }
         }
 
-        & > *:not(svg) {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
+        & > .breadcrumb-ellipsis {
+            align-items: center;
+            display: flex;
+            height: 2rem;
+            justify-content: center;
+            user-select: none;
+            width: 2rem;
+
+            & > svg {
+                height: 1rem;
+                width: 1rem;
+            }
+
+            & > *:not(svg) {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border-width: 0;
+            }
         }
     }
 }
- }
 
-@layer components { .lustre-ui-badge {
-    /* VARIABLES ------------------------------------------------------------ */
+@layer components {
+    .lustre-ui-badge {
+        /* VARIABLES ------------------------------------------------------------ */
 
-    --background: transparent;
-    --background-hover: transparent;
-    --border: rgb(var(--lustre-ui-accent));
-    --border-hover: rgb(var(--lustre-ui-accent-strong));
-    --padding-x: var(--lustre-ui-spacing-sm);
-    --padding-y: var(--lustre-ui-spacing-xs);
-    --radius: var(--lustre-ui-radius-sm);
-    --text: rgb(var(--lustre-ui-text));
-
-    /* BASE STYLES ---------------------------------------------------------- */
-
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background-color: var(--background);
-    color: var(--text);
-    display: inline-flex;
-    align-items: center;
-    padding: var(--padding-y) var(--padding-x);
-
-    /*  Badges that can be interacted with receive additional visual styles to
-        indicate that to the user.
-    */
-    &:is(a, button, [tabindex]):is(:hover, :focus) {
-        background-color: var(--background-hover);
-        border-color: var(--border-hover);
-        cursor: pointer;
-    }
-
-    &:active {
-        transform: translateY(1px);
-    }
-
-    &:empty {
-        padding: max(var(--padding-y), var(--padding-x));
-        border-radius: 100%;
-    }
-
-    /* VARIANTS ------------------------------------------------------------- */
-
-    &.badge-outline {
         --background: transparent;
         --background-hover: transparent;
         --border: rgb(var(--lustre-ui-accent));
         --border-hover: rgb(var(--lustre-ui-accent-strong));
+        --padding-x: var(--lustre-ui-spacing-sm);
+        --padding-y: var(--lustre-ui-spacing-xs);
+        --radius: var(--lustre-ui-radius-sm);
         --text: rgb(var(--lustre-ui-text));
-    }
 
-    &.badge-soft {
-        --background: rgb(var(--lustre-ui-tint));
-        --background-hover: rgb(var(--lustre-ui-tint-strong));
-        --border: transparent;
-        --border-hover: transparent;
-        --text: rgb(var(--lustre-ui-text));
-    }
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    &.badge-solid {
-        --background: rgb(var(--lustre-ui-solid));
-        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
-        --border: transparent;
-        --border-hover: transparent;
-        --text: rgb(var(--lustre-ui-solid-text));
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background-color: var(--background);
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        padding: var(--padding-y) var(--padding-x);
+
+        /*  Badges that can be interacted with receive additional visual styles to
+        indicate that to the user.
+    */
+        &:is(a, button, [tabindex]):is(:hover, :focus) {
+            background-color: var(--background-hover);
+            border-color: var(--border-hover);
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:empty {
+            padding: max(var(--padding-y), var(--padding-x));
+            border-radius: 100%;
+        }
+
+        /* VARIANTS ------------------------------------------------------------- */
+
+        &.badge-outline {
+            --background: transparent;
+            --background-hover: transparent;
+            --border: rgb(var(--lustre-ui-accent));
+            --border-hover: rgb(var(--lustre-ui-accent-strong));
+            --text: rgb(var(--lustre-ui-text));
+        }
+
+        &.badge-soft {
+            --background: rgb(var(--lustre-ui-tint));
+            --background-hover: rgb(var(--lustre-ui-tint-strong));
+            --border: transparent;
+            --border-hover: transparent;
+            --text: rgb(var(--lustre-ui-text));
+        }
+
+        &.badge-solid {
+            --background: rgb(var(--lustre-ui-solid));
+            --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+            --border: transparent;
+            --border-hover: transparent;
+            --text: rgb(var(--lustre-ui-solid-text));
+        }
     }
 }
- }
 
-@layer components { .lustre-ui-alert {
-    /* VARIABLES ------------------------------------------------------------ */
+@layer components {
+    .lustre-ui-alert {
+        /* VARIABLES ------------------------------------------------------------ */
 
-    --background: rgb(var(--lustre-ui-bg));
-    --border: rgb(var(--lustre-ui-accent));
-    --indicator-size: 16px;
-    --padding-x: var(--lustre-ui-spacing-lg);
-    --padding-y: var(--lustre-ui-spacing-md);
-    --radius: 0;
-    --text: rgb(var(--lustre-ui-text));
-    --title-margin: var(--padding-y);
-    --title-weight: 500;
+        --background: rgb(var(--lustre-ui-bg));
+        --border: rgb(var(--lustre-ui-accent));
+        --indicator-size: 16px;
+        --padding-x: var(--lustre-ui-spacing-lg);
+        --padding-y: var(--lustre-ui-spacing-md);
+        --radius: 0;
+        --text: rgb(var(--lustre-ui-text));
+        --title-margin: var(--padding-y);
+        --title-weight: 500;
 
-    /* BASE STYLES ---------------------------------------------------------- */
+        /* BASE STYLES ---------------------------------------------------------- */
 
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: var(--padding-y) var(--padding-x);
-    position: relative;
-    width: full;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--background);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: var(--padding-y) var(--padding-x);
+        position: relative;
+        width: full;
 
-    /* CHILDREN ------------------------------------------------------------- */
+        /* CHILDREN ------------------------------------------------------------- */
 
-    & > .alert-indicator {
-        position: absolute;
-        width: var(--indicator-size);
-        height: var(--indicator-size);
-    }
+        & > .alert-indicator {
+            position: absolute;
+            width: var(--indicator-size);
+            height: var(--indicator-size);
+        }
 
-    & > .alert-title {
-        font-weight: var(--title-weight);
-        margin-block-end: var(--title-margin);
-        overflow: clip;
-        text-overflow: ellipsis;
-    }
+        & > .alert-title {
+            font-weight: var(--title-weight);
+            margin-block-end: var(--title-margin);
+            overflow: clip;
+            text-overflow: ellipsis;
+        }
 
-    /*  If an indicator is present, it's important it doesn't end up placed over
+        /*  If an indicator is present, it's important it doesn't end up placed over
         the top of any content we have. To make sure things are placed correctly,
         we calculate padding on these elements to push them further to the right
         by an amount based on the the indicator's size.
     */
-    &:has(.alert-indicator) > :not(.alert-indicator) {
-        padding-inline-start: calc(var(--indicator-size) + var(--padding-x));
+        &:has(.alert-indicator) > :not(.alert-indicator) {
+            padding-inline-start: calc(
+                var(--indicator-size) + var(--padding-x)
+            );
+        }
     }
 }
- }
 
-@layer components { lustre-ui-accordion {
-    --padding-x: var(--lustre-ui-spacing-sm);
-    --padding-y: var(--lustre-ui-spacing-sm);
-    --border: rbg(var(--lustre-ui-accent));
-    --border-focus: rgb(var(--lustre-ui-primary-solid));
-    --border-width: 1px;
-    --text: rgb(var(--lustre-ui-text));
+@layer components {
+    lustre-ui-accordion {
+        --padding-x: var(--lustre-ui-spacing-sm);
+        --padding-y: var(--lustre-ui-spacing-sm);
+        --border: rbg(var(--lustre-ui-accent));
+        --border-focus: rgb(var(--lustre-ui-primary-solid));
+        --border-width: 1px;
+        --text: rgb(var(--lustre-ui-text));
 
-    display: block;
-
-    &::part(accordion-trigger) {
-        align-items: center;
-        border-bottom: var(--border) solid var(--border-width);
-        color: var(--text);
-        display: flex;
-        gap: var(--padding-x);
-        outline-offset: 2px;
-        outline: 2px solid transparent;
-        padding: var(--padding-y) var(--padding-x);
-        width: 100%;
-    }
-
-    &::part(accordion-trigger):focus {
-        border-color: var(--border-focus);
-    }
-
-    &::part(accordion-trigger-label) {
-        flex: 1 1 0%;
-        text-align: left;
-    }
-
-    &::part(accordion-trigger-icon) {
-        border-radius: var(--radius);
-        height: 1.5rem;
-        padding: 0.25rem;
-        transform: rotate(0deg);
-        transition-duration: 150ms;
-        transition-property: color transform;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        width: 1.5rem;
-    }
-
-    &::part(accordion-trigger-icon expanded) {
-        transform: rotate(-180deg);
-    }
-
-    &::part(accordion-content) {
         display: block;
-        padding: var(--padding-y) var(--padding-x);
+
+        &::part(accordion-trigger) {
+            align-items: center;
+            border-bottom: var(--border) solid var(--border-width);
+            color: var(--text);
+            display: flex;
+            gap: var(--padding-x);
+            outline-offset: 2px;
+            outline: 2px solid transparent;
+            padding: var(--padding-y) var(--padding-x);
+            width: 100%;
+        }
+
+        &::part(accordion-trigger):focus {
+            border-color: var(--border-focus);
+        }
+
+        &::part(accordion-trigger-label) {
+            flex: 1 1 0%;
+            text-align: left;
+        }
+
+        &::part(accordion-trigger-icon) {
+            border-radius: var(--radius);
+            height: 1.5rem;
+            padding: 0.25rem;
+            transform: rotate(0deg);
+            transition-duration: 150ms;
+            transition-property: color transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            width: 1.5rem;
+        }
+
+        &::part(accordion-trigger-icon expanded) {
+            transform: rotate(-180deg);
+        }
+
+        &::part(accordion-content) {
+            display: block;
+            padding: var(--padding-y) var(--padding-x);
+        }
     }
 }
- }
 
-@layer reset { /*
+@layer reset {
+    /*
 ! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
 */
 
-*,
-:after,
-:before {
-    box-sizing: border-box;
-    border: 0 solid #e2e8f0;
-}
-
-:host,
-html {
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
-    tab-size: 4;
-    font-feature-settings: normal;
-    font-variation-settings: normal;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    margin: 0;
-    line-height: inherit;
-}
-
-hr {
-    height: 0;
-    color: inherit;
-    border-top-width: 1px;
-}
-
-abbr:where([title]) {
-    -webkit-text-decoration: underline dotted;
-    text-decoration: underline dotted;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-size: inherit;
-    font-weight: inherit;
-}
-
-a {
-    color: inherit;
-    text-decoration: inherit;
-}
-
-b,
-strong {
-    font-weight: bolder;
-}
-
-code,
-kbd,
-pre,
-samp {
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Monaco,
-        Consolas,
-        Liberation Mono,
-        Courier New,
-        monospace;
-    font-feature-settings: normal;
-    font-variation-settings: normal;
-    font-size: 1em;
-}
-
-small {
-    font-size: 80%;
-}
-
-sub,
-sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-}
-
-sub {
-    bottom: -0.25em;
-}
-
-sup {
-    top: -0.5em;
-}
-
-table {
-    text-indent: 0;
-    border-color: inherit;
-    border-collapse: collapse;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-    font-family: inherit;
-    font-feature-settings: inherit;
-    font-variation-settings: inherit;
-    font-size: 100%;
-    font-weight: inherit;
-    line-height: inherit;
-    letter-spacing: inherit;
-    color: inherit;
-    margin: 0;
-    padding: 0;
-}
-
-button,
-select {
-    text-transform: none;
-}
-
-button,
-input:where([type="button"]),
-input:where([type="reset"]),
-input:where([type="submit"]) {
-    -webkit-appearance: button;
-    background-color: transparent;
-    background-image: none;
-}
-
-:-moz-focusring {
-    outline: auto;
-}
-
-:-moz-ui-invalid {
-    box-shadow: none;
-}
-
-progress {
-    vertical-align: baseline;
-}
-
-::-webkit-inner-spin-button,
-::-webkit-outer-spin-button {
-    height: auto;
-}
-
-[type="search"] {
-    -webkit-appearance: textfield;
-    outline-offset: -2px;
-}
-
-::-webkit-search-decoration {
-    -webkit-appearance: none;
-}
-
-::-webkit-file-upload-button {
-    -webkit-appearance: button;
-    font: inherit;
-}
-
-summary {
-    display: list-item;
-}
-
-blockquote,
-dd,
-dl,
-figure,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-p,
-pre {
-    margin: 0;
-}
-
-fieldset {
-    margin: 0;
-}
-
-fieldset,
-legend {
-    padding: 0;
-}
-
-menu,
-ol,
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-dialog {
-    padding: 0;
-}
-
-textarea {
-    resize: vertical;
-}
-
-input::-moz-placeholder,
-textarea::-moz-placeholder {
-    opacity: 1;
-    color: #94a3b8;
-}
-
-input::placeholder,
-textarea::placeholder {
-    opacity: 1;
-    color: #94a3b8;
-}
-
-[role="button"],
-button {
-    cursor: pointer;
-}
-
-:disabled {
-    cursor: default;
-}
-
-audio,
-canvas,
-embed,
-iframe,
-img,
-object,
-svg,
-video {
-    display: block;
-    vertical-align: middle;
-}
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-[hidden]:where(:not([hidden="until-found"])) {
-    display: none;
-}
- }
-
-@layer primitives { lustre-ui-popover {
-    --gap: var(--lustre-ui-spacing-sm);
-
-    display: inline;
-    position: relative;
-
-    & > [slot] {
-        display: contents;
+    *,
+    :after,
+    :before {
+        box-sizing: border-box;
+        border: 0 solid #e2e8f0;
     }
 
-    &::part(popover-content) {
-        left: 0;
-        top: 0;
+    :host,
+    html {
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        -moz-tab-size: 4;
+        -o-tab-size: 4;
+        tab-size: 4;
+        font-feature-settings: normal;
+        font-variation-settings: normal;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        margin: 0;
+        line-height: inherit;
+    }
+
+    hr {
+        height: 0;
+        color: inherit;
+        border-top-width: 1px;
+    }
+
+    abbr:where([title]) {
+        -webkit-text-decoration: underline dotted;
+        text-decoration: underline dotted;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    b,
+    strong {
+        font-weight: bolder;
+    }
+
+    code,
+    kbd,
+    pre,
+    samp {
+        font-family:
+            ui-monospace,
+            SFMono-Regular,
+            Menlo,
+            Monaco,
+            Consolas,
+            Liberation Mono,
+            Courier New,
+            monospace;
+        font-feature-settings: normal;
+        font-variation-settings: normal;
+        font-size: 1em;
+    }
+
+    small {
+        font-size: 80%;
+    }
+
+    sub,
+    sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+    }
+
+    sub {
+        bottom: -0.25em;
+    }
+
+    sup {
+        top: -0.5em;
+    }
+
+    table {
+        text-indent: 0;
+        border-color: inherit;
+        border-collapse: collapse;
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+        font-family: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        font-size: 100%;
+        font-weight: inherit;
+        line-height: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        margin: 0;
+        padding: 0;
+    }
+
+    button,
+    select {
+        text-transform: none;
+    }
+
+    button,
+    input:where([type="button"]),
+    input:where([type="reset"]),
+    input:where([type="submit"]) {
+        -webkit-appearance: button;
+        background-color: transparent;
+        background-image: none;
+    }
+
+    :-moz-focusring {
+        outline: auto;
+    }
+
+    :-moz-ui-invalid {
+        box-shadow: none;
+    }
+
+    progress {
+        vertical-align: baseline;
+    }
+
+    ::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+        height: auto;
+    }
+
+    [type="search"] {
+        -webkit-appearance: textfield;
+        outline-offset: -2px;
+    }
+
+    ::-webkit-search-decoration {
+        -webkit-appearance: none;
+    }
+
+    ::-webkit-file-upload-button {
+        -webkit-appearance: button;
+        font: inherit;
+    }
+
+    summary {
+        display: list-item;
+    }
+
+    blockquote,
+    dd,
+    dl,
+    figure,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    hr,
+    p,
+    pre {
+        margin: 0;
+    }
+
+    fieldset {
+        margin: 0;
+    }
+
+    fieldset,
+    legend {
+        padding: 0;
+    }
+
+    menu,
+    ol,
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    dialog {
+        padding: 0;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+        opacity: 1;
+        color: #94a3b8;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        opacity: 1;
+        color: #94a3b8;
+    }
+
+    [role="button"],
+    button {
+        cursor: pointer;
+    }
+
+    :disabled {
+        cursor: default;
+    }
+
+    audio,
+    canvas,
+    embed,
+    iframe,
+    img,
+    object,
+    svg,
+    video {
         display: block;
-        position: absolute;
-        transition-duration: 150ms;
-        transition-property: opacity, transform;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 999;
+        vertical-align: middle;
     }
 
-    &[anchor|="top"] {
-        --translate-x: 0;
-
-        &::part(popover-content) {
-            padding-bottom: var(--gap);
-            transform: translate(var(--translate-x), -100%);
-        }
-
-        &[equal-width]::part(popover-content) {
-            --translate-x: 0 !important;
-
-            left: 0 !important;
-            right: 0;
-        }
-
-        &[anchor="top-left"]::part(popover-content) {
-            left: 0;
-        }
-
-        &[anchor="top-middle"]::part(popover-content) {
-            --translate-x: -50%;
-            left: 50%;
-        }
-
-        &[anchor="top-right"]::part(popover-content) {
-            --translate-x: -100%;
-            left: 100%;
-        }
-
-        &:state(will-expand)::part(popover-content) {
-            transform: translate(var(--translate-x), -90%);
-        }
-
-        &:state(collapsing)::part(popover-content) {
-            transform: translate(var(--translate-x), -90%);
-        }
+    img,
+    video {
+        max-width: 100%;
+        height: auto;
     }
 
-    &[anchor|="right"] {
-        --translate-y: 0;
-
-        &::part(popover-content) {
-            padding-left: var(--gap);
-            left: 100%;
-            transform: translate(0, var(--translate-y));
-        }
-
-        &[anchor="right-top"]::part(popover-content) {
-            top: 0;
-        }
-
-        &[anchor="right-middle"]::part(popover-content) {
-            --translate-y: -50%;
-            top: 50%;
-        }
-
-        &[anchor="right-bottom"]::part(popover-content) {
-            --translate-y: -100%;
-            top: 100%;
-        }
-
-        &:state(will-expand)::part(popover-content) {
-            transform: translate(-10%, var(--translate-y));
-        }
-
-        &:state(collapsing)::part(popover-content) {
-            transform: translate(-10%, var(--translate-y));
-        }
-    }
-
-    &[anchor|="bottom"] {
-        --translate-x: 0;
-
-        &::part(popover-content) {
-            top: unset;
-            padding-top: var(--gap);
-            transform: translate(var(--translate-x), 0);
-        }
-
-        &[equal-width]::part(popover-content) {
-            --translate-x: 0 !important;
-
-            left: 0 !important;
-            right: 0;
-        }
-
-        &[anchor="bottom-left"]::part(popover-content) {
-            left: 0;
-        }
-
-        &[anchor="bottom-middle"]::part(popover-content) {
-            --translate-x: -50%;
-            left: 50%;
-        }
-
-        &[anchor="bottom-right"]::part(popover-content) {
-            --translate-x: -100%;
-            left: 100%;
-        }
-
-        &:state(will-expand)::part(popover-content) {
-            transform: translate(var(--translate-x), -10%);
-        }
-
-        &:state(collapsing)::part(popover-content) {
-            transform: translate(var(--translate-x), -10%);
-        }
-    }
-
-    &[anchor|="left"] {
-        --translate-y: 0;
-
-        &::part(popover-content) {
-            padding-right: var(--gap);
-            transform: translate(-100%, var(--translate-y));
-        }
-
-        &[anchor="left-top"]::part(popover-content) {
-            top: 0;
-        }
-
-        &[anchor="left-middle"]::part(popover-content) {
-            --translate-y: -50%;
-            top: 50%;
-        }
-
-        &[anchor="left-bottom"]::part(popover-content) {
-            --translate-y: -100%;
-            top: 100%;
-        }
-
-        &:state(will-expand)::part(popover-content) {
-            transform: translate(-90%, var(--translate-y));
-        }
-
-        &:state(collapsing)::part(popover-content) {
-            transform: translate(-90%, var(--translate-y));
-        }
-    }
-
-    &:state(will-expand)::part(popover-content) {
-        opacity: 0;
-    }
-
-    &:state(expanded)::part(popover-content) {
-        opacity: 100;
-    }
-
-    &:state(will-collapse)::part(popover-content) {
-        opacity: 100;
-    }
-
-    &:state(collapsing)::part(popover-content) {
-        opacity: 0;
-    }
-
-    &:state(collapsed)::part(popover-content) {
+    [hidden]:where(:not([hidden="until-found"])) {
         display: none;
     }
 }
- }
 
-@layer primitives { lustre-ui-collapse {
-    --duration: 150ms;
+@layer primitives {
+    lustre-ui-popover {
+        --gap: var(--lustre-ui-spacing-sm);
 
-    display: block;
+        display: inline;
+        position: relative;
 
-    &::part(collapse-content) {
-        transition-duration: var(--duration);
-        transition-property: height;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-y: hidden;
+        & > [slot] {
+            display: contents;
+        }
+
+        &::part(popover-content) {
+            left: 0;
+            top: 0;
+            display: block;
+            position: absolute;
+            transition-duration: 150ms;
+            transition-property: opacity, transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        &[anchor|="top"] {
+            --translate-x: 0;
+
+            &::part(popover-content) {
+                padding-bottom: var(--gap);
+                transform: translate(var(--translate-x), -100%);
+            }
+
+            &[equal-width]::part(popover-content) {
+                --translate-x: 0 !important;
+
+                left: 0 !important;
+                right: 0;
+            }
+
+            &[anchor="top-left"]::part(popover-content) {
+                left: 0;
+            }
+
+            &[anchor="top-middle"]::part(popover-content) {
+                --translate-x: -50%;
+                left: 50%;
+            }
+
+            &[anchor="top-right"]::part(popover-content) {
+                --translate-x: -100%;
+                left: 100%;
+            }
+
+            &:state(will-expand)::part(popover-content) {
+                transform: translate(var(--translate-x), -90%);
+            }
+
+            &:state(collapsing)::part(popover-content) {
+                transform: translate(var(--translate-x), -90%);
+            }
+        }
+
+        &[anchor|="right"] {
+            --translate-y: 0;
+
+            &::part(popover-content) {
+                padding-left: var(--gap);
+                left: 100%;
+                transform: translate(0, var(--translate-y));
+            }
+
+            &[anchor="right-top"]::part(popover-content) {
+                top: 0;
+            }
+
+            &[anchor="right-middle"]::part(popover-content) {
+                --translate-y: -50%;
+                top: 50%;
+            }
+
+            &[anchor="right-bottom"]::part(popover-content) {
+                --translate-y: -100%;
+                top: 100%;
+            }
+
+            &:state(will-expand)::part(popover-content) {
+                transform: translate(-10%, var(--translate-y));
+            }
+
+            &:state(collapsing)::part(popover-content) {
+                transform: translate(-10%, var(--translate-y));
+            }
+        }
+
+        &[anchor|="bottom"] {
+            --translate-x: 0;
+
+            &::part(popover-content) {
+                top: unset;
+                padding-top: var(--gap);
+                transform: translate(var(--translate-x), 0);
+            }
+
+            &[equal-width]::part(popover-content) {
+                --translate-x: 0 !important;
+
+                left: 0 !important;
+                right: 0;
+            }
+
+            &[anchor="bottom-left"]::part(popover-content) {
+                left: 0;
+            }
+
+            &[anchor="bottom-middle"]::part(popover-content) {
+                --translate-x: -50%;
+                left: 50%;
+            }
+
+            &[anchor="bottom-right"]::part(popover-content) {
+                --translate-x: -100%;
+                left: 100%;
+            }
+
+            &:state(will-expand)::part(popover-content) {
+                transform: translate(var(--translate-x), -10%);
+            }
+
+            &:state(collapsing)::part(popover-content) {
+                transform: translate(var(--translate-x), -10%);
+            }
+        }
+
+        &[anchor|="left"] {
+            --translate-y: 0;
+
+            &::part(popover-content) {
+                padding-right: var(--gap);
+                transform: translate(-100%, var(--translate-y));
+            }
+
+            &[anchor="left-top"]::part(popover-content) {
+                top: 0;
+            }
+
+            &[anchor="left-middle"]::part(popover-content) {
+                --translate-y: -50%;
+                top: 50%;
+            }
+
+            &[anchor="left-bottom"]::part(popover-content) {
+                --translate-y: -100%;
+                top: 100%;
+            }
+
+            &:state(will-expand)::part(popover-content) {
+                transform: translate(-90%, var(--translate-y));
+            }
+
+            &:state(collapsing)::part(popover-content) {
+                transform: translate(-90%, var(--translate-y));
+            }
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            opacity: 0;
+        }
+
+        &:state(expanded)::part(popover-content) {
+            opacity: 100;
+        }
+
+        &:state(will-collapse)::part(popover-content) {
+            opacity: 100;
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            opacity: 0;
+        }
+
+        &:state(collapsed)::part(popover-content) {
+            display: none;
+        }
     }
 }
- }
 
+@layer primitives {
+    :where(.lustre-ui-icon) {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+@layer primitives {
+    lustre-ui-collapse {
+        --duration: 150ms;
+
+        display: block;
+
+        &::part(collapse-content) {
+            transition-duration: var(--duration);
+            transition-property: height;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: hidden;
+        }
+    }
+}
