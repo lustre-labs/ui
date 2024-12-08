@@ -34,14 +34,8 @@
 
 ## Features
 
-- A set of **thoughtfully designed** and **accessible** components that account
+- A set of **thoughtfully designed** and **accessible** components that have been
   written with idiomatic Gleam and CSS in mind.
-
-- A collection of **layouting primitives** that make it easy to build complex
-  UIs without knowledge of flexbox or grid.
-
-- **Utility classes** that make it easy to style your own components without
-  writing CSS.
 
 - A customisable **theme system** to tweak colours, spacing, and typography to
   fit your brand.
@@ -59,27 +53,24 @@ folks in mind, and has two main goals:
 
 To achieve this, Lustre UI is _opinionated_ on many aspects of the visual design.
 For folks that don't want to worry about design, this is a feature not a bug, but
-for users looking for a flexible "headless" UI library you may have to look elsewhere.
+for users looking for a flexible "headless" UI library you will find that many
+aspects of each component's styles are customisable through CSS variables.
 
 ## Installation
 
-> **Note**: Lustre UI is currently still an alpha release while we work on the
-> core library and experiment with different components. Expect the API to change
-> from time to time and documentation to be sparse!
+> **Note**: Lustre UI is currently in pre-release and under active development.
+> If you have any feedback or suggestions, please open an issue or reach out on
+> the [Gleam discord](https://discord.gg/Fm8Pwmy).
 
 Lustre UI is published on [Hex](https://hex.pm/packages/lustre_ui). To use it in
 your project with Gleam:
 
 ```sh
-gleam add lustre_ui
+gleam add lustre_ui@1.0.0-rc.1
 ```
 
-Ensure the required CSS is rendered in your apps by either serving the stylesheet
-found in the `priv/static` directory of this package or rendering the styles inline
-using the functions found in [`lustre/ui/util/styles`](https://hexdocs.pm/lustre_ui/lustre/ui/util/styles.html).
-
-Lustre UI is configured to work out of the box with no additional themeing or
-setup required, so you can just drop the stylesheet in and go!
+Ensure the required CSS is rendered in your apps by serving the stylesheet found
+in the `priv/static` directory of this package!
 
 ## Support
 
@@ -88,3 +79,10 @@ around two jobs. If you'd like to support my work, you can [sponsor me on GitHub
 
 Contributions are also very welcome! If you've spotted a bug, or would like to
 suggest a feature, please open an issue or a pull request.
+
+## Reads
+
+- https://www.aha.io/engineering/articles/web-components-and-implicit-slot-names
+- https://www.abeautifulsite.net/posts/dynamic-slots/
+- https://thomaswilburn.github.io/wc-book/sd-slots.html
+- https://nolanlawson.com/2022/11/28/shadow-dom-and-accessibility-the-trouble-with-aria/

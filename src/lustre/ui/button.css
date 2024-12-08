@@ -1,72 +1,137 @@
-.use-lustre-ui button,
-.use-lustre-ui .button,
 .lustre-ui-button {
-  --bg-active: var(--element-background-strong);
-  --bg-hover: var(--element-background-hover);
-  --bg: var(--element-background);
-  --border-active: var(--bg-active);
-  --border: var(--bg);
-  --text: var(--text-high-contrast);
-  --padding-y: var(--space-xs);
-  --padding-x: var(--space-sm);
+    /* VARIABLES ------------------------------------------------------------ */
 
-  background-color: var(--bg);
-  border: 1px solid var(--border, var(--bg), var(--element-border-subtle));
-  border-radius: var(--border-radius);
-  color: var(--text);
-  padding: var(--padding-y) var(--padding-x);
+    --background: rgb(var(--lustre-ui-tint));
+    --background-hover: rgb(var(--lustre-ui-tint-strong));
+    --border: transparent;
+    --border-hover: transparent;
+    --border-width: 1px;
+    --height: 2rem;
+    --height-min: 2rem;
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --radius: var(--lustre-ui-radius-sm);
+    --text: rgb(var(--lustre-ui-text));
 
-  &:hover,
-  &:focus-within {
-    background-color: var(--bg-hover);
-  }
+    /* BASE STYLES ---------------------------------------------------------- */
 
-  &:hover:active,
-  &:focus-within:active {
-    background-color: var(--bg-active);
-    border-color: var(--border-active);
-  }
+    align-items: center;
+    background-color: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    display: inline-flex;
+    gap: var(--padding-x);
+    justify-content: center;
+    min-height: var(--height-min);
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
+    white-space: nowrap;
 
-  &.small {
-    --padding-y: var(--space-2xs);
-    --padding-x: var(--space-xs);
-  }
-
-  &.solid {
-    --bg-active: var(--solid-background-hover);
-    --bg-hover: var(--solid-background-hover);
-    --bg: var(--solid-background);
-    --border-active: var(--solid-background-hover);
-    --border: var(--solid-background);
-    --text: white;
-
-    &:hover:active,
-    &:focus-within:active {
-      --bg-active: color-mix(in srgb, var(--solid-background-hover) 90%, black);
-      --border-active: color-mix(
-        in srgb,
-        var(--solid-background-hover) 90%,
-        black
-      );
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: default;
     }
-  }
 
-  &.soft {
-    --bg-active: var(--element-background-strong);
-    --bg-hover: var(--element-background-hover);
-    --bg: var(--element-background);
-    --border-active: var(--bg-active);
-    --border: var(--bg);
-    --text: var(--text-high-contrast);
-  }
+    &:hover,
+    &:focus {
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        background-color: var(--background-hover);
+        border-color: var(--border-hover);
+    }
 
-  &.outline {
-    --bg: unset;
-    --border: var(--element-border-subtle);
-  }
+    &:active {
+        transform: translateY(1px);
+    }
 
-  &.clear {
-    --bg: unset;
-    --border: unset;
-  }
+    &:is(a) {
+        text-decoration: none;
+
+        &:visited {
+            color: var(--text);
+        }
+    }
+
+    /* SIZE VARIANTS -------------------------------------------------------- */
+
+    &.button-icon {
+        --height: 2rem;
+        width: var(--height);
+
+        & > svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &.button-small {
+        --height: 2rem;
+        --padding-x: var(--lustre-ui-spacing-sm);
+    }
+
+    &.button-medium {
+        --height: 2.25rem;
+        --padding-x: var(--lustre-ui-spacing-md);
+    }
+
+    &.button-large {
+        --height: 2.5rem;
+        --padding-x: var(--lustre-ui-spacing-lg);
+    }
+
+    /* COLOUR VARIANTS ------------------------------------------------------ */
+
+    &.button-clear {
+        --background: transparent;
+        --background-hover: rgb(var(--lustre-ui-tint));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-outline {
+        --background: transparent;
+        --background-hover: transparent;
+        --border: rgb(var(--lustre-ui-accent));
+        --border-hover: rgb(var(--lustre-ui-accent-strong));
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-soft {
+        --background: rgb(var(--lustre-ui-tint));
+        --background-hover: rgb(var(--lustre-ui-tint-strong));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.button-solid {
+        --background: rgb(var(--lustre-ui-solid));
+        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-solid-text));
+    }
+
+    /* CHILDREN ------------------------------------------------------------- */
+
+    & .button-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.625em;
+        border: 1px solid var(--text);
+        border-radius: var(--radius);
+        padding: 0 1ch;
+        margin: 0 calc(-1 * var(--padding-x) / 2);
+
+        & .key + .key::before {
+            content: var(--separator, "");
+        }
+
+        & .icon {
+            width: 1em;
+            height: 1em;
+        }
+    }
 }

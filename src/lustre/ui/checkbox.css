@@ -1,0 +1,51 @@
+.lustre-ui-checkbox {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: transparent;
+    --background-hover: transparent;
+    --border: rgb(var(--lustre-ui-accent));
+    --border-hover: rgb(var(--lustre-ui-accent-strong));
+    --border-width: 1px;
+    --size: 1rem;
+    --check-color: rgb(var(--lustre-ui-solid-text));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    appearance: none;
+    background-color: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--lustre-ui-radius-sm);
+    cursor: pointer;
+    display: grid;
+    height: var(--size);
+    margin: 0;
+    place-content: center;
+    width: var(--size);
+
+    &::before {
+        background-color: var(--check-color);
+        clip-path: polygon(
+            16% 44%,
+            10% 55%,
+            45% 90%,
+            90% 16%,
+            80% 10%,
+            45% 60%
+        );
+        content: "";
+        height: calc(var(--size) * 0.6);
+        transform: scale(0);
+        transform-origin: center;
+        transition: 150ms transform cubic-bezier(0.4, 0, 0.2, 1);
+        width: calc(var(--size) * 0.6);
+    }
+
+    &:checked {
+        background-color: rgb(var(--lustre-ui-solid));
+        border-color: transparent;
+    }
+
+    &:checked::before {
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,66 @@
+.lustre-ui-badge {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: transparent;
+    --background-hover: transparent;
+    --border: rgb(var(--lustre-ui-accent));
+    --border-hover: rgb(var(--lustre-ui-accent-strong));
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-xs);
+    --radius: var(--lustre-ui-radius-sm);
+    --text: rgb(var(--lustre-ui-text));
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--background);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    padding: var(--padding-y) var(--padding-x);
+
+    /*  Badges that can be interacted with receive additional visual styles to
+        indicate that to the user.
+    */
+    &:is(a, button, [tabindex]):is(:hover, :focus) {
+        background-color: var(--background-hover);
+        border-color: var(--border-hover);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:empty {
+        padding: max(var(--padding-y), var(--padding-x));
+        border-radius: 100%;
+    }
+
+    /* VARIANTS ------------------------------------------------------------- */
+
+    &.badge-outline {
+        --background: transparent;
+        --background-hover: transparent;
+        --border: rgb(var(--lustre-ui-accent));
+        --border-hover: rgb(var(--lustre-ui-accent-strong));
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.badge-soft {
+        --background: rgb(var(--lustre-ui-tint));
+        --background-hover: rgb(var(--lustre-ui-tint-strong));
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-text));
+    }
+
+    &.badge-solid {
+        --background: rgb(var(--lustre-ui-solid));
+        --background-hover: rgb(var(--lustre-ui-solid) / 0.8);
+        --border: transparent;
+        --border-hover: transparent;
+        --text: rgb(var(--lustre-ui-solid-text));
+    }
+}

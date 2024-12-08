@@ -1,0 +1,39 @@
+.lustre-ui-divider {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --colour: rgb(var(--lustre-ui-accent));
+    --gap: var(--lustre-ui-spacing-sm);
+    --margin: 0;
+    --size-x: 2px;
+    --size-y: 0;
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    &:empty {
+        align-self: stretch;
+        border-color: var(--colour);
+        border-right-width: var(--size-y);
+        border-style: solid;
+        border-top-width: var(--size-x);
+        margin: var(--margin) 0;
+    }
+
+    &:not(:empty) {
+        align-items: center;
+        align-self: stretch;
+        display: flex;
+        gap: var(--gap);
+        justify-items: center;
+        margin: var(--margin) 0;
+
+        &::before,
+        &::after {
+            background-color: var(--colour);
+            content: "";
+            display: block;
+            flex-grow: 1;
+            height: var(--size-x);
+            width: var(--size-y);
+        }
+    }
+}

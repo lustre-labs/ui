@@ -1,0 +1,51 @@
+lustre-ui-accordion {
+    --padding-x: var(--lustre-ui-spacing-sm);
+    --padding-y: var(--lustre-ui-spacing-sm);
+    --border: rbg(var(--lustre-ui-accent));
+    --border-focus: rgb(var(--lustre-ui-primary-solid));
+    --border-width: 1px;
+    --text: rgb(var(--lustre-ui-text));
+
+    display: block;
+
+    &::part(accordion-trigger) {
+        align-items: center;
+        border-bottom: var(--border) solid var(--border-width);
+        color: var(--text);
+        display: flex;
+        gap: var(--padding-x);
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+        padding: var(--padding-y) var(--padding-x);
+        width: 100%;
+    }
+
+    &::part(accordion-trigger):focus {
+        border-color: var(--border-focus);
+    }
+
+    &::part(accordion-trigger-label) {
+        flex: 1 1 0%;
+        text-align: left;
+    }
+
+    &::part(accordion-trigger-icon) {
+        border-radius: var(--radius);
+        height: 1.5rem;
+        padding: 0.25rem;
+        transform: rotate(0deg);
+        transition-duration: 150ms;
+        transition-property: color transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        width: 1.5rem;
+    }
+
+    &::part(accordion-trigger-icon expanded) {
+        transform: rotate(-180deg);
+    }
+
+    &::part(accordion-content) {
+        display: block;
+        padding: var(--padding-y) var(--padding-x);
+    }
+}

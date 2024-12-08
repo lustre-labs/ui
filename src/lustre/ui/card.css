@@ -1,0 +1,31 @@
+.lustre-ui-card {
+    /* VARIABLES ------------------------------------------------------------ */
+
+    --background: rgb(var(--lustre-ui-bg));
+    --border: rgb(var(--lustre-ui-accent-subtle));
+    --border-width: 1px;
+    --padding-x: var(--lustre-ui-spacing-xl);
+    --padding-y: var(--lustre-ui-spacing-xl);
+    --radius: var(--lustre-ui-radius-md);
+
+    /* BASE STYLES ---------------------------------------------------------- */
+
+    background: var(--background);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+
+    & > * {
+        padding-top: 0;
+        padding: var(--padding-y) var(--padding-x);
+    }
+
+    & > .card-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & > .card-footer {
+        align-items: center;
+        display: flex;
+    }
+}

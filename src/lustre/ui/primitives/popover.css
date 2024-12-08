@@ -1,0 +1,181 @@
+lustre-ui-popover {
+    --gap: var(--lustre-ui-spacing-sm);
+
+    display: inline;
+    position: relative;
+
+    & > [slot] {
+        display: contents;
+    }
+
+    &::part(popover-content) {
+        left: 0;
+        top: 0;
+        display: block;
+        position: absolute;
+        transition-duration: 150ms;
+        transition-property: opacity, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+    }
+
+    &[anchor|="top"] {
+        --translate-x: 0;
+
+        &::part(popover-content) {
+            padding-bottom: var(--gap);
+            transform: translate(var(--translate-x), -100%);
+        }
+
+        &[equal-width]::part(popover-content) {
+            --translate-x: 0 !important;
+
+            left: 0 !important;
+            right: 0;
+        }
+
+        &[anchor="top-left"]::part(popover-content) {
+            left: 0;
+        }
+
+        &[anchor="top-middle"]::part(popover-content) {
+            --translate-x: -50%;
+            left: 50%;
+        }
+
+        &[anchor="top-right"]::part(popover-content) {
+            --translate-x: -100%;
+            left: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(var(--translate-x), -90%);
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(var(--translate-x), -90%);
+        }
+    }
+
+    &[anchor|="right"] {
+        --translate-y: 0;
+
+        &::part(popover-content) {
+            padding-left: var(--gap);
+            left: 100%;
+            transform: translate(0, var(--translate-y));
+        }
+
+        &[anchor="right-top"]::part(popover-content) {
+            top: 0;
+        }
+
+        &[anchor="right-middle"]::part(popover-content) {
+            --translate-y: -50%;
+            top: 50%;
+        }
+
+        &[anchor="right-bottom"]::part(popover-content) {
+            --translate-y: -100%;
+            top: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(-10%, var(--translate-y));
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(-10%, var(--translate-y));
+        }
+    }
+
+    &[anchor|="bottom"] {
+        --translate-x: 0;
+
+        &::part(popover-content) {
+            top: unset;
+            padding-top: var(--gap);
+            transform: translate(var(--translate-x), 0);
+        }
+
+        &[equal-width]::part(popover-content) {
+            --translate-x: 0 !important;
+
+            left: 0 !important;
+            right: 0;
+        }
+
+        &[anchor="bottom-left"]::part(popover-content) {
+            left: 0;
+        }
+
+        &[anchor="bottom-middle"]::part(popover-content) {
+            --translate-x: -50%;
+            left: 50%;
+        }
+
+        &[anchor="bottom-right"]::part(popover-content) {
+            --translate-x: -100%;
+            left: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(var(--translate-x), -10%);
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(var(--translate-x), -10%);
+        }
+    }
+
+    &[anchor|="left"] {
+        --translate-y: 0;
+
+        &::part(popover-content) {
+            padding-right: var(--gap);
+            transform: translate(-100%, var(--translate-y));
+        }
+
+        &[anchor="left-top"]::part(popover-content) {
+            top: 0;
+        }
+
+        &[anchor="left-middle"]::part(popover-content) {
+            --translate-y: -50%;
+            top: 50%;
+        }
+
+        &[anchor="left-bottom"]::part(popover-content) {
+            --translate-y: -100%;
+            top: 100%;
+        }
+
+        &:state(will-expand)::part(popover-content) {
+            transform: translate(-90%, var(--translate-y));
+        }
+
+        &:state(collapsing)::part(popover-content) {
+            transform: translate(-90%, var(--translate-y));
+        }
+    }
+
+    &:state(will-expand)::part(popover-content) {
+        opacity: 0;
+    }
+
+    &:state(expanded)::part(popover-content) {
+        opacity: 100;
+    }
+
+    &:state(will-collapse)::part(popover-content) {
+        opacity: 100;
+    }
+
+    &:state(collapsing)::part(popover-content) {
+        opacity: 0;
+    }
+
+    &:state(collapsed)::part(popover-content) {
+        display: none;
+    }
+}

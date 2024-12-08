@@ -1,76 +1,27 @@
-// IMPORTS ---------------------------------------------------------------------
-
-import gleam/bool
 import gleam/list
-import gleam/regex.{Match, Options}
-import gleam/string
+import gleam/result
+import globlin
 import simplifile
 
-// MAIN ------------------------------------------------------------------------
-
 pub fn main() {
-  let options = Options(case_insensitive: False, multi_line: True)
-  let assert Ok(src) = simplifile.read("./src/lustre/ui/util/styles.gleam")
-  let assert Ok(entries) = simplifile.get_files("./src/lustre/ui")
-  let css = {
-    use css, path <- list.fold(entries, "")
-    use <- bool.guard(!string.ends_with(path, ".css"), css)
-    let assert Ok(styles) = simplifile.read(path)
+  let assert Ok(files) = simplifile.get_files("./src")
+  let assert Ok(pattern) = globlin.new_pattern("./**/*.css")
 
-    css <> styles <> "\n"
-  }
-  let _ = {
-    let assert Ok(regex) =
-      regex.compile("const element_css: String = \"(.|\n)+\"", options)
-    let assert [Match(content, ..)] = regex.scan(regex, src)
-    use css <- compile_css(css, "lustre-ui")
-    let css =
-      css
-      |> string.replace("\\", "\\\\")
-      |> string.replace("\"", "\\\"")
-    let out =
-      string.replace(
-        src,
-        content,
-        "const element_css: String = \"\n" <> css <> "\n\"",
-      )
-    let assert Ok(_) =
-      simplifile.write("./src/lustre/ui/util/styles.gleam", out)
-  }
+  let assert Ok(css) =
+    files
+    |> list.filter(globlin.match_pattern(pattern:, path: _))
+    |> list.try_fold("@layer reset, primitives, components;\n\n", fn(css, path) {
+      use src <- result.map(simplifile.read(path))
+      let src = case path {
+        "./src/lustre/ui/primitives/reset.css" ->
+          "@layer reset { " <> src <> " }"
+        "./src/lustre/ui/primitives/" <> _ ->
+          "@layer primitives { " <> src <> " }"
+        _ -> "@layer components { " <> src <> " }"
+      }
 
-  let css = {
-    use css, path <- list.fold(entries, "")
-    use <- bool.guard(
-      !string.ends_with(path, ".css") || string.ends_with(path, "_reset.css"),
-      css,
-    )
-    let assert Ok(styles) = simplifile.read(path)
+      css <> src <> "\n\n"
+    })
 
-    css <> styles <> "\n"
-  }
-  let _ = {
-    let assert Ok(regex) =
-      regex.compile("const element_css_no_reset: String = \"(.|\n)+\"", options)
-    let assert [Match(content, ..)] = regex.scan(regex, src)
-    use css <- compile_css(css, "lustre-ui-no-reset")
-    let css =
-      css
-      |> string.replace("\\", "\\\\")
-      |> string.replace("\"", "\\\"")
-    let out =
-      string.replace(
-        src,
-        content,
-        "const element_css_no_reset: String = \"\n" <> css <> "\n\"",
-      )
-    let assert Ok(_) =
-      simplifile.write("./src/lustre/ui/util/styles.gleam", out)
-  }
-}
-
-// EXTERNALS -------------------------------------------------------------------
-
-@external(javascript, "./build.ffi.mjs", "compile_css")
-fn compile_css(_css: String, _name: String, _next: fn(String) -> a) -> a {
-  panic as "This build script should be run using the JavaScript target as it depends on PostCSS."
+  let assert Ok(_) = simplifile.write("./priv/static/lustre_ui.css", css)
 }

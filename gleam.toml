@@ -6,19 +6,27 @@ target = "javascript"
 licences = ["MIT"]
 repository = { type = "github", user = "lustre-labs", repo = "lustre_ui" }
 links = [
-  { title = "Website", href = "https://lustre.build" },
-  { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
+    { title = "Website", href = "https://lustre.build" },
+    { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
 ]
 
-internal_modules = ["internals/*", "lustre/ui/internals"]
-gleam = ">= 0.33.0"
+internal_modules = [
+    "lustre_ui",
+    "lustre/ui/data/*",
+    "lustre/ui/internals/*",
+    "lustre/ui/primitives/*",
+]
 
 [dependencies]
-gleam_community_colour = "~> 1.4"
-gleam_json = "~> 1.0"
-gleam_stdlib = "~> 0.34"
-lustre = "~> 4.0"
+gleam_community_colour = ">= 1.4.0 and < 2.0.0"
+gleam_community_maths = ">= 1.1.1 and < 2.0.0"
+gleam_stdlib = ">= 0.40.0 and < 2.0.0"
+lustre = ">= 4.5.0 and < 5.0.0"
+decipher = ">= 1.2.1 and < 2.0.0"
+gleam_json = ">= 2.0.0 and < 3.0.0"
 
 [dev-dependencies]
+birdie = ">= 1.1.6 and < 2.0.0"
 gleeunit = "~> 1.0"
-simplifile = "~> 1.0"
+globlin = ">= 2.0.2 and < 3.0.0"
+simplifile = ">= 2.2.0 and < 3.0.0"
