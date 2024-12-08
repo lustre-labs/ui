@@ -443,17 +443,18 @@
         display: inline-flex;
         gap: var(--gap);
 
+        &[aria-current="page"] {
+            color: var(--text-hover);
+        }
+
         &:hover {
             color: var(--text-hover);
         }
     }
 
-    & > .breadcrumb-current {
-        color: var(--text-hover);
-    }
-
     & > .breadcrumb-separator {
         user-select: none;
+        pointer-events: none;
 
         & > svg {
             height: 1rem;
@@ -611,12 +612,17 @@
 @layer components { lustre-ui-accordion {
     --padding-x: var(--lustre-ui-spacing-sm);
     --padding-y: var(--lustre-ui-spacing-sm);
+    --border: rbg(var(--lustre-ui-accent));
+    --border-focus: rgb(var(--lustre-ui-primary-solid));
     --border-width: 1px;
+    --text: rgb(var(--lustre-ui-text));
+
+    display: block;
 
     &::part(accordion-trigger) {
         align-items: center;
-        border-bottom: rgb(var(--lustre-ui-accent)) solid var(--border-width);
-        color: rgb(var(--lustre-ui-text));
+        border-bottom: var(--border) solid var(--border-width);
+        color: var(--text);
         display: flex;
         gap: var(--padding-x);
         outline-offset: 2px;
@@ -626,7 +632,7 @@
     }
 
     &::part(accordion-trigger):focus {
-        border-color: rgb(var(--lustre-ui-primary-solid));
+        border-color: var(--border-focus);
     }
 
     &::part(accordion-trigger-label) {
@@ -913,6 +919,7 @@ video {
 @layer primitives { lustre-ui-popover {
     --gap: var(--lustre-ui-spacing-sm);
 
+    display: inline;
     position: relative;
 
     & > [slot] {
@@ -1094,6 +1101,8 @@ video {
 
 @layer primitives { lustre-ui-collapse {
     --duration: 150ms;
+
+    display: block;
 
     &::part(collapse-content) {
         transition-duration: var(--duration);
