@@ -14,7 +14,7 @@
 ////   label, but it may also be an icon.
 ////
 ////   When empty, the [`badge`](#badge) container becomes a circle and can be
-////   used as a statis indicator.
+////   used as a status indicator.
 ////
 //// ## Recipes
 ////
@@ -78,6 +78,9 @@ import lustre/ui/theme
 /// indicate the type of a product in a grid, or to annotate something as "new"
 /// or "updated".
 ///
+/// This will render a `<small>` tag in your markup. If you would like to render
+/// a different element, use [`of`](#of) instead.
+///
 /// <!-- @element -->
 ///
 pub fn badge(
@@ -85,6 +88,15 @@ pub fn badge(
   children: List(Element(msg)),
 ) -> Element(msg) {
   of(html.small, attributes, children)
+}
+
+/// Render a badge as a small circle with no content. This can be used as a
+/// status or online indicator.
+///
+/// <!-- @element -->
+///
+pub fn indicator(attributes: List(Attribute(msg))) -> Element(msg) {
+  of(html.span, attributes, [])
 }
 
 /// Render the given `element` function as a [`badge`](#badge). The default badge

@@ -63,6 +63,22 @@
 ////
 //// ## Customisation
 ////
+//// The colour or type of an alert can be set to the corresponding colour palette
+//// in your theme by using one of the following attributes:
+////
+//// - [`primary`](#primary)
+//// - [`secondary`](#secondary)
+//// - [`warning`](#warning)
+//// - [`danger`](#danger)
+//// - [`success`](#success)
+////
+//// The border radius of an alert can be controlled while still using your theme's
+//// configuration by using one of the following attributes:
+////
+//// - [`square`](#square)
+//// - [`round`](#round)
+//// - [`pill`](#pill)
+////
 //// It is possible to control some aspects of an alert's styling through CSS
 //// variables. You may want to do this in cases where you are integrating lustre/ui
 //// into an existing design system and you want the `alert` element to match
@@ -106,8 +122,8 @@ import lustre/ui/theme
 /// attributes: [`primary`](#primary), [`secondary`](#secondary), [`warning`](#warning),
 /// [`danger`](#danger), or [`successs`](#success).
 ///
-/// This will render an `<article>` tag in your markup. If you would like to
-/// render a different element, use [`of`](#of) instead.
+/// This will render a `<div>` tag in your markup. If you would like to render a
+/// different element, use [`of`](#of) instead.
 ///
 /// <!-- @element -->
 ///
@@ -115,7 +131,7 @@ pub fn alert(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
-  of(html.aside, attributes, children)
+  of(html.div, attributes, children)
 }
 
 /// Render the given `element` function as an [`alert`](#alert). This applies

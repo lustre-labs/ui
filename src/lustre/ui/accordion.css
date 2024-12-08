@@ -1,14 +1,17 @@
 lustre-ui-accordion {
     --padding-x: var(--lustre-ui-spacing-sm);
     --padding-y: var(--lustre-ui-spacing-sm);
+    --border: rbg(var(--lustre-ui-accent));
+    --border-focus: rgb(var(--lustre-ui-primary-solid));
     --border-width: 1px;
+    --text: rgb(var(--lustre-ui-text));
 
     display: block;
 
     &::part(accordion-trigger) {
         align-items: center;
-        border-bottom: rgb(var(--lustre-ui-accent)) solid var(--border-width);
-        color: rgb(var(--lustre-ui-text));
+        border-bottom: var(--border) solid var(--border-width);
+        color: var(--text);
         display: flex;
         gap: var(--padding-x);
         outline-offset: 2px;
@@ -18,7 +21,7 @@ lustre-ui-accordion {
     }
 
     &::part(accordion-trigger):focus {
-        border-color: rgb(var(--lustre-ui-primary-solid));
+        border-color: var(--border-focus);
     }
 
     &::part(accordion-trigger-label) {

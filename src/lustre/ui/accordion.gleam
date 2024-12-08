@@ -1,3 +1,98 @@
+//// The [`accordion`](#accordion) element is an interactive component that allows
+//// users to show and hide grouped sections of content. Each section has a panel
+//// containing additional content that can be shown or hidden.
+////
+//// Common uses for accordions include:
+////
+//// - Organizing content into collapsible sections to reduce cognitive load.
+////
+//// - Creating FAQ sections where questions expand to show their answers.
+////
+//// ## Anatomy
+////
+//// <image src="/assets/diagram-accordion.svg" alt="" width="100%">
+////
+//// An accordion is made up of two different parts:
+////
+//// - The main [`accordion`](#accordion) container used to organize content into
+////   collapsible sections. (**required**)
+////
+//// - One or more [`item`](#item) elements representing each expandable section,
+////   containing a label and content. (**required**)
+////
+//// ## Recipes
+////
+//// Below are some recipes that show common uses of the `accordion` element.
+////
+//// ### A basic FAQ accordion:
+////
+//// ```gleam
+//// import lustre/element/html
+//// import lustre/ui/accordion.{accordion}
+////
+//// pub fn faq() {
+////   accordion([], [
+////     accordion.item(
+////       value: "q1",
+////       label: "What is an accordion?",
+////       content: [html.text("An interactive element for showing/hiding content")]
+////     ),
+////     accordion.item(
+////       value: "q2",
+////       label: "When should I use one?",
+////       content: [html.text("When you want to organize content into sections")]
+////     )
+////   ])
+//// }
+//// ```
+////
+//// ### An accordion with `exactly_one` mode:
+////
+//// ```gleam
+//// import lustre/element/html
+//// import lustre/ui/accordion.{accordion}
+////
+//// pub fn settings() {
+////   accordion([accordion.exactly_one()], [
+////     accordion.item(
+////       value: "general",
+////       label: "General",
+////       content: [html.text("General settings content")]
+////     ),
+////     accordion.item(
+////       value: "privacy",
+////       label: "Privacy",
+////       content: [html.text("Privacy settings content")]
+////     )
+////   ])
+//// }
+//// ```
+////
+//// ## Customisation
+////
+//// The behaviour of an accordion can be controlled by setting the `mode` attribute
+//// using one of the following functions:
+////
+//// - [`at_most_one`](#at_most_one)
+//// - [`exactly_one`](#exactly_one)
+//// - [`multi`](#multi)
+////
+//// It is possible to control some aspects of an accordion's styling through CSS
+//// variables. You may want to do this in cases where you are integrating lustre/ui
+//// into an existing design system and you want the `accordion` element to match
+//// elements outside of this package.
+////
+//// The following CSS variables can set in your own stylesheets or by using the
+//// corresponding attribute functions in this module:
+////
+//// - [`--border`](#border)
+//// - [`--border-focus`](#border_focus)
+//// - [`--padding-x`](#padding_x)
+//// - [`--padding-y`](#padding_y)
+//// - [`--radius`](#radius)
+//// - [`--text`](#text)
+////
+
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam/bool
@@ -20,18 +115,55 @@ import lustre/ui/primitives/collapse.{collapse}
 
 // TYPES -----------------------------------------------------------------------
 
+/// Represents a single item in accordion, including both the title and the
+/// content that is shown when the item is expanded. To construct an `Item`,
+/// you should use the [`item`](#item) function.
+///
+///
 pub opaque type Item(msg) {
   Item(value: String, label: String, content: List(Element(msg)))
 }
 
 // ELEMENTS --------------------------------------------------------------------
 
+/// The name of the custom element as rendered in the DOM - "lustre-ui-accordion".
+///
 pub const name: String = "lustre-ui-accordion"
 
-pub fn component() -> lustre.App(Nil, Model, Msg) {
-  lustre.component(init, update, view, on_attribute_change())
-}
-
+/// Register the accordion component with the tag name "lustre-ui-accordion". In
+/// a Lustre SPA you **must** do this before the component will properly render;
+/// most-commonly this is done before you start your Lustre app:
+///
+/// ```gleam
+/// import lustre
+/// import lustre/ui/accordion
+///
+/// pub fn main() {
+///   let assert Ok(_) = accordion.register()
+///
+///   let app = lustre.application(init, update, view)
+///   let assert Ok(_) = lustre.start(app, "#app", Nil)
+///
+///   ...
+/// }
+/// ```
+///
+/// Another option is to register the component in as an effect:
+///
+/// ```gleam
+/// import lustre/effect.{type Effect}
+/// import lustre/ui/accordion
+///
+/// fn register_components(on_error: fn(lustre.Error) -> msg) -> Effect(msg) {
+///   use dispatch <- effect.from
+///
+///   case accordion.register() {
+///     Ok(_) -> Nil
+///     Error(error) -> on_error(error) |> dispatch
+///   }
+/// }
+/// ```
+///
 pub fn register() -> Result(Nil, lustre.Error) {
   case collapse.register() {
     Ok(Nil) | Error(lustre.ComponentAlreadyRegistered(_)) -> {
@@ -42,22 +174,61 @@ pub fn register() -> Result(Nil, lustre.Error) {
   }
 }
 
+/// The `accordion` element is an interactive component that allows users to show
+/// and hide grouped sections of content. Each section has a panel containing
+/// additional content that can be shown or hidden.
+///
+/// Common uses for accordions include:
+///
+/// - Organizing content into collapsible sections to reduce cognitive load.
+///
+/// - Creating FAQ sections where questions expand to show their answers.
+///
+/// You set the content of the accordion by passing a list of [`item`](#item)
+/// elements as children.
+///
+/// By default, the `accordion` component allows allows only one item to be
+/// expanded at a time. You can change this behaviour by setting the `mode`
+/// attribute using one of the following functions:
+///
+/// - [`at_most_one`](#at_most_one): only zero or one item can be expanded at
+///   a time. (**default**)
+///
+/// - [`exactly_one`](#exactly_one): exactly one item must be expanded at all
+///   times. By default, the first item is expanded.
+///
+/// - [`multi`](#multi): any number of items can be expanded at a time.
+///
+/// <!-- @element -->
+///
 pub fn accordion(
   attributes: List(Attribute(msg)),
   children: List(Item(msg)),
 ) -> Element(msg) {
-  element(name, attributes, {
+  element.keyed(element(name, attributes, _), {
     use Item(value, label, content) <- list.flat_map(children)
+    use <- bool.guard(value == "", [])
+
     let item =
       element("lustre-ui-accordion-item", [attribute.value(value)], [
         html.text(label),
       ])
     let content = html.div([attribute("slot", value)], content)
 
-    [item, content]
+    [#(value, item), #(value <> "-content", content)]
   })
 }
 
+/// An `item` element represents a single expandable section in an accordion. It
+/// contains a label that is always visible and a content area that is shown or
+/// hidden when the accordion item is toggled.
+///
+/// The `value` attribute is used to uniquely identify the item in the accordion
+/// and should not clash with an other items in the same accordion. If the `value`
+/// attribute is an empty string, the item will not be rendered.
+///
+/// <!-- @element -->
+///
 pub fn item(
   value value: String,
   label label: String,
@@ -68,21 +239,88 @@ pub fn item(
 
 // ATTRIBUTES ------------------------------------------------------------------
 
+/// Set the `mode` attribute of an accordion to allow zero or one item to be
+/// expanded at a time. This is the default mode.
+///
+/// <!-- @attribute -->
+///
 pub fn at_most_one() -> Attribute(msg) {
   attribute("mode", "at-most-one")
 }
 
+/// Set the `mode` attribute of an accordion to allow exactly one item to be
+/// expanded at all times. If no item is expanded when this attribute is set,
+/// the first item will be automatically expanded.
+///
+/// <!-- @attribute -->
+///
 pub fn exactly_one() -> Attribute(msg) {
   attribute("mode", "exactly-one")
 }
 
+/// Set the `mode` attribute of an accordion to allow any number of items to be
+/// expanded at a time.
+///
+/// <!-- @attribute -->
+///
 pub fn multi() -> Attribute(msg) {
   attribute("mode", "multi")
 }
 
+// VARIABLES -------------------------------------------------------------------
+
+///
+/// <!-- @css-variable -->
+///
+pub fn padding(x x: String, y y: String) -> Attribute(msg) {
+  attribute.style([#("--padding-x", x), #("--padding-y", y)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn padding_x(value: String) -> Attribute(msg) {
+  attribute.style([#("--padding-x", value)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn padding_y(value: String) -> Attribute(msg) {
+  attribute.style([#("--padding-y", value)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn border(value: String) -> Attribute(msg) {
+  attribute.style([#("--border", value)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn border_focus(value: String) -> Attribute(msg) {
+  attribute.style([#("--border-focus", value)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn border_width(value: String) -> Attribute(msg) {
+  attribute.style([#("--border-width", value)])
+}
+
+///
+/// <!-- @css-variable -->
+///
+pub fn text(value: String) -> Attribute(msg) {
+  attribute.style([#("--text", value)])
+}
+
 // MODEL -----------------------------------------------------------------------
 
-pub opaque type Model {
+type Model {
   Model(options: Options, expanded: Set(String), mode: Mode)
 }
 
@@ -111,7 +349,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
 
 // UPDATE ----------------------------------------------------------------------
 
-pub opaque type Msg {
+type Msg {
   ParentChangedChildren(List(#(String, String)))
   ParentSetMode(Mode)
   UserPressedDown(String)

@@ -20,17 +20,18 @@
         display: inline-flex;
         gap: var(--gap);
 
+        &[aria-current="page"] {
+            color: var(--text-hover);
+        }
+
         &:hover {
             color: var(--text-hover);
         }
     }
 
-    & > .breadcrumb-current {
-        color: var(--text-hover);
-    }
-
     & > .breadcrumb-separator {
         user-select: none;
+        pointer-events: none;
 
         & > svg {
             height: 1rem;

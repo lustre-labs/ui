@@ -33,10 +33,6 @@ pub opaque type Item {
 
 pub const name: String = "lustre-ui-combobox"
 
-pub fn component() -> lustre.App(Nil, Model, Msg) {
-  lustre.component(init, update, view, on_attribute_change())
-}
-
 pub fn register() -> Result(Nil, lustre.Error) {
   case popover.register() {
     Ok(Nil) | Error(lustre.ComponentAlreadyRegistered(_)) -> {
@@ -88,15 +84,12 @@ pub fn on_change(handler: fn(String) -> msg) -> Attribute(msg) {
 
 // MODEL -----------------------------------------------------------------------
 
-pub opaque type Model {
+type Model {
   Model(
     expanded: Bool,
     value: String,
-    /// A placeholder to fall back to if the current value is `""`.
     placeholder: String,
-    /// What the user has currently typed into the search box.
     query: String,
-    ///
     intent: option.Option(String),
     intent_strategy: Strategy,
     options: Options,
@@ -140,7 +133,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
 
 // UPDATE ----------------------------------------------------------------------
 
-pub opaque type Msg {
+type Msg {
   DomBlurredTrigger
   DomFocusedTrigger
   ParentChangedChildren(List(Item))
@@ -432,12 +425,7 @@ fn view(model: Model) -> Element(Msg) {
         event.on("click", handle_popover_click(_, !model.expanded)),
         event.on("keydown", handle_popover_keydown(_, !model.expanded)),
       ],
-      trigger: view_trigger(
-        model.value,
-        model.placeholder,
-        model.expanded,
-        model.options,
-      ),
+      trigger: view_trigger(model.value, model.placeholder, model.options),
       content: html.div([attribute("part", "combobox-options")], [
         view_input(model.query),
         view_options(model.options, model.value, model.intent),
@@ -527,7 +515,6 @@ fn after_paint(k: fn() -> Nil) -> Nil
 fn view_trigger(
   value: String,
   placeholder: String,
-  expanded: Bool,
   options: Options,
 ) -> Element(Msg) {
   let label =
