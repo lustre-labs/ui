@@ -1,16 +1,3 @@
-// These icons have been lovingly ported from radix-ui's excellent icon set. You
-// can find that over here:
-//
-//  https://www.radix-ui.com/icons
-//
-// Naming is 1:1 with the original icon set with only two minor changes:
-//
-// - spaces replaced with underscores
-// - icons with multiple variants 1 and 2 have been renamed so that the first
-//   icon is just the name of the icon with no suffix, and the second icon is
-//   the name of the icon with an `_alt` suffix.
-//
-
 // IMPORTS ---------------------------------------------------------------------
 
 import lustre/attribute.{type Attribute, attribute}

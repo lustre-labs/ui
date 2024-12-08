@@ -19,8 +19,8 @@ import lustre/element.{type Element, element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/data/bidict.{type Bidict}
-import lustre/ui/icon
 import lustre/ui/input.{input}
+import lustre/ui/primitives/icon
 import lustre/ui/primitives/popover.{popover}
 
 // TYPES -----------------------------------------------------------------------

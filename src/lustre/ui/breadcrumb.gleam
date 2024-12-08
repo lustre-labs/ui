@@ -94,7 +94,7 @@
 import lustre/attribute.{type Attribute, attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui/icon
+import lustre/ui/primitives/icon
 
 // ELEMENTS --------------------------------------------------------------------
 
