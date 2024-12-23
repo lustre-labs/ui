@@ -133,7 +133,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     ParentSetDuration(duration) -> {
       let target = model.start +. duration
       let model = Model(..model, target:, duration:)
-      let effect = effect.none()
+      let effect = case model.can_animate {
+        True -> after_paint()
+        False -> effect.none()
+      }
 
       #(model, effect)
     }
