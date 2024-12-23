@@ -91,7 +91,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
       from: 0.0,
       value: 0.0,
       to: 0.0,
-      duration: 0.0,
+      duration: 1000.0,
       now: 0.0,
       start: 0.0,
       target: 0.0,
@@ -131,14 +131,15 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     ParentSetDuration(duration) -> {
-      let model = Model(..model, duration: duration)
+      let target = model.start +. duration
+      let model = Model(..model, target:, duration:)
       let effect = effect.none()
 
       #(model, effect)
     }
 
     ParentSetFunction(function) -> {
-      let model = Model(..model, function: function)
+      let model = Model(..model, function:)
       let effect = effect.none()
 
       #(model, effect)
@@ -158,7 +159,6 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       let model =
         Model(
           ..model,
-          from: model.value,
           to: to,
           start: start,
           target: start +. model.duration,
@@ -244,18 +244,13 @@ fn animation_time() -> Float
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
-  let target = float.round(model.target)
+  let to = float.round(model.to)
   let value = float.round(model.value)
 
   element(
     "lustre-ui-intersection-observer",
     [event.on("intersection", handle_intersection)],
-    [
-      value
-      |> int.min(target)
-      |> int.to_string
-      |> html.text,
-    ],
+    [value |> int.min(to) |> int.to_string |> html.text],
   )
 }
 
