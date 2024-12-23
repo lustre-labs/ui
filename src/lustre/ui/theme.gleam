@@ -9,7 +9,7 @@ import gleam/pair
 import gleam/result
 import gleam/string
 import gleam_community/colour.{type Colour} as gleam_community_colour
-import lustre/attribute.{type Attribute, attribute}
+import lustre/attribute.{attribute}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/ui/colour.{type ColourPalette, type ColourScale, ColourPalette}
@@ -153,7 +153,7 @@ pub fn default() -> Theme {
   let id = "lustre-ui-default"
   let font = Fonts(heading: sans, body: sans, code: code)
   let radius = perfect_fifth(0.75)
-  let space = golden_ratio(0.75)
+  let space = golden_ratio(1.0)
 
   let light = colour.default_light_palette()
   let dark = colour.default_dark_palette()
@@ -435,32 +435,6 @@ pub fn with_dark_danger_scale(theme: Theme, scale: ColourScale) -> Theme {
       ColourPalette(..dark, danger: scale)
     })),
   )
-}
-
-// ATTRIBUTES ------------------------------------------------------------------
-
-pub fn use_base() -> Attribute(msg) {
-  attribute.class("base")
-}
-
-pub fn use_primary() -> Attribute(msg) {
-  attribute.class("primary")
-}
-
-pub fn use_secondary() -> Attribute(msg) {
-  attribute.class("secondary")
-}
-
-pub fn use_success() -> Attribute(msg) {
-  attribute.class("success")
-}
-
-pub fn use_warning() -> Attribute(msg) {
-  attribute.class("warning")
-}
-
-pub fn use_danger() -> Attribute(msg) {
-  attribute.class("danger")
 }
 
 // CONVERSIONS -----------------------------------------------------------------
