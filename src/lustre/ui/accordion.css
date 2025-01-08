@@ -1,7 +1,7 @@
 lustre-ui-accordion {
     --padding-x: var(--lustre-ui-spacing-sm);
     --padding-y: var(--lustre-ui-spacing-sm);
-    --border: rbg(var(--lustre-ui-accent));
+    --border: rgb(var(--lustre-ui-accent));
     --border-focus: rgb(var(--lustre-ui-primary-solid));
     --border-width: 1px;
     --text: rgb(var(--lustre-ui-text));

@@ -1,4 +1,4 @@
-//// The [`accordion`](#accordion) element is an interactive component that allows
+//// The [`accordion`](#element) element is an interactive component that allows
 //// users to show and hide grouped sections of content. Each section has a panel
 //// containing additional content that can be shown or hidden.
 ////
@@ -14,7 +14,7 @@
 ////
 //// An accordion is made up of two different parts:
 ////
-//// - The main [`accordion`](#accordion) container used to organize content into
+//// - The main [`element`](#element) container used to organize content into
 ////   collapsible sections. (**required**)
 ////
 //// - One or more [`item`](#item) elements representing each expandable section,
@@ -28,10 +28,10 @@
 ////
 //// ```gleam
 //// import lustre/element/html
-//// import lustre/ui/accordion.{accordion}
+//// import lustre/ui/accordion
 ////
 //// pub fn faq() {
-////   accordion([], [
+////   accordion.element([], [
 ////     accordion.item(
 ////       value: "q1",
 ////       label: "What is an accordion?",
@@ -50,10 +50,10 @@
 ////
 //// ```gleam
 //// import lustre/element/html
-//// import lustre/ui/accordion.{accordion}
+//// import lustre/ui/accordion
 ////
 //// pub fn settings() {
-////   accordion([accordion.exactly_one()], [
+////   accordion.element([accordion.exactly_one()], [
 ////     accordion.item(
 ////       value: "general",
 ////       label: "General",
@@ -99,6 +99,7 @@ import gleam/bool
 import gleam/dict.{type Dict}
 import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic, dynamic}
 import gleam/int
+import gleam/json
 import gleam/list
 import gleam/pair
 import gleam/result
@@ -106,11 +107,11 @@ import gleam/set.{type Set}
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/effect.{type Effect}
-import lustre/element.{type Element, element}
+import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/data/bidict.{type Bidict}
-import lustre/ui/primitives/collapse.{collapse}
+import lustre/ui/primitives/collapse
 import lustre/ui/primitives/icon
 
 // TYPES -----------------------------------------------------------------------
@@ -201,16 +202,16 @@ pub fn register() -> Result(Nil, lustre.Error) {
 ///
 /// <!-- @element -->
 ///
-pub fn accordion(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Item(msg)),
 ) -> Element(msg) {
-  element.keyed(element(name, attributes, _), {
+  element.keyed(element.element(name, attributes, _), {
     use Item(value, label, content) <- list.flat_map(children)
     use <- bool.guard(value == "", [])
 
     let item =
-      element("lustre-ui-accordion-item", [attribute.value(value)], [
+      element.element("lustre-ui-accordion-item", [attribute.value(value)], [
         html.text(label),
       ])
     let content = html.div([attribute("slot", value)], content)
@@ -480,7 +481,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       }
 
       let model = Model(..model, expanded:)
-      let effect = effect.none()
+      let effect = case set.contains(expanded, value) {
+        True -> event.emit("expand", json.string(value))
+        False -> event.emit("collapse", json.string(value))
+      }
 
       #(model, effect)
     }
@@ -536,7 +540,7 @@ fn view(model: Model) -> Element(Msg) {
       use #(key, label) <- list.map(model.options.all)
       let is_expanded = set.contains(model.expanded, key)
       let item =
-        collapse(
+        collapse.element(
           [
             collapse.expanded(is_expanded),
             collapse.on_change(fn(_) { UserToggledItem(key) }),

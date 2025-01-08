@@ -6,7 +6,7 @@ import lustre/element/html
 
 // ELEMENTS --------------------------------------------------------------------
 
-pub fn divider(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {

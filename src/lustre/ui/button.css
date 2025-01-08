@@ -45,6 +45,12 @@
         transform: translateY(1px);
     }
 
+    @media (prefers-reduced-motion) {
+        &:active {
+            transform: unset;
+        }
+    }
+
     &:is(a) {
         text-decoration: none;
 

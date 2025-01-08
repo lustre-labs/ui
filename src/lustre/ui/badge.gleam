@@ -1,7 +1,7 @@
-//// The [`badge`] element, sometimes called a "tag", is commonly used to attach
-//// a small piece of information to some other element. You might use a badge to
-//// indicate the type of a product in a grid, or to annotate something as "new"
-//// or "updated".
+//// The [`badge`](#element) element, sometimes called a "tag", is commonly used
+//// to attach a small piece of information to some other element. You might use
+//// a badge to indicate the type of a product in a grid, or to annotate something
+//// as "new" or "updated".
 ////
 //// ## Anatomy
 ////
@@ -9,11 +9,11 @@
 ////
 //// A badge is made up of only one part:
 ////
-//// - The main [`badge`](#badge) container used to apply the badge styles. Often
+//// - The main [`root`](#root) container used to apply the badge styles. Often
 ////   the only direct child of the container is the text used for the badges
 ////   label, but it may also be an icon.
 ////
-////   When empty, the [`badge`](#badge) container becomes a circle and can be
+////   When empty, the [`root`](#root) container becomes a circle and can be
 ////   used as a status indicator.
 ////
 //// ## Recipes
@@ -27,12 +27,12 @@
 //// ```gleam
 //// import lustre/attribute
 //// import lustre/element/html
-//// import lustre/ui/badge.{badge}
+//// import lustre/ui/badge
 ////
 //// pub fn online_avatar(src) {
 ////   html.div([attribute.class("inline-block relative")], [
 ////     html.img([attribute.class("size-6 rounded-full"), attribute.src(src)]),
-////     badge([
+////     badge.element([
 ////       badge.background("green"),
 ////       badge.solid(),
 ////       attribute.class("absolute top-0 right-0"),
@@ -83,7 +83,7 @@ import lustre/ui/theme
 ///
 /// <!-- @element -->
 ///
-pub fn badge(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {

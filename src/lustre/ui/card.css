@@ -4,8 +4,8 @@
     --background: rgb(var(--lustre-ui-bg));
     --border: rgb(var(--lustre-ui-accent-subtle));
     --border-width: 1px;
-    --padding-x: var(--lustre-ui-spacing-xl);
-    --padding-y: var(--lustre-ui-spacing-xl);
+    --padding-x: var(--lustre-ui-spacing-md);
+    --padding-y: var(--lustre-ui-spacing-md);
     --radius: var(--lustre-ui-radius-md);
 
     /* BASE STYLES ---------------------------------------------------------- */
