@@ -1,6 +1,6 @@
-//// The [`alert`](#alert) element, sometimes called a "callout", is used to direct
-//// the user's attention away from the main content on the page and to some important
-//// information or context.
+//// The [`alert`](#element) element, sometimes called a "callout", is used to
+//// direct the user's attention away from the main content on the page and to
+//// some important information or context.
 ////
 //// Common uses for the `alert` element include:
 ////
@@ -15,7 +15,7 @@
 ////
 //// An alert is made up of different parts:
 ////
-//// - The main [`alert`](#alert) container used to control the alert's styles
+//// - The main [`element`](#element) container used to control the alert's styles
 ////   and layout. (**required**)
 ////
 //// - An [`indicator`](#indicator) used to provide users with a visual clue about
@@ -35,10 +35,10 @@
 ////
 //// ```gleam
 //// import lustre/element/html
-//// import lustre/ui/alert.{alert}
+//// import lustre/ui/alert
 ////
 //// pub fn new_todo_added() {
-////   alert([alert.success()], [
+////   alert.element([alert.success()], [
 ////     alert.title([], [html.text("New todo added to your list.")])
 ////   ])
 //// }
@@ -48,10 +48,10 @@
 ////
 //// ```gleam
 //// import lustre/element/html
-//// import lustre/ui/alert.{alert}
+//// import lustre/ui/alert
 ////
 //// pub fn delete_todo_failed() {
-////   alert([alert.danger()], [
+////   alert.element([alert.danger()], [
 ////     alert.indicator([], [icon.exclamation_triangle([])]),
 ////     alert.title([], [html.text("Could not delete todo")]),
 ////     alert.content([], [
@@ -127,7 +127,7 @@ import lustre/ui/theme
 ///
 /// <!-- @element -->
 ///
-pub fn alert(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {

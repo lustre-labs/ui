@@ -1,4 +1,4 @@
-//// The [`breadcrumb`](#breadcrumb) element helps users understand their current
+//// The [`breadcrumb`](#element) element helps users understand their current
 //// location in a hierarchical navigation structure and provides an easy way to
 //// navigate back up to parent pages.
 ////
@@ -15,7 +15,7 @@
 ////
 //// A breadcrumb is made up of different parts:
 ////
-//// - The main [`breadcrumb`](#breadcrumb) container used to organize the navigation
+//// - The main [`element`](#element) container used to organize the navigation
 ////   items. (**required**)
 ////
 //// - One or more [`item`](#item) elements representing pages in the navigation
@@ -39,10 +39,10 @@
 //// ```gleam
 //// import lustre/attribute
 //// import lustre/element/html
-//// import lustre/ui/breadcrumb.{breadcrumb}
+//// import lustre/ui/breadcrumb
 ////
 //// pub fn nav() {
-////   breadcrumb([], [
+////   breadcrumb.element([], [
 ////     breadcrumb.item([], [
 ////       html.a([attribute.href("/")], [html.text("Home")]),
 ////     ]),
@@ -60,10 +60,10 @@
 ////
 //// ```gleam
 //// import lustre/element/html
-//// import lustre/ui/breadcrumb.{breadcrumb}
+//// import lustre/ui/breadcrumb
 ////
 //// pub fn nav() {
-////   breadcrumb([], [
+////   breadcrumb.element([], [
 ////     breadcrumb.item([], [
 ////       html.a([attribute.href("/")], [html.text("Home")]),
 ////     ]),
@@ -107,7 +107,7 @@ import lustre/ui/primitives/icon
 ///
 /// <!-- @element -->
 ///
-pub fn breadcrumb(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {

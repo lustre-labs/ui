@@ -1,4 +1,12 @@
 .lustre-ui-divider {
+    /* Frameworks like Tailwind like to set the default height of <hr /> elements
+    to 0 which messes up our styles that expect the browser defaults. This rolls
+    back any of those changes.
+    */
+
+    height: initial;
+    width: initial;
+
     /* VARIABLES ------------------------------------------------------------ */
 
     --colour: rgb(var(--lustre-ui-accent));

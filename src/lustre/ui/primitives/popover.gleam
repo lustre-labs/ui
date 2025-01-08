@@ -11,7 +11,7 @@ import gleam/string
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/effect.{type Effect}
-import lustre/element.{type Element, element}
+import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 
@@ -42,12 +42,12 @@ pub fn register() -> Result(Nil, lustre.Error) {
   lustre.register(app, name)
 }
 
-pub fn popover(
+pub fn element(
   attributes: List(Attribute(msg)),
   trigger trigger: Element(msg),
   content content: Element(msg),
 ) -> Element(msg) {
-  element(name, attributes, [
+  element.element(name, attributes, [
     html.div([attribute("slot", "trigger")], [trigger]),
     html.div([attribute("slot", "popover")], [content]),
   ])

@@ -6,7 +6,7 @@ import lustre/element/html
 
 // ELEMENTS --------------------------------------------------------------------
 
-pub fn input(attributes: List(Attribute(msg))) -> Element(msg) {
+pub fn element(attributes: List(Attribute(msg))) -> Element(msg) {
   html.input([attribute.class("lustre-ui-input"), ..attributes])
 }
 

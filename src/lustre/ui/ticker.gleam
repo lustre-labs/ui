@@ -9,7 +9,7 @@ import gleam/result
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/effect.{type Effect}
-import lustre/element.{type Element, element}
+import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/tween.{tween}
@@ -49,8 +49,8 @@ fn register_intersection_observer() -> Result(Nil, lustre.Error)
 // The size of the `content` element is measured whenever it changes (but not
 // if its children change) and the collapse will adjust its height accordingly.
 //
-pub fn ticker(attributes: List(Attribute(msg))) -> Element(msg) {
-  element(name, attributes, [])
+pub fn element(attributes: List(Attribute(msg))) -> Element(msg) {
+  element.element(name, attributes, [])
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
@@ -250,7 +250,7 @@ fn view(model: Model) -> Element(Msg) {
   let to = float.round(model.to)
   let value = float.round(model.value)
 
-  element(
+  element.element(
     "lustre-ui-intersection-observer",
     [event.on("intersection", handle_intersection)],
     [value |> int.min(to) |> int.to_string |> html.text],

@@ -1,4 +1,4 @@
-//// The [`button`](#button) element is a clickable control that receives keyboard
+//// The [`button`](#element) element is a clickable control that receives keyboard
 //// and pointer events that you would use to dispatch messages to your `update`
 //// function when interacted with.
 ////
@@ -16,7 +16,7 @@
 ////
 //// A button is made up of different parts:
 ////
-//// - The main [`button`](#button) container used to control the button's styles
+//// - The main [`element`](#element) container used to control the button's styles
 ////   and layout. (**required**)
 ////
 //// - One or more items of content like text or icons that provide visual and
@@ -31,11 +31,11 @@
 //// ```gleam
 //// import lustre/element/html
 //// import lustre/event
-//// import lustre/ui/button.{button}
+//// import lustre/ui/button
 //// import lustre/ui/icon
 ////
 //// pub fn save(handle_click) {
-////   button([event.on_click(handle_click)], [
+////   button.element([event.on_click(handle_click)], [
 ////     icon.save([]),
 ////     html.text("Save"),
 ////   ])
@@ -47,10 +47,10 @@
 //// ```gleam
 //// import lustre/element/html
 //// import lustre/event
-//// import lustre/ui/button.{button}
+//// import lustre/ui/button
 ////
 //// pub fn command_palette(handle_click) {
-////   button([button.solid(), event.on_click(handle_click)], [
+////   button.element([button.solid(), event.on_click(handle_click)], [
 ////     html.text("Open"),
 ////     button.shortcut_badge([], ["⌘", "k"])
 ////   ])
@@ -121,7 +121,7 @@ import lustre/ui/theme
 /// them focusable, buttons in Lustre UI have their `tabindex` attribute set to
 /// `0` for consistent behaviour across browsers.
 ///
-pub fn button(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
@@ -216,12 +216,19 @@ pub fn shortcut_badge(
 /// If the count is greater than 99, the badge will display `"99+"`.
 ///
 pub fn count_badge(attributes: List(Attribute(msg)), count: Int) -> Element(msg) {
-  html.span([attribute.class("button-badge"), ..attributes], [
-    html.text(case count < 100 {
-      True -> int.to_string(count)
-      False -> "99+"
-    }),
-  ])
+  html.span(
+    [
+      attribute.class("button-badge"),
+      attribute.style([#("font-variant-numeric", "tabular-nums")]),
+      ..attributes
+    ],
+    [
+      html.text(case count < 100 {
+        True -> int.to_string(count)
+        False -> "99+"
+      }),
+    ],
+  )
 }
 
 // ATTRIBUTES ------------------------------------------------------------------

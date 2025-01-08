@@ -15,13 +15,13 @@ import gleam/string
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/effect.{type Effect}
-import lustre/element.{type Element, element}
+import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/data/bidict.{type Bidict}
-import lustre/ui/input.{input}
+import lustre/ui/input
 import lustre/ui/primitives/icon
-import lustre/ui/primitives/popover.{popover}
+import lustre/ui/primitives/popover
 
 // TYPES -----------------------------------------------------------------------
 
@@ -43,16 +43,18 @@ pub fn register() -> Result(Nil, lustre.Error) {
   }
 }
 
-pub fn combobox(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Item),
 ) -> Element(msg) {
-  element.keyed(element(name, attributes, _), {
+  element.keyed(element.element(name, attributes, _), {
     use item <- list.map(children)
     let el =
-      element("lustre-ui-combobox-option", [attribute.value(item.value)], [
-        html.text(item.label),
-      ])
+      element.element(
+        "lustre-ui-combobox-option",
+        [attribute.value(item.value)],
+        [html.text(item.label)],
+      )
 
     #(item.value, el)
   })
@@ -407,7 +409,7 @@ fn view(model: Model) -> Element(Msg) {
       attribute.style([#("display", "none")]),
       event.on("slotchange", handle_slot_change),
     ]),
-    popover(
+    popover.element(
       [
         popover.anchor(popover.BottomMiddle),
         popover.equal_width(),
@@ -550,7 +552,7 @@ fn view_trigger(
 fn view_input(query: String) -> Element(Msg) {
   input.container([attribute("part", "combobox-input")], [
     icon.magnifying_glass([]),
-    input([
+    input.element([
       attribute.style([
         #("width", "100%"),
         #("border-bottom-left-radius", "0px"),
@@ -678,7 +680,7 @@ fn view_option(
     [
       icon([attribute.style([#("height", "1rem"), #("width", "1rem")])]),
       html.span([attribute.style([#("flex", "1 1 0%")])], [
-        element("slot", [attribute.name("option-" <> option.value)], [
+        element.element("slot", [attribute.name("option-" <> option.value)], [
           html.text(option.label),
         ]),
       ]),

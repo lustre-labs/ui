@@ -7,7 +7,7 @@ import lustre/ui/theme
 
 // ELEMENTS --------------------------------------------------------------------
 
-pub fn card(
+pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Element(msg)),
 ) -> Element(msg) {
