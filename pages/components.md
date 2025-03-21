@@ -41,7 +41,7 @@ real HTML elements in the DOM.
 
 ## Components are always controlled
 
-Native HTML elements like `<input>` or `<select>` can be ussd in an "uncontrolled"
+Native HTML elements like `<input>` or `<select>` can be used in an "uncontrolled"
 way. This is where you let the element maintain its own internal state and your
 program listens for events when it wants to know what that state is.
 
