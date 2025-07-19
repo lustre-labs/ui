@@ -10,25 +10,17 @@ links = [
     { title = "Sponsor", href = "https://github.com/sponsors/hayleigh-dot-dev" },
 ]
 
-internal_modules = [
-    "lustre_ui",
-    "lustre/ui/data/*",
-    "lustre/ui/internals/*",
-    "lustre/ui/primitives/*",
-]
+internal_modules = []
 
 [dependencies]
-gleam_community_colour = ">= 2.0.0 and < 3.0.0"
-gleam_community_maths = ">= 2.0.0 and < 3.0.0"
 gleam_json = ">= 3.0.0 and < 4.0.0"
 gleam_stdlib = ">= 0.60.0 and < 2.0.0"
 lustre = ">= 5.0.0 and < 6.0.0"
 
 [dev-dependencies]
-birdie = ">= 1.1.6 and < 2.0.0"
 esgleam = ">= 0.7.0 and < 1.0.0"
 gleeunit = "~> 1.0"
 globlin = ">= 2.0.2 and < 3.0.0"
+lustre_dev_tools = ">= 1.8.2 and < 2.0.0"
 lustre_fable = { git = "https://github.com/lustre-labs/fable.git", ref = "main" }
 simplifile = ">= 2.2.0 and < 3.0.0"
-lustre_dev_tools = ">= 1.8.2 and < 2.0.0"
