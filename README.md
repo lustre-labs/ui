@@ -72,6 +72,24 @@ gleam add lustre_ui@1.0.0-rc.1
 Ensure the required CSS is rendered in your apps by serving the stylesheet found
 in the `priv/static` directory of this package!
 
+## Usage
+
+In order for lustre/ui to work correctly you need to do two things:
+
+1. Include the lustre/ui stylesheet in your app. This can be found in the
+   `priv/static` directory for _this package_ and can either be served by your
+   backend (in case of a full stack application) or copied or otherwise included
+   from `build/packages/lustre_ui/priv/static` in your frontend application.
+
+2. Construct a theme from the `lustre/ui/theme` module and render the dynamic
+   style element by calling `theme.to_style` or wrapping your application's view
+   function using `theme.inject`.
+
+**Both** of these steps must be done in order for the components to render
+correctly. The base stylesheet includes the necessary CSS rules and classes for
+every component, and your theme defines the design tokens and CSS variables used
+by those components.
+
 ## Support
 
 Lustre is mostly built by just me, [Hayleigh](https://github.com/hayleigh-dot-dev),

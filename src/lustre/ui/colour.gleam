@@ -1,9 +1,9 @@
 // IMPORTS ---------------------------------------------------------------------
-import gleam/dynamic.{type DecodeError, type Dynamic}
+
+import gleam/dynamic/decode.{type Decoder}
 import gleam/float
 import gleam/int
 import gleam/json.{type Json}
-import gleam/result.{try}
 import gleam_community/colour
 import gleam_community/colour/accessibility
 
@@ -183,23 +183,23 @@ pub fn encode_palette(palette: ColourPalette) -> Json {
   ])
 }
 
-pub fn decoder(json: Dynamic) -> Result(ColourScale, List(DecodeError)) {
-  use bg <- try(dynamic.field("bg", colour.decoder)(json))
-  use bg_subtle <- try(dynamic.field("bg_subtle", colour.decoder)(json))
-  use tint <- try(dynamic.field("tint", colour.decoder)(json))
-  use tint_subtle <- try(dynamic.field("tint_subtle", colour.decoder)(json))
-  use tint_strong <- try(dynamic.field("tint_strong", colour.decoder)(json))
-  use accent <- try(dynamic.field("accent", colour.decoder)(json))
-  use accent_subtle <- try(dynamic.field("accent_subtle", colour.decoder)(json))
-  use accent_strong <- try(dynamic.field("accent_strong", colour.decoder)(json))
-  use solid <- try(dynamic.field("solid", colour.decoder)(json))
-  use solid_subtle <- try(dynamic.field("solid_subtle", colour.decoder)(json))
-  use solid_strong <- try(dynamic.field("solid_strong", colour.decoder)(json))
-  use solid_text <- try(dynamic.field("solid_text", colour.decoder)(json))
-  use text <- try(dynamic.field("text", colour.decoder)(json))
-  use text_subtle <- try(dynamic.field("text_subtle", colour.decoder)(json))
+pub fn decoder() -> Decoder(ColourScale) {
+  use bg <- decode.field("bg", colour.decoder())
+  use bg_subtle <- decode.field("bg_subtle", colour.decoder())
+  use tint <- decode.field("tint", colour.decoder())
+  use tint_subtle <- decode.field("tint_subtle", colour.decoder())
+  use tint_strong <- decode.field("tint_strong", colour.decoder())
+  use accent <- decode.field("accent", colour.decoder())
+  use accent_subtle <- decode.field("accent_subtle", colour.decoder())
+  use accent_strong <- decode.field("accent_strong", colour.decoder())
+  use solid <- decode.field("solid", colour.decoder())
+  use solid_subtle <- decode.field("solid_subtle", colour.decoder())
+  use solid_strong <- decode.field("solid_strong", colour.decoder())
+  use solid_text <- decode.field("solid_text", colour.decoder())
+  use text <- decode.field("text", colour.decoder())
+  use text_subtle <- decode.field("text_subtle", colour.decoder())
 
-  Ok(ColourScale(
+  decode.success(ColourScale(
     bg:,
     bg_subtle:,
     tint:,
@@ -217,18 +217,22 @@ pub fn decoder(json: Dynamic) -> Result(ColourScale, List(DecodeError)) {
   ))
 }
 
-pub fn palette_decoder(
-  json: Dynamic,
-) -> Result(ColourPalette, List(DecodeError)) {
-  dynamic.decode6(
-    ColourPalette,
-    dynamic.field("base", decoder),
-    dynamic.field("primary", decoder),
-    dynamic.field("secondary", decoder),
-    dynamic.field("success", decoder),
-    dynamic.field("warning", decoder),
-    dynamic.field("danger", decoder),
-  )(json)
+pub fn palette_decoder() -> Decoder(ColourPalette) {
+  use base <- decode.field("base", decoder())
+  use primary <- decode.field("primary", decoder())
+  use secondary <- decode.field("secondary", decoder())
+  use success <- decode.field("success", decoder())
+  use warning <- decode.field("warning", decoder())
+  use danger <- decode.field("danger", decoder())
+
+  decode.success(ColourPalette(
+    base:,
+    primary:,
+    secondary:,
+    success:,
+    warning:,
+    danger:,
+  ))
 }
 
 // RADIX UI --------------------------------------------------------------------

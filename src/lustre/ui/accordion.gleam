@@ -87,17 +87,29 @@
 ////
 //// - [`--border`](#border)
 //// - [`--border-focus`](#border_focus)
+//// - [`--border-width`](#border_focus)
 //// - [`--padding-x`](#padding_x)
 //// - [`--padding-y`](#padding_y)
 //// - [`--radius`](#radius)
 //// - [`--text`](#text)
 ////
+//// ## Accessibility
+////
+//// Accordions created with this element have a robust set of keyboard commands:
+////
+//// - <kbd>ArrowDown</kbd> will focus the next trigger in the accordion
+//// - <kbd>ArrowUp</kbd> will focus the previous trigger in the accordion
+//// - <kbd>End</kbd> will focus the last trigger in the accordion
+//// - <kbd>Enter</kbd> or <kbd>Space</kbd> will toggle the expanded state
+//// - <kbd>Home</kbd> will focus the first trigger in the accordion
+//// - <kbd>Tab</kbd> will move focus to the next focusable element
+////
 
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam/bool
-import gleam/dict.{type Dict}
-import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic, dynamic}
+import gleam/dynamic.{type Dynamic}
+import gleam/dynamic/decode.{type Decoder}
 import gleam/int
 import gleam/json
 import gleam/list
@@ -106,10 +118,13 @@ import gleam/result
 import gleam/set.{type Set}
 import lustre
 import lustre/attribute.{type Attribute, attribute}
+import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
+import lustre/element/keyed
 import lustre/event
+import lustre/ffi/dom
 import lustre/ui/data/bidict.{type Bidict}
 import lustre/ui/primitives/collapse
 import lustre/ui/primitives/icon
@@ -168,9 +183,21 @@ pub const name: String = "lustre-ui-accordion"
 pub fn register() -> Result(Nil, lustre.Error) {
   case collapse.register() {
     Ok(Nil) | Error(lustre.ComponentAlreadyRegistered(_)) -> {
-      let app = lustre.component(init, update, view, on_attribute_change())
+      let app =
+        lustre.component(init, update, view, [
+          component.on_attribute_change("mode", fn(value) {
+            case value {
+              "at-most-one" -> Ok(ParentSetMode(AtMostOne))
+              "exactly-one" -> Ok(ParentSetMode(ExactlyOne))
+              "multi" -> Ok(ParentSetMode(Multi))
+              _ -> Error(Nil)
+            }
+          }),
+        ])
+
       lustre.register(app, name)
     }
+
     error -> error
   }
 }
@@ -206,7 +233,7 @@ pub fn element(
   attributes: List(Attribute(msg)),
   children: List(Item(msg)),
 ) -> Element(msg) {
-  element.keyed(element.element(name, attributes, _), {
+  keyed.element(name, attributes, {
     use Item(value, label, content) <- list.flat_map(children)
     use <- bool.guard(value == "", [])
 
@@ -274,49 +301,49 @@ pub fn multi() -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn padding(x x: String, y y: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", x), #("--padding-y", y)])
+  attribute.styles([#("--padding-x", x), #("--padding-y", y)])
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn padding_x(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", value)])
+  attribute.style("--padding-x", value)
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn padding_y(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-y", value)])
+  attribute.style("--padding-y", value)
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn border(value: String) -> Attribute(msg) {
-  attribute.style([#("--border", value)])
+  attribute.style("--border", value)
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn border_focus(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-focus", value)])
+  attribute.style("--border-focus", value)
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn border_width(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-width", value)])
+  attribute.style("--border-width", value)
 }
 
 ///
 /// <!-- @css-variable -->
 ///
 pub fn text(value: String) -> Attribute(msg) {
-  attribute.style([#("--text", value)])
+  attribute.style("--text", value)
 }
 
 // MODEL -----------------------------------------------------------------------
@@ -353,10 +380,10 @@ fn init(_) -> #(Model, Effect(Msg)) {
 type Msg {
   ParentChangedChildren(List(#(String, String)))
   ParentSetMode(Mode)
-  UserPressedDown(String)
+  UserPressedDown(String, event: Dynamic)
   UserPressedEnd
   UserPressedHome
-  UserPressedUp(String)
+  UserPressedUp(String, event: Dynamic)
   UserToggledItem(String)
 }
 
@@ -416,7 +443,7 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       #(model, effect)
     }
 
-    UserPressedDown(key) -> {
+    UserPressedDown(key, event:) -> {
       let effect = {
         use index <- result.try(bidict.get(model.options.lookup_index, key))
         use next <- result.map(bidict.get_inverse(
@@ -427,7 +454,13 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
         focus_trigger(next)
       }
 
-      #(model, effect |> result.unwrap(effect.none()))
+      #(
+        model,
+        effect.batch([
+          effect |> result.unwrap(effect.none()),
+          dom.prevent_default(event),
+        ]),
+      )
     }
 
     UserPressedEnd -> {
@@ -456,7 +489,7 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
       #(model, effect |> result.unwrap(effect.none()))
     }
 
-    UserPressedUp(key) -> {
+    UserPressedUp(key, event:) -> {
       let effect = {
         use index <- result.try(bidict.get(model.options.lookup_index, key))
         use prev <- result.map(bidict.get_inverse(
@@ -467,7 +500,13 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
         focus_trigger(prev)
       }
 
-      #(model, effect |> result.unwrap(effect.none()))
+      #(
+        model,
+        effect.batch([
+          effect |> result.unwrap(effect.none()),
+          dom.prevent_default(event),
+        ]),
+      )
     }
 
     UserToggledItem(value) -> {
@@ -491,52 +530,26 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   }
 }
 
-fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
-  dict.from_list([
-    #("mode", fn(value) {
-      dynamic.string(value)
-      |> result.then(fn(mode) {
-        case mode {
-          "at-most-one" -> Ok(AtMostOne)
-          "exactly-one" -> Ok(ExactlyOne)
-          "multi" -> Ok(Multi)
-          _ -> Error([])
-        }
-      })
-      |> result.unwrap(AtMostOne)
-      |> ParentSetMode
-      |> Ok
-    }),
-  ])
-}
-
 // EFFECTS ---------------------------------------------------------------------
 
 fn focus_trigger(key: String) -> Effect(msg) {
-  use _, root <- element.get_root()
-  let selector = "[data-lustre-key=" <> key <> "] button[part=trigger]"
+  let selector = "[data-lustre-key=" <> key <> "] [part=accordion-trigger]"
 
-  case get_element(selector)(root) {
-    Ok(trigger) -> focus(trigger)
-    Error(_) -> Nil
-  }
+  dom.focus(selector)
 }
-
-@external(javascript, "../../dom.ffi.mjs", "get_element")
-fn get_element(selector: String) -> Decoder(Dynamic)
-
-@external(javascript, "../../dom.ffi.mjs", "focus")
-fn focus(element: Dynamic) -> Nil
 
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
   element.fragment([
-    html.slot([
-      attribute.style([#("display", "none")]),
-      event.on("slotchange", handle_slot_change),
-    ]),
-    element.keyed(element.fragment, {
+    html.slot(
+      [
+        attribute.style("display", "none"),
+        event.on("slotchange", handle_slot_change()),
+      ],
+      [],
+    ),
+    keyed.fragment({
       use #(key, label) <- list.map(model.options.all)
       let is_expanded = set.contains(model.expanded, key)
       let item =
@@ -549,7 +562,7 @@ fn view(model: Model) -> Element(Msg) {
             [
               attribute("part", "accordion-trigger"),
               attribute("tabindex", "0"),
-              event.on("keydown", handle_keydown(key, _)),
+              event.on("keydown", handle_keydown(key)),
             ],
             [
               html.p([attribute("part", "accordion-trigger-label")], [
@@ -563,10 +576,10 @@ fn view(model: Model) -> Element(Msg) {
               ]),
             ],
           ),
-          content: html.slot([
-            attribute("part", "accordion-content"),
-            attribute.name(key),
-          ]),
+          content: html.slot(
+            [attribute("part", "accordion-content"), attribute.name(key)],
+            [],
+          ),
         )
 
       #(key, item)
@@ -574,18 +587,19 @@ fn view(model: Model) -> Element(Msg) {
   ])
 }
 
-fn handle_slot_change(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  use children <- result.try(dynamic.field("target", assigned_elements)(event))
-  use options <- result.try(
-    dynamic.list(fn(el) {
-      dynamic.decode3(
-        fn(name, value, label) { #(name, value, label) },
-        dynamic.field("tagName", dynamic.string),
-        get_attribute("value"),
-        dynamic.field("textContent", dynamic.string),
-      )(el)
-    })(children),
-  )
+fn handle_slot_change() -> Decoder(Msg) {
+  use options <- decode.field("target", {
+    dom.assigned_elements(
+      {
+        use tag <- decode.field("tagName", decode.string)
+        use value <- decode.then(dom.attribute("value"))
+        use label <- decode.field("textContent", decode.string)
+
+        decode.success(#(tag, value, label))
+      },
+      lenient: True,
+    )
+  })
 
   options
   |> list.fold_right(#([], set.new()), fn(acc, option) {
@@ -600,32 +614,18 @@ fn handle_slot_change(event: Dynamic) -> Result(Msg, List(DecodeError)) {
   })
   |> pair.first
   |> ParentChangedChildren
-  |> Ok
+  |> decode.success
 }
 
-@external(javascript, "../../dom.ffi.mjs", "assigned_elements")
-fn assigned_elements(_slot: Dynamic) -> Result(Dynamic, List(DecodeError))
-
-@external(javascript, "../../dom.ffi.mjs", "get_attribute")
-fn get_attribute(name: String) -> Decoder(String)
-
-fn handle_keydown(
-  value: String,
-  event: Dynamic,
-) -> Result(Msg, List(DecodeError)) {
-  use key <- result.try(dynamic.field("key", dynamic.string)(event))
+fn handle_keydown(id: String) -> Decoder(Msg) {
+  use event <- decode.then(decode.dynamic)
+  use key <- decode.field("key", decode.string)
 
   case key {
-    "ArrowDown" -> {
-      event.prevent_default(event)
-      Ok(UserPressedDown(value))
-    }
-    "ArrowUp" -> {
-      event.prevent_default(event)
-      Ok(UserPressedUp(value))
-    }
-    "End" -> Ok(UserPressedEnd)
-    "Home" -> Ok(UserPressedHome)
-    _ -> Error([])
+    "ArrowDown" -> decode.success(UserPressedDown(id, event:))
+    "ArrowUp" -> decode.success(UserPressedUp(id, event:))
+    "End" -> decode.success(UserPressedEnd)
+    "Home" -> decode.success(UserPressedHome)
+    _ -> decode.failure(UserPressedHome, "")
   }
 }

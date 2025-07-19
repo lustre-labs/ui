@@ -187,7 +187,7 @@ pub fn badge(
 ///
 /// pub fn cmd_k_badge() {
 ///   let chord = ["⌘", "k"]
-///   let styles = attribute.style([#("--separator", "'+'")])
+///   let styles = attribute.style("--separator", "'+'")
 ///
 ///   button.shortcut_badge([styles], chord)
 /// }
@@ -219,7 +219,7 @@ pub fn count_badge(attributes: List(Attribute(msg)), count: Int) -> Element(msg)
   html.span(
     [
       attribute.class("button-badge"),
-      attribute.style([#("font-variant-numeric", "tabular-nums")]),
+      attribute.style("font-variant-numeric", "tabular-nums"),
       ..attributes
     ],
     [
@@ -232,6 +232,47 @@ pub fn count_badge(attributes: List(Attribute(msg)), count: Int) -> Element(msg)
 }
 
 // ATTRIBUTES ------------------------------------------------------------------
+
+/// Adjust the alert's colour to match your theme's primary colour palette. The
+/// primary palette is typically used for alerts that provide additional information
+/// or context to an action.
+///
+/// <!-- @attribute -->
+///
+pub fn primary() -> Attribute(msg) {
+  attribute.class("primary")
+}
+
+/// Adjust the alert's colour to match your theme's secondary colour palette. The
+/// secondary palette is typically used for alerts that provide additional information
+/// or context to an action.
+///
+/// <!-- @attribute -->
+///
+pub fn secondary() -> Attribute(msg) {
+  attribute.class("secondary")
+}
+
+/// Adjust the alert's colour to match your theme's warning colour palette. The
+/// warning palette is typically used to draw the user's attention to additional
+/// information before they perform an action or to alert the user of a non-fatal
+/// error.
+///
+/// <!-- @attribute -->
+///
+pub fn warning() -> Attribute(msg) {
+  attribute.class("warning")
+}
+
+/// Adjust the alert's colour to match your theme's danger colour palette. The
+/// danger palette is typically used to highlight critical information before a
+/// user performs an action or to alert the user of an important error.
+///
+/// <!-- @attribute -->
+///
+pub fn danger() -> Attribute(msg) {
+  attribute.class("danger")
+}
 
 ///
 ///
@@ -304,59 +345,59 @@ pub fn large() -> Attribute(msg) {
 ///
 ///
 pub fn background(value: String) -> Attribute(msg) {
-  attribute.style([#("--background", value)])
+  attribute.style("--background", value)
 }
 
 ///
 ///
 pub fn background_hover(value: String) -> Attribute(msg) {
-  attribute.style([#("--background-hover", value)])
+  attribute.style("--background-hover", value)
 }
 
 ///
 ///
 pub fn border(value: String) -> Attribute(msg) {
-  attribute.style([#("--border", value)])
+  attribute.style("--border", value)
 }
 
 ///
 ///
 pub fn border_hover(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-hover", value)])
+  attribute.style("--border-hover", value)
 }
 
 ///
 ///
 pub fn border_width(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-width", value)])
+  attribute.style("--border-width", value)
 }
 
 ///
 ///
 pub fn height(value: String) -> Attribute(msg) {
-  attribute.style([#("--height", value)])
+  attribute.style("--height", value)
 }
 
 ///
 ///
 pub fn min_height(value: String) -> Attribute(msg) {
-  attribute.style([#("--min-height", value)])
+  attribute.style("--min-height", value)
 }
 
 ///
 ///
 pub fn padding_x(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", value)])
+  attribute.style("--padding-x", value)
 }
 
 ///
 ///
 pub fn radius(value: String) -> Attribute(msg) {
-  attribute.style([#("--radius", value)])
+  attribute.style("--radius", value)
 }
 
 ///
 ///
 pub fn text(value: String) -> Attribute(msg) {
-  attribute.style([#("--text", value)])
+  attribute.style("--text", value)
 }
