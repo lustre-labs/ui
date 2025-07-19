@@ -1,20 +1,20 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import decipher
 import gleam/bool
-import gleam/dict.{type Dict}
-import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic, dynamic}
+import gleam/dynamic.{type Dynamic}
+import gleam/dynamic/decode.{type Decoder}
 import gleam/float
 import gleam/int
 import gleam/json
-import gleam/result
 import gleam/string
 import lustre
 import lustre/attribute.{type Attribute, attribute}
+import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
+import lustre/ffi/dom
 
 // ELEMENTS --------------------------------------------------------------------
 
@@ -26,7 +26,17 @@ pub const name: String = "lustre-ui-collapse"
 // must do this before the component will properly render.
 //
 pub fn register() -> Result(Nil, lustre.Error) {
-  let app = lustre.component(init, update, view, on_attribute_change())
+  let app =
+    lustre.component(init, update, view, [
+      component.adopt_styles(True),
+      component.on_attribute_change("aria-expanded", fn(value) {
+        case value {
+          "true" -> Ok(ParentSetExpanded(True))
+          "false" | "" -> Ok(ParentSetExpanded(False))
+          _ -> Error(Nil)
+        }
+      }),
+    ])
 
   lustre.register(app, name)
 }
@@ -62,31 +72,25 @@ pub fn expanded(is_expanded: Bool) -> Attribute(msg) {
 // By default,
 //
 pub fn duration(ms: Int) -> Attribute(msg) {
-  attribute.style([#("transition-duration", int.to_string(ms) <> "ms")])
+  attribute.style("transition-duration", int.to_string(ms) <> "ms")
 }
 
 // EVENTS ----------------------------------------------------------------------
 
 pub fn on_change(handler: fn(Bool) -> msg) -> Attribute(msg) {
-  use event <- event.on("change")
-  use is_expanded <- result.try(decipher.at(
-    ["detail", "expanded"],
-    dynamic.bool,
-  )(event))
+  event.on("change", {
+    use expanded <- decode.subfield(["detail", "expanded"], decode.bool)
 
-  Ok(handler(is_expanded))
+    decode.success(handler(expanded))
+  })
 }
 
 pub fn on_expand(handler: msg) -> Attribute(msg) {
-  use _ <- event.on("expand")
-
-  Ok(handler)
+  event.on("expand", decode.success(handler))
 }
 
 pub fn on_collapse(handler: msg) -> Attribute(msg) {
-  use _ <- event.on("collapse")
-
-  Ok(handler)
+  event.on("collapse", decode.success(handler))
 }
 
 // MODEL -----------------------------------------------------------------------
@@ -107,14 +111,14 @@ fn init(_) -> #(Model, Effect(Msg)) {
 type Msg {
   ParentChangedContent(Float)
   ParentSetExpanded(Bool)
-  UserPressedTrigger(Float)
+  UserPressedTrigger(Float, event: Dynamic)
 }
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   case msg {
     ParentChangedContent(height) -> #(Model(..model, height:), effect.none())
     ParentSetExpanded(expanded) -> #(Model(..model, expanded:), effect.none())
-    UserPressedTrigger(height) -> {
+    UserPressedTrigger(height, event) -> {
       let model = Model(..model, height:)
 
       let emit_change =
@@ -128,24 +132,16 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
         False -> event.emit("expand", json.null())
       }
 
-      let effect = effect.batch([emit_change, emit_expand_collapse])
+      let effect =
+        effect.batch([
+          emit_change,
+          emit_expand_collapse,
+          dom.prevent_default(event),
+        ])
 
       #(model, effect)
     }
   }
-}
-
-fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
-  dict.from_list([
-    //
-    #("aria-expanded", fn(value) {
-      value
-      |> decipher.bool_string
-      |> result.unwrap(False)
-      |> ParentSetExpanded
-      |> Ok
-    }),
-  ])
 }
 
 // VIEW ------------------------------------------------------------------------
@@ -160,66 +156,77 @@ fn view(model: Model) -> Element(Msg) {
 }
 
 fn view_trigger() -> Element(Msg) {
-  html.slot([
-    attribute("part", "collapse-trigger"),
-    attribute.name("trigger"),
-    event.on("click", handle_click),
-    event.on("keydown", handle_keydown),
-  ])
+  html.slot(
+    [
+      attribute("part", "collapse-trigger"),
+      attribute.name("trigger"),
+      event.on("click", handle_click()),
+      event.on("keydown", handle_keydown()),
+    ],
+    [],
+  )
 }
 
 fn view_content(height: String) -> Element(Msg) {
   html.div(
     [
       attribute("part", "collapse-content"),
-      attribute.style([#("transition-duration", "inherit"), #("height", height)]),
+      attribute.styles([
+        #("transition-duration", "inherit"),
+        #("height", height),
+      ]),
     ],
-    [html.slot([event.on("slotchange", handle_slot_change)])],
+    [html.slot([event.on("slotchange", handle_slot_change())], [])],
   )
 }
 
 // EVENT HANDLERS --------------------------------------------------------------
 
-fn handle_click(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  let path = ["currentTarget", "nextElementSibling", "firstElementChild"]
-  use slot <- result.try(decipher.at(path, dynamic)(event))
-  use height <- result.try(calculate_slot_height(slot))
+fn handle_click() -> Decoder(Msg) {
+  use heights <- decode.subfield(
+    ["currentTarget", "nextElementSibling", "firstElementChild"],
+    dom.assigned_elements(
+      dom.bounding_client_rect() |> decode.map(fn(rect) { rect.height }),
+      lenient: False,
+    ),
+  )
+  let height = float.sum(heights)
 
-  Ok(UserPressedTrigger(height))
+  decode.success(UserPressedTrigger(height, event: dynamic.nil()))
 }
 
-fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  use key <- result.try(dynamic.field("key", dynamic.string)(event))
+fn handle_keydown() -> Decoder(Msg) {
+  use event <- decode.then(decode.dynamic)
+  use key <- decode.field("key", decode.string)
 
   case key {
     "Enter" | " " -> {
-      let path = ["currentTarget", "nextElementSibling", "firstElementChild"]
-      use slot <- result.try(decipher.at(path, dynamic)(event))
-      use height <- result.try(calculate_slot_height(slot))
-      event.prevent_default(event)
+      use heights <- decode.subfield(
+        ["currentTarget", "nextElementSibling", "firstElementChild"],
+        dom.assigned_elements(
+          dom.bounding_client_rect()
+            |> decode.map(fn(rect) { rect.height }),
+          lenient: False,
+        ),
+      )
+      let height = float.sum(heights)
 
-      Ok(UserPressedTrigger(height))
+      decode.success(UserPressedTrigger(height, event:))
     }
 
-    _ -> Error([])
+    _ -> decode.failure(UserPressedTrigger(0.0, event: dynamic.nil()), "")
   }
 }
 
-fn handle_slot_change(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  use slot <- result.try(dynamic.field("target", dynamic)(event))
-  use height <- result.try(calculate_slot_height(slot))
-
-  Ok(ParentChangedContent(height))
-}
-
-fn calculate_slot_height(slot: Dynamic) -> Result(Float, List(DecodeError)) {
-  use content <- result.try(assigned_elements(slot))
-  use heights <- result.try(
-    dynamic.list(dynamic.field("clientHeight", dynamic.float))(content),
+fn handle_slot_change() -> Decoder(Msg) {
+  use heights <- decode.subfield(
+    ["currentTarget", "nextElementSibling", "firstElementChild"],
+    dom.assigned_elements(
+      dom.bounding_client_rect() |> decode.map(fn(rect) { rect.height }),
+      lenient: False,
+    ),
   )
+  let height = float.sum(heights)
 
-  Ok(float.sum(heights))
+  decode.success(ParentChangedContent(height))
 }
-
-@external(javascript, "../../../dom.ffi.mjs", "assigned_elements")
-fn assigned_elements(_slot: Dynamic) -> Result(Dynamic, List(DecodeError))

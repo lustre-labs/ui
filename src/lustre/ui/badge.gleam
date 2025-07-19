@@ -215,7 +215,7 @@ pub fn success() -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn background(value: String) -> Attribute(msg) {
-  attribute.style([#("--background", value)])
+  attribute.style("--background", value)
 }
 
 ///
@@ -223,7 +223,7 @@ pub fn background(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn background_hover(value: String) -> Attribute(msg) {
-  attribute.style([#("--background-hover", value)])
+  attribute.style("--background-hover", value)
 }
 
 ///
@@ -231,7 +231,7 @@ pub fn background_hover(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn border(value: String) -> Attribute(msg) {
-  attribute.style([#("--border", value)])
+  attribute.style("--border", value)
 }
 
 ///
@@ -239,7 +239,7 @@ pub fn border(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn border_hover(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-hover", value)])
+  attribute.style("--border-hover", value)
 }
 
 ///
@@ -247,7 +247,7 @@ pub fn border_hover(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn border_width(value: String) -> Attribute(msg) {
-  attribute.style([#("--border-width", value)])
+  attribute.style("--border-width", value)
 }
 
 ///
@@ -255,7 +255,7 @@ pub fn border_width(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn padding(x: String, y: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", x), #("--padding-y", y)])
+  attribute.styles([#("--padding-x", x), #("--padding-y", y)])
 }
 
 ///
@@ -263,7 +263,7 @@ pub fn padding(x: String, y: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn padding_x(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", value)])
+  attribute.style("--padding-x", value)
 }
 
 ///
@@ -271,7 +271,7 @@ pub fn padding_x(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn padding_y(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-y", value)])
+  attribute.style("--padding-y", value)
 }
 
 ///
@@ -279,7 +279,7 @@ pub fn padding_y(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn radius(value: String) -> Attribute(msg) {
-  attribute.style([#("--radius", value)])
+  attribute.style("--radius", value)
 }
 
 ///
@@ -287,5 +287,5 @@ pub fn radius(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn text(value: String) -> Attribute(msg) {
-  attribute.style([#("--text", value)])
+  attribute.style("--text", value)
 }

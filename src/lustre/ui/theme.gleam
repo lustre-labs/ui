@@ -1,18 +1,19 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import gleam/dynamic.{type DecodeError, type Dynamic, DecodeError}
+import gleam/dynamic/decode.{type Decoder}
 import gleam/float
 import gleam/int
 import gleam/json.{type Json}
 import gleam/option.{type Option, None, Some}
 import gleam/pair
-import gleam/result
 import gleam/string
-import gleam_community/colour.{type Colour} as gleam_community_colour
+import gleam_community/colour as gleam_community_colour
 import lustre/attribute.{attribute}
 import lustre/element.{type Element}
 import lustre/element/html
-import lustre/ui/colour.{type ColourPalette, type ColourScale, ColourPalette}
+import lustre/ui/colour.{
+  type Colour, type ColourPalette, type ColourScale, ColourPalette,
+}
 
 // TYPES -----------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ import lustre/ui/colour.{type ColourPalette, type ColourScale, ColourPalette}
 /// to colour a span of text with the primary colour of your theme by doing:
 ///
 /// ```gleam
-/// html.span([attribute.style([#("color", theme.primary.solid_text)])], [
+/// html.span([attribute.style("color", theme.primary.solid_text)], [
 ///   html.text("Hello, world!")
 /// ])
 /// ```
@@ -88,6 +89,7 @@ pub type SizeScale {
 ///
 pub type Selector {
   Global
+  Host
   Class(String)
   DataAttribute(String, String)
 }
@@ -169,6 +171,18 @@ pub fn default() -> Theme {
   )
 }
 
+pub fn constant_size(base: Float) -> SizeScale {
+  SizeScale(
+    xs: base,
+    sm: base,
+    md: base,
+    lg: base,
+    xl: base,
+    xl_2: base,
+    xl_3: base,
+  )
+}
+
 pub fn perfect_fourth(base: Float) -> SizeScale {
   SizeScale(
     xs: base /. 1.333 /. 1.333 /. 1.333,
@@ -219,6 +233,11 @@ pub fn golden_ratio(base: Float) -> SizeScale {
 
 // MANIPULATIONS ---------------------------------------------------------------
 
+pub fn with_scope(theme: Theme, selector: Selector) -> Theme {
+  Theme(..theme, selector:)
+}
+
+///
 /// Set all of the fonts in a theme at once.
 ///
 pub fn with_fonts(theme: Theme, fonts: Fonts) -> Theme {
@@ -351,9 +370,10 @@ pub fn with_dark_palette(
 pub fn with_dark_base_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, base: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, base: scale) }),
+    ),
   )
 }
 
@@ -367,9 +387,10 @@ pub fn with_dark_base_scale(theme: Theme, scale: ColourScale) -> Theme {
 pub fn with_dark_primary_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, primary: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, primary: scale) }),
+    ),
   )
 }
 
@@ -383,9 +404,10 @@ pub fn with_dark_primary_scale(theme: Theme, scale: ColourScale) -> Theme {
 pub fn with_dark_secondary_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, secondary: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, secondary: scale) }),
+    ),
   )
 }
 
@@ -399,9 +421,10 @@ pub fn with_dark_secondary_scale(theme: Theme, scale: ColourScale) -> Theme {
 pub fn with_dark_success_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, success: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, success: scale) }),
+    ),
   )
 }
 
@@ -415,9 +438,10 @@ pub fn with_dark_success_scale(theme: Theme, scale: ColourScale) -> Theme {
 pub fn with_dark_warning_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, warning: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, warning: scale) }),
+    ),
   )
 }
 
@@ -431,9 +455,10 @@ pub fn with_dark_warning_scale(theme: Theme, scale: ColourScale) -> Theme {
 pub fn with_dark_danger_scale(theme: Theme, scale: ColourScale) -> Theme {
   Theme(
     ..theme,
-    dark: option.map(theme.dark, pair.map_second(_, fn(dark) {
-      ColourPalette(..dark, danger: scale)
-    })),
+    dark: option.map(
+      theme.dark,
+      pair.map_second(_, fn(dark) { ColourPalette(..dark, danger: scale) }),
+    ),
   )
 }
 
@@ -665,6 +690,7 @@ ${selector}${dark_selector}, ${selector} ${dark_selector} {
 fn to_css_selector(selector: Selector) -> String {
   case selector {
     Global -> ""
+    Host -> ":root, :host"
     Class(class) -> "." <> class
     DataAttribute(name, "") -> "[data-" <> name <> "]"
     DataAttribute(name, value) -> "[data-" <> name <> "=" <> value <> "]"
@@ -799,6 +825,7 @@ pub fn encode(theme: Theme) -> Json {
 fn encode_selector(selector: Selector) -> Json {
   case selector {
     Global -> json.object([#("kind", json.string("Global"))])
+    Host -> json.object([#("kind", json.string("Host"))])
     Class(class) ->
       json.object([
         #("kind", json.string("Class")),
@@ -833,67 +860,67 @@ fn encode_sizes(sizes: SizeScale) -> Json {
   ])
 }
 
-pub fn decoder(json: Dynamic) -> Result(Theme, List(DecodeError)) {
-  dynamic.decode7(
-    Theme,
-    dynamic.field("id", dynamic.string),
-    dynamic.field("selector", selector_decoder),
-    dynamic.field("font", fonts_decoder),
-    dynamic.field("radius", sizes_decoder),
-    dynamic.field("space", sizes_decoder),
-    dynamic.field("light", colour.palette_decoder),
-    dynamic.field(
-      "dark",
-      dynamic.optional(dynamic.tuple2(selector_decoder, colour.palette_decoder)),
-    ),
-  )(json)
+pub fn decoder() -> Decoder(Theme) {
+  use id <- decode.field("id", decode.string)
+  use selector <- decode.field("selector", selector_decoder())
+  use font <- decode.field("font", fonts_decoder())
+  use radius <- decode.field("radius", sizes_decoder())
+  use space <- decode.field("space", sizes_decoder())
+  use light <- decode.field("light", colour.palette_decoder())
+  use dark <- decode.field(
+    "dark",
+    decode.optional({
+      use selector <- decode.field(0, selector_decoder())
+      use palette <- decode.field(1, colour.palette_decoder())
+
+      decode.success(#(selector, palette))
+    }),
+  )
+
+  decode.success(Theme(id:, selector:, font:, radius:, space:, light:, dark:))
 }
 
-fn selector_decoder(json: Dynamic) -> Result(Selector, List(DecodeError)) {
-  use kind <- result.try(dynamic.field("kind", dynamic.string)(json))
+fn selector_decoder() -> Decoder(Selector) {
+  use kind <- decode.field("kind", decode.string)
 
   case kind {
-    "Global" -> Ok(Global)
-    "Class" ->
-      json |> dynamic.decode1(Class, dynamic.field("class", dynamic.string))
-    "DataAttribute" ->
-      json
-      |> dynamic.decode2(
-        DataAttribute,
-        dynamic.field("name", dynamic.string),
-        dynamic.field("value", dynamic.string),
-      )
-    _ ->
-      Error([
-        DecodeError(
-          expected: "'Global' | 'Class' | 'DataAttribute'",
-          found: kind,
-          path: ["kind"],
-        ),
-      ])
+    "Global" -> decode.success(Global)
+    "Host" -> decode.success(Host)
+    "Class" -> {
+      use class <- decode.field("class", decode.string)
+
+      decode.success(Class(class))
+    }
+
+    "DataAttribute" -> {
+      use name <- decode.field("name", decode.string)
+      use value <- decode.field("value", decode.string)
+
+      decode.success(DataAttribute(name, value))
+    }
+
+    _ -> decode.failure(Global, "")
   }
 }
 
-fn fonts_decoder(json: Dynamic) -> Result(Fonts, List(DecodeError)) {
-  dynamic.decode3(
-    Fonts,
-    dynamic.field("heading", dynamic.string),
-    dynamic.field("body", dynamic.string),
-    dynamic.field("code", dynamic.string),
-  )(json)
+fn fonts_decoder() -> Decoder(Fonts) {
+  use heading <- decode.field("heading", decode.string)
+  use body <- decode.field("body", decode.string)
+  use code <- decode.field("code", decode.string)
+
+  decode.success(Fonts(heading:, body:, code:))
 }
 
-fn sizes_decoder(json: Dynamic) -> Result(SizeScale, List(DecodeError)) {
-  dynamic.decode7(
-    SizeScale,
-    dynamic.field("xs", dynamic.float),
-    dynamic.field("sm", dynamic.float),
-    dynamic.field("md", dynamic.float),
-    dynamic.field("lg", dynamic.float),
-    dynamic.field("xl", dynamic.float),
-    dynamic.field("xl-2", dynamic.float),
-    dynamic.field("xl-3", dynamic.float),
-  )(json)
+fn sizes_decoder() -> Decoder(SizeScale) {
+  use xs <- decode.field("xs", decode.float)
+  use sm <- decode.field("sm", decode.float)
+  use md <- decode.field("md", decode.float)
+  use lg <- decode.field("lg", decode.float)
+  use xl <- decode.field("xl", decode.float)
+  use xl_2 <- decode.field("xl_2", decode.float)
+  use xl_3 <- decode.field("xl_3", decode.float)
+
+  decode.success(SizeScale(xs:, sm:, md:, lg:, xl:, xl_2:, xl_3:))
 }
 
 // THEME TOKENS ---------------------------------------------------------------

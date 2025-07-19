@@ -52,7 +52,7 @@
 ////
 //// pub fn delete_todo_failed() {
 ////   alert.element([alert.danger()], [
-////     alert.indicator([], [icon.exclamation_triangle([])]),
+////     alert.indicator(icon.exclamation_triangle([])),
 ////     alert.title([], [html.text("Could not delete todo")]),
 ////     alert.content([], [
 ////       html.p([], [html.text("Check your internet connection and try again.")])
@@ -288,7 +288,7 @@ pub fn pill() -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn background(value: String) -> Attribute(msg) {
-  attribute.style([#("--background", value)])
+  attribute.style("--background", value)
 }
 
 /// By default, the `alert` element uses an appropriate border colour based on
@@ -305,7 +305,7 @@ pub fn background(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn border(value: String) -> Attribute(msg) {
-  attribute.style([#("--border", value)])
+  attribute.style("--border", value)
 }
 
 /// By default, the `alert` element sets the size of the [`indicator`](#indicator)
@@ -323,7 +323,7 @@ pub fn border(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn indicator_size(value: String) -> Attribute(msg) {
-  attribute.style([#("--indicator-size", value)])
+  attribute.style("--indicator-size", value)
 }
 
 /// By default, the `alert` element sets appropriate horizontal and vertical
@@ -343,41 +343,41 @@ pub fn indicator_size(value: String) -> Attribute(msg) {
 /// <!-- @css-variable -->
 ///
 pub fn padding(x x: String, y y: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", x), #("--padding-y", y)])
+  attribute.styles([#("--padding-x", x), #("--padding-y", y)])
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn padding_x(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-x", value)])
+  attribute.style("--padding-x", value)
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn padding_y(value: String) -> Attribute(msg) {
-  attribute.style([#("--padding-y", value)])
+  attribute.style("--padding-y", value)
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn radius(value: String) -> Attribute(msg) {
-  attribute.style([#("--radius", value)])
+  attribute.style("--radius", value)
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn text(value: String) -> Attribute(msg) {
-  attribute.style([#("--text", value)])
+  attribute.style("--text", value)
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn title_margin(value: String) -> Attribute(msg) {
-  attribute.style([#("--title-margin", value)])
+  attribute.style("--title-margin", value)
 }
 
 /// <!-- @css-variable -->
 ///
 pub fn title_weight(value: String) -> Attribute(msg) {
-  attribute.style([#("--title-weight", value)])
+  attribute.style("--title-weight", value)
 }

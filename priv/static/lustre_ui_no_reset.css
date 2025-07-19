@@ -1,4 +1,4 @@
-@layer reset, primitives, components;
+@layer primitives, components;
 
 @layer components {
 .lustre-ui-input {
@@ -690,7 +690,7 @@ lustre-ui-accordion {
 
 }
 
-@layer reset {
+@layer components {
 /*
 ! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
 */

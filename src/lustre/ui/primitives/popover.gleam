@@ -1,19 +1,18 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import decipher
 import gleam/bool
-import gleam/dict.{type Dict}
-import gleam/dynamic.{type DecodeError, type Decoder, type Dynamic}
+import gleam/dynamic.{type Dynamic}
+import gleam/dynamic/decode.{type Decoder}
 import gleam/json
-import gleam/list
-import gleam/result
 import gleam/string
 import lustre
 import lustre/attribute.{type Attribute, attribute}
+import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
+import lustre/ffi/dom
 
 // TYPES -----------------------------------------------------------------------
 
@@ -37,7 +36,17 @@ pub type Anchor {
 pub const name: String = "lustre-ui-popover"
 
 pub fn register() -> Result(Nil, lustre.Error) {
-  let app = lustre.component(init, update, view, on_attribute_change())
+  let app =
+    lustre.component(init, update, view, [
+      component.adopt_styles(True),
+      component.on_attribute_change("aria-expanded", fn(value) {
+        case value {
+          "true" | "" -> Ok(ParentSetOpen(True))
+          "false" -> Ok(ParentSetOpen(False))
+          _ -> Error(Nil)
+        }
+      }),
+    ])
 
   lustre.register(app, name)
 }
@@ -101,28 +110,25 @@ pub fn equal_width() -> Attribute(msg) {
 /// to override that gap, or remove it entirely.
 ///
 pub fn gap(value: String) -> Attribute(msg) {
-  attribute.style([#("--gap", value)])
+  attribute.style("--gap", value)
 }
 
 // EVENTS ----------------------------------------------------------------------
 
 pub fn on_change(handler: fn(Bool) -> msg) -> Attribute(msg) {
-  use event <- event.on("change")
-  use is_open <- result.try(decipher.at(["detail", "open"], dynamic.bool)(event))
+  event.on("change", {
+    use is_open <- decode.subfield(["detail", "open"], decode.bool)
 
-  Ok(handler(is_open))
+    decode.success(handler(is_open))
+  })
 }
 
 pub fn on_open(handler: msg) -> Attribute(msg) {
-  use _ <- event.on("open")
-
-  Ok(handler)
+  event.on("open", decode.success(handler))
 }
 
 pub fn on_close(handler: msg) -> Attribute(msg) {
-  use _ <- event.on("close")
-
-  Ok(handler)
+  event.on("close", decode.success(handler))
 }
 
 // MODEL -----------------------------------------------------------------------
@@ -137,7 +143,7 @@ type Model {
 
 fn init(_) -> #(Model, Effect(Msg)) {
   let model = Collapsed
-  let effect = effect.batch([set_state("collapsed")])
+  let effect = effect.batch([component.set_pseudo_state("collapsed")])
 
   #(model, effect)
 }
@@ -149,112 +155,104 @@ type Msg {
   ParentSetOpen(Bool)
   SchedulerDidTick
   TransitionDidEnd
-  UserPressedTrigger
+  UserPressedTrigger(event: Dynamic)
 }
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
-  case msg, model {
+  case echo msg, model {
     ParentSetOpen(True), WillCollapse | ParentSetOpen(True), Collapsed -> #(
       WillExpand,
-      effect.batch([tick(), set_state("will-expand")]),
+      effect.batch([tick(), component.set_pseudo_state("will-expand")]),
     )
+
     ParentSetOpen(True), _ -> #(model, effect.none())
+
     ParentSetOpen(False), WillExpand | ParentSetOpen(False), Expanded -> #(
       WillCollapse,
-      effect.batch([tick(), set_state("will-collapse")]),
+      effect.batch([tick(), component.set_pseudo_state("will-collapse")]),
     )
+
     ParentSetOpen(False), _ -> #(model, effect.none())
-    SchedulerDidTick, WillExpand -> #(Expanded, set_state("expanded"))
-    SchedulerDidTick, WillCollapse -> #(Collapsing, set_state("collapsing"))
+
+    SchedulerDidTick, WillExpand -> #(
+      Expanded,
+      component.set_pseudo_state("expanded"),
+    )
+
+    SchedulerDidTick, WillCollapse -> #(
+      Collapsing,
+      component.set_pseudo_state("collapsing"),
+    )
+
     SchedulerDidTick, _ -> #(model, effect.none())
-    TransitionDidEnd, Collapsing -> #(Collapsed, set_state("collapsed"))
+
+    TransitionDidEnd, Collapsing -> #(
+      Collapsed,
+      component.set_pseudo_state("collapsed"),
+    )
+
     TransitionDidEnd, _ -> #(model, effect.none())
-    UserPressedTrigger, WillExpand | UserPressedTrigger, Expanded -> #(
+
+    UserPressedTrigger(event:), WillExpand
+    | UserPressedTrigger(event:), Expanded
+    -> #(
       model,
       effect.batch([
         event.emit("close", json.null()),
         event.emit("change", json.object([#("open", json.bool(False))])),
+        dom.prevent_default(event),
       ]),
     )
-    UserPressedTrigger, WillCollapse
-    | UserPressedTrigger, Collapsing
-    | UserPressedTrigger, Collapsed
+
+    UserPressedTrigger(event:), WillCollapse
+    | UserPressedTrigger(event:), Collapsing
+    | UserPressedTrigger(event:), Collapsed
     -> #(
       model,
       effect.batch([
         event.emit("open", json.null()),
         event.emit("change", json.object([#("open", json.bool(True))])),
+        dom.prevent_default(event),
       ]),
     )
   }
 }
 
-fn on_attribute_change() -> Dict(String, Decoder(Msg)) {
-  dict.from_list([
-    #("aria-expanded", fn(value) {
-      value
-      |> decipher.bool_string
-      |> result.map(ParentSetOpen)
-    }),
-  ])
-}
-
 // EFFECTS ---------------------------------------------------------------------
 
-fn set_state(value: String) -> Effect(msg) {
-  use _, root <- element.get_root
-  use state <- list.each([
-    "will-expand", "expanded", "will-collapse", "collapsing", "collapsed",
-  ])
-
-  case state == value {
-    True -> do_set_state(value, root)
-    False -> do_remove_state(state, root)
-  }
-}
-
-@external(javascript, "../../../dom.ffi.mjs", "set_state")
-fn do_set_state(value: String, root: Dynamic) -> Nil
-
-@external(javascript, "../../../dom.ffi.mjs", "remove_state")
-fn do_remove_state(value: String, root: Dynamic) -> Nil
-
 fn tick() -> Effect(Msg) {
-  use dispatch <- effect.from
-  use <- after_paint
+  use dispatch, _ <- effect.after_paint
 
   dispatch(SchedulerDidTick)
 }
 
-@external(javascript, "../../../scheduler.ffi.mjs", "after_paint")
-fn after_paint(k: fn() -> Nil) -> Nil
-
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Msg) {
-  html.div([attribute.style([#("position", "relative")])], [
+  html.div([attribute.style("position", "relative")], [
     view_trigger(),
     view_popover(model),
   ])
 }
 
 fn view_trigger() -> Element(Msg) {
-  html.slot([
-    attribute.name("trigger"),
-    event.on_click(UserPressedTrigger),
-    event.on("keydown", handle_keydown),
-  ])
+  html.slot(
+    [
+      attribute.name("trigger"),
+      event.on("click", decode.map(decode.dynamic, UserPressedTrigger)),
+      event.on("keydown", handle_keydown()),
+    ],
+    [],
+  )
 }
 
-fn handle_keydown(event: Dynamic) -> Result(Msg, List(DecodeError)) {
-  use key <- result.try(dynamic.field("key", dynamic.string)(event))
+fn handle_keydown() -> Decoder(Msg) {
+  use event <- decode.then(decode.dynamic)
+  use key <- decode.field("key", decode.string)
 
   case key {
-    "Enter" | " " -> {
-      event.prevent_default(event)
-      Ok(UserPressedTrigger)
-    }
-    _ -> Error([])
+    "Enter" | " " -> decode.success(UserPressedTrigger(event:))
+    _ -> decode.failure(UserPressedTrigger(event:), "")
   }
 }
 
@@ -264,12 +262,8 @@ fn view_popover(model: Model) -> Element(Msg) {
   html.div(
     [
       attribute("part", "popover-content"),
-      event.on("transitionend", handle_transitionend),
+      event.on("transitionend", decode.success(TransitionDidEnd)),
     ],
-    [html.slot([attribute.name("popover")])],
+    [html.slot([attribute.name("popover")], [])],
   )
-}
-
-fn handle_transitionend(_: Dynamic) -> Result(Msg, List(DecodeError)) {
-  Ok(TransitionDidEnd)
 }
