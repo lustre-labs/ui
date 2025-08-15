@@ -15,7 +15,9 @@ internal_modules = []
 [dependencies]
 gleam_json = ">= 3.0.0 and < 4.0.0"
 gleam_stdlib = ">= 0.60.0 and < 2.0.0"
-lustre = ">= 5.0.0 and < 6.0.0"
+lustre = { git = "https://github.com/lustre-labs/lustre.git", ref = "main" }
+justin = ">= 1.0.1 and < 2.0.0"
+iv = ">= 1.3.2 and < 2.0.0"
 
 [dev-dependencies]
 esgleam = ">= 0.7.0 and < 1.0.0"
