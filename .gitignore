@@ -3,3 +3,7 @@
 build
 erl_crash.dump
 node_modules
+
+src/lustre_ui.css
+
+priv/static/lustre_ui_storybook.*
