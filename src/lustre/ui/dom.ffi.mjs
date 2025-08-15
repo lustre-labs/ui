@@ -40,7 +40,8 @@ export const is_event = (dynamic) => dynamic instanceof Event;
 export const with_cleanup = (root, callback) => {
   const host = root instanceof ShadowRoot ? root.host : root;
   const cleanup = callback();
-  const observer = new MutationObserver((mutations) => {
+
+  let observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       for (const node of mutation.removedNodes) {
         if (node === host) {
