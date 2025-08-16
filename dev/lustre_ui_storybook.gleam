@@ -14,6 +14,8 @@ pub fn main() {
         otp_stories.default_story(),
         otp_stories.six_digits_story(),
         otp_stories.with_separator_story(),
+        otp_stories.letters_story(),
+        otp_stories.letters_and_digits_story(),
       ]),
     ])
 

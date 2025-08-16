@@ -4,6 +4,8 @@ import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/json
 import gleam/list
+import gleam/regexp
+import gleam/result
 import gleam/string
 import lustre
 import lustre/attribute.{type Attribute}
@@ -104,6 +106,37 @@ pub fn separator() -> Item {
   Separator
 }
 
+type AllowedCharacters {
+  Digits
+  Letters
+  Both
+}
+
+fn allowed_from_parts(string: String) -> Result(AllowedCharacters, Nil) {
+  let options = regexp.Options(case_insensitive: False, multi_line: False)
+  let assert Ok(whitespace) = regexp.compile("\\s+", options)
+
+  use parts <- result.try(
+    regexp.split(whitespace, string)
+    |> list.filter(fn(s) { !string.is_empty(s) })
+    |> list.try_map(fn(s) {
+      case s {
+        "digits" -> Ok(Digits)
+        "letters" -> Ok(Letters)
+        _ -> Error(Nil)
+      }
+    }),
+  )
+
+  list.reduce(parts, fn(a, b) {
+    case a {
+      Both -> Both
+      _ if a == b -> a
+      _ -> Both
+    }
+  })
+}
+
 // MODEL -----------------------------------------------------------------------
 
 type Model {
@@ -113,6 +146,7 @@ type Model {
     slots: Int,
     show_caret: Bool,
     disabled: Bool,
+    allowed: AllowedCharacters,
   )
 }
 
@@ -124,6 +158,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
       slots: 4,
       show_caret: False,
       disabled: False,
+      allowed: Digits,
     )
   let effect = effect.none()
 
@@ -140,6 +175,9 @@ fn options() -> List(component.Option(Msg)) {
     component.on_attribute_change("disabled", fn(_) {
       Ok(ParentToggledDisabled)
     }),
+    component.on_attribute_change("allow", fn(allowed) {
+      Ok(ParentChangedAllowed(allowed))
+    }),
   ]
 }
 
@@ -150,6 +188,7 @@ type Msg {
   ParentChangedSlot(items: List(Item))
   ParentChangedValue(value: String)
   ParentToggledDisabled
+  ParentChangedAllowed(allowed: String)
   UserBlurredInput
   UserFocusedInput
   UserPressedIgnoredKey
@@ -162,7 +201,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     ParentChangedSlot(items: template) -> {
       let slots = list.count(template, fn(item) { item == Digit })
-      let value = crop_value(model.value, slots)
+      let value =
+        model.value
+        |> filter_value(model.allowed)
+        |> crop_value(slots)
       let did_change = model.value != value
       let is_complete = did_change && string.length(value) == slots
       let model = Model(..model, template:, slots:, value:)
@@ -180,7 +222,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     ParentChangedValue(value:) -> {
-      let value = crop_value(value, model.slots)
+      let value =
+        value
+        |> filter_value(model.allowed)
+        |> crop_value(model.slots)
       let model = Model(..model, value:)
       let effect = effect.none()
 
@@ -189,6 +234,15 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     ParentToggledDisabled -> {
       let model = Model(..model, disabled: !model.disabled)
+      let effect = effect.none()
+
+      #(model, effect)
+    }
+
+    ParentChangedAllowed(allowed:) -> {
+      let allowed = result.unwrap(allowed_from_parts(allowed), Digits)
+      let value = filter_value(model.value, allowed)
+      let model = Model(..model, value:, allowed:)
       let effect = effect.none()
 
       #(model, effect)
@@ -213,7 +267,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     UserUpdatedValue(value:) -> {
-      let value = crop_value(value, model.slots)
+      let value =
+        value
+        |> filter_value(model.allowed)
+        |> crop_value(model.slots)
       let is_complete = string.length(value) == model.slots
       let model = Model(..model, value:)
       let effect = case is_complete {
@@ -235,6 +292,20 @@ fn crop_value(value: String, slots: Int) -> String {
     length if length > slots -> string.drop_end(value, length - slots)
     _ -> value
   }
+}
+
+fn filter_value(value: String, allowed: AllowedCharacters) -> String {
+  value
+  |> string.to_utf_codepoints()
+  |> list.filter(fn(codepoint) {
+    let c = string.utf_codepoint_to_int(codepoint)
+    case allowed {
+      Both | Digits if c >= 48 && c < 58 -> True
+      Both | Letters if c >= 65 && c < 91 || c >= 97 && c < 122 -> True
+      _ -> False
+    }
+  })
+  |> string.from_utf_codepoints
 }
 
 // EFFECTS ---------------------------------------------------------------------
