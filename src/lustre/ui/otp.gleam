@@ -47,6 +47,25 @@ pub fn disabled(is_disabled: Bool) -> Attribute(msg) {
   attribute.disabled(is_disabled)
 }
 
+///
+///
+pub type AllowedCharacters {
+  Digits
+  Letters
+  Both
+}
+
+///
+///
+pub fn allow(allowed: AllowedCharacters) -> Attribute(msg) {
+  let attribute = case allowed {
+    Digits -> "digits"
+    Letters -> "letters"
+    Both -> "digits letters"
+  }
+  attribute.attribute("allow", attribute)
+}
+
 // EVENTS ----------------------------------------------------------------------
 
 ///
@@ -106,37 +125,6 @@ pub fn separator() -> Item {
   Separator
 }
 
-type AllowedCharacters {
-  Digits
-  Letters
-  Both
-}
-
-fn allowed_from_parts(string: String) -> Result(AllowedCharacters, Nil) {
-  let options = regexp.Options(case_insensitive: False, multi_line: False)
-  let assert Ok(whitespace) = regexp.compile("\\s+", options)
-
-  use parts <- result.try(
-    regexp.split(whitespace, string)
-    |> list.filter(fn(s) { !string.is_empty(s) })
-    |> list.try_map(fn(s) {
-      case s {
-        "digits" -> Ok(Digits)
-        "letters" -> Ok(Letters)
-        _ -> Error(Nil)
-      }
-    }),
-  )
-
-  list.reduce(parts, fn(a, b) {
-    case a {
-      Both -> Both
-      _ if a == b -> a
-      _ -> Both
-    }
-  })
-}
-
 // MODEL -----------------------------------------------------------------------
 
 type Model {
@@ -176,7 +164,14 @@ fn options() -> List(component.Option(Msg)) {
       Ok(ParentToggledDisabled)
     }),
     component.on_attribute_change("allow", fn(allowed) {
-      Ok(ParentChangedAllowed(allowed))
+      case allowed {
+        "" -> Ok(Digits)
+        "digits" -> Ok(Digits)
+        "letters" -> Ok(Letters)
+        "letters digits" | "digits letters" -> Ok(Both)
+        _ -> Error(Nil)
+      }
+      |> result.map(ParentChangedAllowed)
     }),
   ]
 }
@@ -188,7 +183,7 @@ type Msg {
   ParentChangedSlot(items: List(Item))
   ParentChangedValue(value: String)
   ParentToggledDisabled
-  ParentChangedAllowed(allowed: String)
+  ParentChangedAllowed(allowed: AllowedCharacters)
   UserBlurredInput
   UserFocusedInput
   UserPressedIgnoredKey
@@ -240,7 +235,6 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     ParentChangedAllowed(allowed:) -> {
-      let allowed = result.unwrap(allowed_from_parts(allowed), Digits)
       let value = filter_value(model.value, allowed)
       let model = Model(..model, value:, allowed:)
       let effect = effect.none()
@@ -295,17 +289,16 @@ fn crop_value(value: String, slots: Int) -> String {
 }
 
 fn filter_value(value: String, allowed: AllowedCharacters) -> String {
-  value
-  |> string.to_utf_codepoints()
-  |> list.filter(fn(codepoint) {
-    let c = string.utf_codepoint_to_int(codepoint)
+  let options = regexp.Options(case_insensitive: True, multi_line: False)
+  let assert Ok(banned) =
     case allowed {
-      Both | Digits if c >= 48 && c < 58 -> True
-      Both | Letters if c >= 65 && c < 91 || c >= 97 && c < 122 -> True
-      _ -> False
+      Digits -> "[^0-9]"
+      Letters -> "[^a-z]"
+      Both -> "[^0-9a-z]"
     }
-  })
-  |> string.from_utf_codepoints
+    |> regexp.compile(options)
+
+  regexp.replace(each: banned, in: value, with: "")
 }
 
 // EFFECTS ---------------------------------------------------------------------

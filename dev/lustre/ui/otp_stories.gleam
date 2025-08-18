@@ -71,7 +71,7 @@ pub fn letters_story() {
     [
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
-      attribute.attribute("allow", "letters"),
+      otp.allow(otp.Letters),
       tw(),
     ],
     [],
@@ -87,7 +87,7 @@ pub fn letters_and_digits_story() {
     [
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
-      attribute.attribute("allow", "letters digits"),
+      otp.allow(otp.Both),
       tw(),
     ],
     [],
