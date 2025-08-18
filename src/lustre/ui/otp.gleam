@@ -4,6 +4,8 @@ import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/json
 import gleam/list
+import gleam/regexp
+import gleam/result
 import gleam/string
 import lustre
 import lustre/attribute.{type Attribute}
@@ -43,6 +45,25 @@ pub fn value(otp: String) -> Attribute(msg) {
 ///
 pub fn disabled(is_disabled: Bool) -> Attribute(msg) {
   attribute.disabled(is_disabled)
+}
+
+///
+///
+pub type AllowedCharacters {
+  Digits
+  Letters
+  Both
+}
+
+///
+///
+pub fn allow(allowed: AllowedCharacters) -> Attribute(msg) {
+  let attribute = case allowed {
+    Digits -> "digits"
+    Letters -> "letters"
+    Both -> "digits letters"
+  }
+  attribute.attribute("allow", attribute)
 }
 
 // EVENTS ----------------------------------------------------------------------
@@ -113,6 +134,7 @@ type Model {
     slots: Int,
     show_caret: Bool,
     disabled: Bool,
+    allowed: AllowedCharacters,
   )
 }
 
@@ -124,6 +146,7 @@ fn init(_) -> #(Model, Effect(Msg)) {
       slots: 4,
       show_caret: False,
       disabled: False,
+      allowed: Digits,
     )
   let effect = effect.none()
 
@@ -140,6 +163,16 @@ fn options() -> List(component.Option(Msg)) {
     component.on_attribute_change("disabled", fn(_) {
       Ok(ParentToggledDisabled)
     }),
+    component.on_attribute_change("allow", fn(allowed) {
+      case allowed {
+        "" -> Ok(Digits)
+        "digits" -> Ok(Digits)
+        "letters" -> Ok(Letters)
+        "letters digits" | "digits letters" -> Ok(Both)
+        _ -> Error(Nil)
+      }
+      |> result.map(ParentChangedAllowed)
+    }),
   ]
 }
 
@@ -150,6 +183,7 @@ type Msg {
   ParentChangedSlot(items: List(Item))
   ParentChangedValue(value: String)
   ParentToggledDisabled
+  ParentChangedAllowed(allowed: AllowedCharacters)
   UserBlurredInput
   UserFocusedInput
   UserPressedIgnoredKey
@@ -162,7 +196,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     ParentChangedSlot(items: template) -> {
       let slots = list.count(template, fn(item) { item == Digit })
-      let value = crop_value(model.value, slots)
+      let value =
+        model.value
+        |> filter_value(model.allowed)
+        |> crop_value(slots)
       let did_change = model.value != value
       let is_complete = did_change && string.length(value) == slots
       let model = Model(..model, template:, slots:, value:)
@@ -180,7 +217,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     ParentChangedValue(value:) -> {
-      let value = crop_value(value, model.slots)
+      let value =
+        value
+        |> filter_value(model.allowed)
+        |> crop_value(model.slots)
       let model = Model(..model, value:)
       let effect = effect.none()
 
@@ -189,6 +229,14 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
 
     ParentToggledDisabled -> {
       let model = Model(..model, disabled: !model.disabled)
+      let effect = effect.none()
+
+      #(model, effect)
+    }
+
+    ParentChangedAllowed(allowed:) -> {
+      let value = filter_value(model.value, allowed)
+      let model = Model(..model, value:, allowed:)
       let effect = effect.none()
 
       #(model, effect)
@@ -213,7 +261,10 @@ fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
     }
 
     UserUpdatedValue(value:) -> {
-      let value = crop_value(value, model.slots)
+      let value =
+        value
+        |> filter_value(model.allowed)
+        |> crop_value(model.slots)
       let is_complete = string.length(value) == model.slots
       let model = Model(..model, value:)
       let effect = case is_complete {
@@ -235,6 +286,19 @@ fn crop_value(value: String, slots: Int) -> String {
     length if length > slots -> string.drop_end(value, length - slots)
     _ -> value
   }
+}
+
+fn filter_value(value: String, allowed: AllowedCharacters) -> String {
+  let options = regexp.Options(case_insensitive: True, multi_line: False)
+  let assert Ok(banned) =
+    case allowed {
+      Digits -> "[^0-9]"
+      Letters -> "[^a-z]"
+      Both -> "[^0-9a-z]"
+    }
+    |> regexp.compile(options)
+
+  regexp.replace(each: banned, in: value, with: "")
 }
 
 // EFFECTS ---------------------------------------------------------------------

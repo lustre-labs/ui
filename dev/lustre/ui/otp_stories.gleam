@@ -62,6 +62,38 @@ pub fn with_separator_story() {
   )
 }
 
+pub fn letters_story() {
+  use <- fable.story("Letters")
+  use value <- fable.input(label: "OTP", default: "")
+  use controls <- fable.scene()
+
+  otp.root(
+    [
+      otp.value(fable.get(controls, value)),
+      otp.on_change(fable.set(value, _)),
+      otp.allow(otp.Letters),
+      tw(),
+    ],
+    [],
+  )
+}
+
+pub fn letters_and_digits_story() {
+  use <- fable.story("Letters and digits")
+  use value <- fable.input(label: "OTP", default: "")
+  use controls <- fable.scene()
+
+  otp.root(
+    [
+      otp.value(fable.get(controls, value)),
+      otp.on_change(fable.set(value, _)),
+      otp.allow(otp.Both),
+      tw(),
+    ],
+    [],
+  )
+}
+
 // UTILITIES -------------------------------------------------------------------
 
 fn tw() {
