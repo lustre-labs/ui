@@ -34,7 +34,7 @@ packages = [
   { name = "iv", version = "1.3.2", build_tools = ["gleam"], requirements = ["gleam_stdlib", "gleam_yielder"], otp_app = "iv", source = "hex", outer_checksum = "1FE22E047705BE69EA366E3A2E73C2E1310CBCB27DDE767DE17AE3FA86499947" },
   { name = "justin", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "justin", source = "hex", outer_checksum = "7FA0C6DB78640C6DC5FBFD59BF3456009F3F8B485BF6825E97E1EB44E9A1E2CD" },
   { name = "logging", version = "1.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "logging", source = "hex", outer_checksum = "1098FBF10B54B44C2C7FDF0B01C1253CAFACDACABEFB4B0D027803246753E06D" },
-  { name = "lustre", version = "5.3.2", build_tools = ["gleam"], requirements = ["gleam_erlang", "gleam_json", "gleam_otp", "gleam_stdlib", "houdini"], source = "git", repo = "https://github.com/lustre-labs/lustre.git", commit = "d3b5970531e489f40955f5f742855a2b7f300e8e" },
+  { name = "lustre", version = "5.3.4", build_tools = ["gleam"], requirements = ["gleam_erlang", "gleam_json", "gleam_otp", "gleam_stdlib", "houdini"], otp_app = "lustre", source = "hex", outer_checksum = "D0EF92316D51435823A234ADA4FFDD799740C89F1A188412CBC76722139121A5" },
   { name = "lustre_dev_tools", version = "1.9.2", build_tools = ["gleam"], requirements = ["argv", "filepath", "fs", "gleam_community_ansi", "gleam_crypto", "gleam_deque", "gleam_erlang", "gleam_http", "gleam_httpc", "gleam_json", "gleam_otp", "gleam_package_interface", "gleam_regexp", "gleam_stdlib", "glint", "glisten", "mist", "repeatedly", "simplifile", "term_size", "tom", "wisp"], otp_app = "lustre_dev_tools", source = "hex", outer_checksum = "56860C8D91F5D7511C750DBE66B36FCBA4E025691656FE54271C62E9CF7E1040" },
   { name = "lustre_fable", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_json", "gleam_regexp", "gleam_stdlib", "justin", "lustre", "modem", "rsvp"], source = "git", repo = "https://github.com/lustre-labs/fable.git", commit = "11abbc709d123f2966052812a81d86b5a7f29641" },
   { name = "marceau", version = "1.3.0", build_tools = ["gleam"], requirements = [], otp_app = "marceau", source = "hex", outer_checksum = "2D1C27504BEF45005F5DFB18591F8610FB4BFA91744878210BDC464412EC44E9" },
@@ -60,7 +60,7 @@ gleeunit = { version = "~> 1.0" }
 globlin = { version = ">= 2.0.2 and < 3.0.0" }
 iv = { version = ">= 1.3.2 and < 2.0.0" }
 justin = { version = ">= 1.0.1 and < 2.0.0" }
-lustre = { git = "https://github.com/lustre-labs/lustre.git", ref = "main" }
+lustre = { version = ">= 5.3.4 and < 6.0.0" }
 lustre_dev_tools = { version = ">= 1.8.2 and < 2.0.0" }
 lustre_fable = { git = "https://github.com/lustre-labs/fable.git", ref = "main" }
 simplifile = { version = ">= 2.2.0 and < 3.0.0" }
