@@ -14,7 +14,7 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element, element}
 import lustre/element/html
 import lustre/event
-import lustre/ui/dom
+import lustre/ui_internal/dom
 
 // COMPONENT -------------------------------------------------------------------
 
