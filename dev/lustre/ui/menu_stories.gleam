@@ -9,14 +9,13 @@ pub fn edit_menu_story() {
   use selected <- fable.input("Selected value", "")
   use _ <- fable.scene()
 
-  let item_tw =
-    "px-2 py-1 rounded [&:state(active)]:bg-blue-50 [&:state(active)]:text-blue-500"
+  let item_tw = "menu-item"
 
-  let separator_tw = "my-1 h-px bg-gray-100"
+  let separator_tw = "menu-separator"
 
   menu.root(
     [
-      attribute.class("flex flex-col p-1 rounded border border-gray-100"),
+      attribute.class("menu-root"),
       menu.on_select(fable.set(selected, _)),
     ],
     [
@@ -31,7 +30,7 @@ pub fn edit_menu_story() {
       ]),
       menu.separator([attribute.class(separator_tw)], []),
       menu.group([], [
-        html.p([attribute.class("ml-2 text-xs font-semibold text-gray-400")], [
+        html.p([attribute.class("menu-group-label")], [
           html.text("Search"),
         ]),
         menu.item("find", [attribute.class(item_tw)], [
@@ -49,13 +48,13 @@ pub fn discord_server_menu() {
   use <- fable.story("Discord server menu")
   use _ <- fable.scene()
 
-  let menu_tw = "bg-zinc-900 text-zinc-200 flex flex-col p-1 rounded"
+  let menu_tw = "menu-dark"
 
-  let item_tw = "px-2 py-1 rounded [&:state(active)]:bg-zinc-700"
+  let item_tw = "menu-item"
 
-  let checkbox_tw = "grid grid-cols-[1fr_1rem] gap-2"
+  let checkbox_tw = "checkbox-grid"
 
-  let separator_tw = "my-1 h-px bg-zinc-700"
+  let separator_tw = "menu-separator"
 
   menu.root([attribute.class(menu_tw)], [
     menu.item("mark-as-read", [attribute.class(item_tw)], [
