@@ -6,7 +6,8 @@ import lustre
 import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element, element}
-import lustre/ui/checkbox_internal/context.{type Context}
+import lustre/element/html
+import lustre/ui/checkbox_internal/context
 import lustre/ui/checkbox_internal/indicator
 import lustre/ui_internal/host
 import lustre/ui_internal/value.{type Value}
@@ -18,7 +19,7 @@ import lustre/ui_internal/value.{type Value}
 pub fn register() -> Result(Nil, lustre.Error) {
   use _ <- result.try(indicator.register())
   use _ <- result.try(lustre.register(
-    lustre.component(init:, update:, view: todo, options: options()),
+    lustre.component(init:, update:, view:, options: options()),
     context.checkbox_tag,
   ))
 
@@ -98,7 +99,12 @@ type Msg {
 
 fn update(model: Model, msg: Msg) -> #(Model, Effect(Msg)) {
   case msg {
-    _ -> todo
+    _ -> #(model, effect.none())
   }
 }
+
 // VIEW ------------------------------------------------------------------------
+
+fn view(_model: Model) -> Element(Msg) {
+  html.text("")
+}

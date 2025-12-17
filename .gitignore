@@ -7,3 +7,7 @@ node_modules
 src/lustre_ui.css
 
 priv/static/lustre_ui_storybook.*
+
+#Added automatically by Lustre Dev Tools
+/.lustre
+/dist

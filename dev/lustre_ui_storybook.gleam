@@ -2,7 +2,6 @@
 
 import lustre/dev/fable
 import lustre/ui
-
 import lustre/ui/menu_stories
 import lustre/ui/otp_stories
 
@@ -11,7 +10,7 @@ import lustre/ui/otp_stories
 pub fn main() {
   let book =
     fable.book("Lustre UI", [
-      fable.external_stylesheet("/priv/static/lustre_ui_storybook.css"),
+      fable.external_stylesheet("/storybook.css"),
       fable.chapter("Menu", [
         menu_stories.edit_menu_story(),
         menu_stories.discord_server_menu(),

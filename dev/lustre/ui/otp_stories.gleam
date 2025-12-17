@@ -11,7 +11,7 @@ pub fn default_story() {
     [
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
-      tw(),
+      attribute.class("otp-root"),
     ],
     [],
   )
@@ -26,7 +26,7 @@ pub fn six_digits_story() {
     [
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
-      tw(),
+      attribute.class("otp-root"),
     ],
     [
       otp.digit(),
@@ -48,7 +48,7 @@ pub fn with_separator_story() {
     [
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
-      tw(),
+      attribute.class("otp-root"),
     ],
     [
       otp.digit(),
@@ -72,7 +72,7 @@ pub fn letters_story() {
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
       otp.allow(otp.Letters),
-      tw(),
+      attribute.class("otp-root"),
     ],
     [],
   )
@@ -88,21 +88,9 @@ pub fn letters_and_digits_story() {
       otp.value(fable.get(controls, value)),
       otp.on_change(fable.set(value, _)),
       otp.allow(otp.Both),
-      tw(),
+      attribute.class("otp-root"),
     ],
     [],
   )
 }
-
 // UTILITIES -------------------------------------------------------------------
-
-fn tw() {
-  attribute.class(
-    " flex gap-2
-      [&::part(digit)]:w-12 [&::part(digit)]:h-12 [&::part(digit)]:border [&::part(digit)]:border-gray-200 [&::part(digit)]:rounded
-      [&::part(digit_active)]:!border-blue-500
-      [&::part(separator)]:w-4 [&::part(separator)]:h-px [&::part(separator)]:mx-2 [&::part(separator)]:bg-gray-600
-      [&::part(caret)]:w-px [&::part(caret)]:h-3 [&::part(caret)]:bg-blue-500
-    ",
-  )
-}

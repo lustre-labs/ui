@@ -148,17 +148,13 @@ type Model {
 fn init(_) -> #(Model, Effect(Msg)) {
   let context = context.new()
   let model = Model(context:, items: [])
-  let effect =
-    effect.batch([
-      context.provide(context),
-      host.set_role("menu"),
-    ])
+  let effect = effect.batch([context.provide(context), host.set_role("menu")])
 
   #(model, effect)
 }
 
 fn options() -> List(component.Option(Msg)) {
-  [component.delegates_focus(True)]
+  []
 }
 
 // UPDATE ----------------------------------------------------------------------
@@ -431,7 +427,10 @@ fn view(_) -> Element(Msg) {
       "
     }),
 
-    component.default_slot(
+    component.default_slot([], []),
+
+    component.named_slot(
+      "content",
       [
         event.on("slotchange", handle_slotchange),
         event.on("focusin", handle_focus),
