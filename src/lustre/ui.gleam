@@ -1,15 +1,20 @@
+// IMPORTS ---------------------------------------------------------------------
+
 import gleam/result
 import lustre
-import lustre/ui/checkbox
-import lustre/ui/menu
-import lustre/ui/otp
-import lustre/ui/popover
+import lustre/ui/accordion
 
+// ELEMENTS --------------------------------------------------------------------
+
+@internal
+pub fn main() -> Result(Nil, lustre.Error) {
+  register()
+}
+
+///
+///
 pub fn register() -> Result(Nil, lustre.Error) {
-  use _ <- result.try(checkbox.register())
-  use _ <- result.try(menu.register())
-  use _ <- result.try(otp.register())
-  use _ <- result.try(popover.register())
+  use _ <- result.try(accordion.register())
 
   Ok(Nil)
 }
