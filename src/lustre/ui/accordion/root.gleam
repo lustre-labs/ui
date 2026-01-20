@@ -23,7 +23,6 @@ import lustre_ui/dom/element.{type HtmlElement} as html_element
 import lustre_ui/dom/find
 import lustre_ui/dom/web_component
 import lustre_ui/prop.{type Prop, Prop}
-import lustre_ui/shortid
 
 // ELEMENTS --------------------------------------------------------------------
 
@@ -139,7 +138,6 @@ pub fn register() -> Result(Nil, lustre.Error) {
 
 type Model {
   Model(
-    id: String,
     focused: Option(HtmlElement),
     orientation: Orientation,
     loop: Bool,
@@ -156,7 +154,6 @@ type Orientation {
 fn init(_) -> #(Model, Effect(Message)) {
   let model =
     Model(
-      id: shortid.new(6),
       focused: None,
       orientation: Vertical,
       loop: False,
@@ -166,7 +163,7 @@ fn init(_) -> #(Model, Effect(Message)) {
 
   let effect =
     effect.batch([
-      provide(model.id, model.open.value),
+      provide(model.open.value),
       web_component.before_paint(fn(dispatch, _, component) {
         // If the parent hasn't explicitly set the `aria-orientation` attribute
         // then we manually sprout it with the default value of "vertical". We
@@ -229,7 +226,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
         False -> {
           let open = Prop(..model.open, value: set.from_list(value))
           let model = Model(..model, open:)
-          let effect = provide(model.id, open.value)
+          let effect = provide(open.value)
 
           #(model, effect)
         }
@@ -272,7 +269,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
       let open =
         Prop(..model.open, value: set.from_list(value), controlled: True)
       let model = Model(..model, open:)
-      let effect = provide(model.id, open.value)
+      let effect = provide(open.value)
 
       #(model, effect)
     }
@@ -309,17 +306,16 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
       let open = Prop(..model.open, value: next, touched: True)
       let model = Model(..model, open:)
-      let effect = effect.batch([provide(model.id, next), emit_change(next)])
+      let effect = effect.batch([provide(next), emit_change(next)])
 
       #(model, effect)
     }
   }
 }
 
-fn provide(id: String, open: Set(String)) -> Effect(message) {
+fn provide(open: Set(String)) -> Effect(message) {
   effect.provide("accordion", {
     json.object([
-      #("id", json.string(id)),
       #("open", open |> set.to_list |> json.array(json.string)),
     ])
   })

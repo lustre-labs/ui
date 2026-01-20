@@ -101,10 +101,9 @@ pub fn register() -> Result(Nil, lustre.Error) {
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
       component.on_context_change("accordion", {
-        use id <- decode.field("id", decode.string)
         use all <- decode.field("open", decode.list(decode.string))
 
-        decode.success(AccordionProvidedContext(id:, all:))
+        decode.success(AccordionProvidedContext(all:))
       }),
 
       component.on_attribute_change("name", fn(value) {
@@ -169,7 +168,7 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
-  AccordionProvidedContext(id: String, all: List(String))
+  AccordionProvidedContext(all: List(String))
   ParentSetDefaultOpen(value: Bool)
   ParentSetName(value: String)
   ParentSetOpen(value: Bool)
@@ -184,7 +183,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
       #(model, effect.none())
     }
 
-    AccordionProvidedContext(id: _, all:) ->
+    AccordionProvidedContext(all:) ->
       case model.open.controlled {
         True -> #(Model(..model, accordion: Some(all)), effect.none())
         False -> {
