@@ -1,3 +1,96 @@
+//// <script>
+//// const docs = [
+////   {
+////     header: "Elements",
+////     functions: [
+////       "register",
+////       "view",
+////       "item",
+////       "heading",
+////       "trigger",
+////       "panel",
+////       "close",
+////     ]
+////   },
+////   {
+////     header: "Attributes",
+////     sort: true,
+////     functions: [
+////       "label",
+////       "loop",
+////       "open",
+////       "default_open",
+////       "value",
+////       "default_value",
+////       "single",
+////       "multiple",
+////       "horizontal",
+////       "vertical",
+////       "level",
+////     ]
+////   },
+////   {
+////     header: "Events",
+////     sort: true,
+////     functions: [
+////       "on_value_change",
+////       "on_open_change",
+////       "on_show",
+////       "on_hide",
+////     ]
+////   },
+//// ]
+////
+//// const callback = () => {
+////   const list = document.querySelector(".sidebar > ul:last-of-type")
+////   const sortedLists = document.createDocumentFragment()
+////   const sortedMembers = document.createDocumentFragment()
+////
+////   for (const section of docs) {
+////     sortedLists.append((() => {
+////       const node = document.createElement("h3")
+////       node.append(section.header)
+////       return node
+////     })())
+////
+////     sortedMembers.append((() => {
+////       const node = document.createElement("h2")
+////       node.append(section.header)
+////       return node
+////     })())
+////
+////     const sortedList = document.createElement("ul")
+////     sortedLists.append(sortedList)
+////
+////     if (section.sort) {
+////       section.functions.sort()
+////     }
+////
+////     for (const funcName of section.functions) {
+////       const href = `#${funcName}`
+////       const member = document.querySelector(
+////         `.member:has(h2 > a[href="${href}"])`
+////       )
+////       const sidebar = list.querySelector(`li:has(a[href="${href}"])`)
+////       sortedList.append(sidebar)
+////       sortedMembers.append(member)
+////     }
+////   }
+////
+////   document.querySelector(".sidebar").insertBefore(sortedLists, list)
+////   document
+////     .querySelector(".module-members:has(#module-values)")
+////     .insertBefore(
+////       sortedMembers,
+////       document.querySelector("#module-values").nextSibling
+////     )
+//// }
+////
+//// document.readyState !== "loading"
+////   ? callback()
+////   : document.addEventListener("DOMContentLoaded", callback, { once: true })
+//// </script>
+////
 //// An accordion is made up of one or more collapsible sections with content.
 //// Each accordion item is made up of a header and a trigger button, and the
 //// panel that contains the collapsible content.
@@ -163,18 +256,18 @@ import lustre/ui/accordion/trigger
 
 ///
 ///
-pub opaque type Item(message) {
+pub opaque type AccordionItem(message) {
   Item(
     name: String,
     attributes: List(Attribute(message)),
     heading: Element(message),
-    panel: Panel(message),
+    panel: AccordionPanel(message),
   )
 }
 
 ///
 ///
-pub opaque type Trigger(message) {
+pub opaque type AccordionTrigger(message) {
   Trigger(
     attributes: List(Attribute(message)),
     children: List(Element(message)),
@@ -183,7 +276,7 @@ pub opaque type Trigger(message) {
 
 ///
 ///
-pub opaque type Panel(message) {
+pub opaque type AccordionPanel(message) {
   Panel(attributes: List(Attribute(message)), children: List(Element(message)))
 }
 
@@ -248,7 +341,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
 ///
 pub fn view(
   attributes: List(Attribute(message)),
-  children: List(Item(message)),
+  children: List(AccordionItem(message)),
 ) -> Element(message) {
   keyed.element(root.tag, attributes, {
     use Item(name:, attributes:, heading:, panel:) <- list.filter_map(children)
@@ -283,8 +376,8 @@ pub fn item(
   name name: String,
   attributes attributes: List(Attribute(message)),
   heading heading: Element(message),
-  panel panel: Panel(message),
-) -> Item(message) {
+  panel panel: AccordionPanel(message),
+) -> AccordionItem(message) {
   Item(name:, attributes:, heading:, panel:)
 }
 
@@ -308,7 +401,7 @@ pub fn item(
 ///
 pub fn heading(
   attributes: List(Attribute(message)),
-  trigger: Trigger(message),
+  trigger: AccordionTrigger(message),
 ) -> Element(message) {
   heading.element(attributes, [
     trigger.element(trigger.attributes, trigger.children),
@@ -338,7 +431,7 @@ pub fn heading(
 pub fn trigger(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
-) -> Trigger(message) {
+) -> AccordionTrigger(message) {
   Trigger(attributes:, children:)
 }
 
@@ -373,7 +466,7 @@ pub fn trigger(
 pub fn panel(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
-) -> Panel(message) {
+) -> AccordionPanel(message) {
   Panel(attributes:, children:)
 }
 
