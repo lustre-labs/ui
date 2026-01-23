@@ -17,10 +17,8 @@ import lustre_ui/shortid
 
 // COMPONENT -------------------------------------------------------------------
 
-pub const tag: String = "lustre-ui-accordion-panel"
+pub const tag: String = "lustre-accordion-panel"
 
-///
-///
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
@@ -40,16 +38,12 @@ pub fn register() -> Result(Nil, lustre.Error) {
 
 // ELEMENTS --------------------------------------------------------------------
 
-///
-///
 pub fn element(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
 ) -> Element(message) {
   element.element(tag, attributes, children)
 }
-
-// ATTRIBUTES ------------------------------------------------------------------
 
 // EVENTS ----------------------------------------------------------------------
 

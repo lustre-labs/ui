@@ -87,7 +87,7 @@ fn emit_change(open: Set(String)) -> Effect(Message) {
 
 // COMPONENT -------------------------------------------------------------------
 
-pub const tag: String = "lustre-ui-accordion"
+pub const tag: String = "lustre-accordion"
 
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
@@ -184,8 +184,7 @@ fn init(_) -> #(Model, Effect(Message)) {
         // the default state of any child items.
         case html_element.attribute(component, "value") {
           Ok("") | Error(_) -> {
-            let selector =
-              "lustre-ui-accordion-item[open]:not([open=\"false\"])"
+            let selector = item.tag <> "[open]:not([open=\"false\"])"
 
             let default_open =
               component
@@ -356,24 +355,24 @@ fn handle_keydown(
     }
   })
 
+  let selector = fn(element) {
+    case html_element.tag(element) {
+      tag if tag == trigger.tag -> find.Accept
+      // We shouldn't enter panel content to find the next trigger, so we reject
+      // it to stop searching that entire subtree.
+      tag if tag == panel.tag -> find.Reject
+      _ -> find.Skip
+    }
+  }
+
   use trigger <- decode.field("target", {
     use target <- decode.then(html_element.decoder())
 
-    case html_element.closest(target, "lustre-ui-accordion-trigger") {
+    case html_element.closest(target, trigger.tag) {
       Ok(element) -> decode.success(element)
       Error(_) -> decode.failure(html_element.nil(), "")
     }
   })
-
-  let selector = fn(element) {
-    case html_element.tag(element) {
-      "lustre-ui-accordion-trigger" -> find.Accept
-      // We shouldn't enter panel content to find the next trigger, so we reject
-      // it to stop searching that entire subtree.
-      "lustre-ui-accordion-panel" -> find.Reject
-      _ -> find.Skip
-    }
-  }
 
   let result = case key, orientation {
     "Home", _ ->

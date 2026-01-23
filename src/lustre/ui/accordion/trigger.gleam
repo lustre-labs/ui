@@ -11,10 +11,8 @@ import lustre_ui/dom/web_component
 
 // COMPONENT -------------------------------------------------------------------
 
-pub const tag: String = "lustre-ui-accordion-trigger"
+pub const tag: String = "lustre-accordion-trigger"
 
-///
-///
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
@@ -33,18 +31,12 @@ pub fn register() -> Result(Nil, lustre.Error) {
 
 // ELEMENTS --------------------------------------------------------------------
 
-///
-///
 pub fn element(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
 ) -> Element(message) {
   element.element(tag, attributes, children)
 }
-
-// ATTRIBUTES ------------------------------------------------------------------
-
-// EVENTS ----------------------------------------------------------------------
 
 // MODEL -----------------------------------------------------------------------
 
