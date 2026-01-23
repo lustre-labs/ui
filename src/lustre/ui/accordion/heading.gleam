@@ -12,8 +12,6 @@ import lustre_ui/dom/web_component
 
 // ELEMENTS --------------------------------------------------------------------
 
-///
-///
 pub fn element(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
@@ -21,16 +19,10 @@ pub fn element(
   element.element(tag, attributes, children)
 }
 
-// ATTRIBUTES ------------------------------------------------------------------
-
-// EVENTS ----------------------------------------------------------------------
-
 // COMPONENT -------------------------------------------------------------------
 
-pub const tag: String = "lustre-ui-accordion-heading"
+pub const tag: String = "lustre-accordion-heading"
 
-///
-///
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [

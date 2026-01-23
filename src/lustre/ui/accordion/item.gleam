@@ -12,7 +12,9 @@ import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/event
+import lustre/ui/accordion/heading
 import lustre/ui/accordion/panel
+import lustre/ui/accordion/trigger
 import lustre_ui/dom/document
 import lustre_ui/dom/element as html_element
 import lustre_ui/dom/web_component
@@ -20,8 +22,6 @@ import lustre_ui/prop.{type Prop, Prop}
 
 // ELEMENTS --------------------------------------------------------------------
 
-///
-///
 pub fn element(
   attributes: List(Attribute(message)),
   children: List(Element(message)),
@@ -92,10 +92,8 @@ pub fn on_hide(message: fn(String) -> message) -> Attribute(message) {
 
 // COMPONENT -------------------------------------------------------------------
 
-pub const tag: String = "lustre-ui-accordion-item"
+pub const tag: String = "lustre-accordion-item"
 
-///
-///
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
@@ -152,7 +150,7 @@ fn init(_) -> #(Model, Effect(Message)) {
       web_component.before_paint(fn(dispatch, _, component) {
         let result =
           component
-          |> html_element.query_selector("lustre-ui-accordion-panel")
+          |> html_element.query_selector(panel.tag)
           |> result.try(html_element.attribute(_, "id"))
 
         case result {
@@ -345,15 +343,12 @@ fn divert_focus() -> Effect(message) {
   use _, _, component <- web_component.before_paint
   let _ = {
     use active <- result.try(document.active_element())
-    use item <- result.try(html_element.closest(
-      active,
-      "lustre-ui-accordion-item",
-    ))
+    use item <- result.try(html_element.closest(active, tag))
 
     use <- bool.guard(!html_element.is(item, component), Error(Nil))
     use trigger <- result.try(html_element.query_selector(
       component,
-      "lustre-ui-accordion-heading > lustre-ui-accordion-trigger",
+      heading.tag <> " > " <> trigger.tag,
     ))
 
     Ok(html_element.do_focus(trigger))
@@ -368,7 +363,7 @@ fn view(_) -> Element(Message) {
   let handle_click = {
     use target <- decode.field("target", html_element.decoder())
 
-    case html_element.closest(target, "lustre-ui-accordion-trigger") {
+    case html_element.closest(target, trigger.tag) {
       Ok(_) -> decode.success(UserPressedTrigger)
       Error(_) -> decode.failure(UserPressedTrigger, "")
     }
@@ -378,7 +373,7 @@ fn view(_) -> Element(Message) {
     use target <- decode.field("target", html_element.decoder())
     use key <- decode.field("key", decode.string)
 
-    case key, html_element.closest(target, "lustre-ui-accordion-trigger") {
+    case key, html_element.closest(target, trigger.tag) {
       "Enter", Ok(_) | " ", Ok(_) ->
         decode.success(event.handler(UserPressedTrigger, True, False))
 
