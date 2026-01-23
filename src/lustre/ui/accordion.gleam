@@ -305,6 +305,12 @@ pub fn register() -> Result(Nil, lustre.Error) {
 
 /// The root accordion element is a container for multiple accordion items.
 ///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion>
+/// ```
+///
 /// #### Attributes
 ///
 /// [`default_value`](#default_value), [`horizontal`](#horizontal), [`label`](#label),
@@ -360,6 +366,12 @@ pub fn view(
 /// Each accordion item represents a single collapsible section within the
 /// accordion. It must have a unique name within the accordion to identify it.
 ///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion-item>
+/// ```
+///
 /// #### Attributes
 ///
 /// [`default_open`](#default_open), [`open`](#open).
@@ -383,6 +395,12 @@ pub fn item(
 
 /// An accordion heading heading contains the trigger button for an accordion
 /// item as its only child.
+///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion-heading>
+/// ```
 ///
 /// #### Attributes
 ///
@@ -411,6 +429,12 @@ pub fn heading(
 /// The accordion trigger is the button that toggles the open state of an
 /// accordion item. It must not contain any other interactive elements.
 ///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion-trigger>
+/// ```
+///
 /// #### Attributes
 ///
 /// [`label`](#label).
@@ -437,6 +461,12 @@ pub fn trigger(
 
 /// The accordion panel contains the collapsible content for the containing
 /// accordion item.
+///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion-panel>
+/// ```
 ///
 /// #### CSS states
 ///
@@ -473,6 +503,12 @@ pub fn panel(
 /// The optional accordion close trigger can be placed within the panel content
 /// to provide an additional way to collapse the containing accordion item without
 /// navigating back to the item header.
+///
+/// #### Tag
+///
+/// ```html
+/// <lustre-accordion-trigger>
+/// ```
 ///
 /// #### Attributes
 ///
