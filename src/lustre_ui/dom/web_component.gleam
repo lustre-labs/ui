@@ -3,8 +3,30 @@
 import gleam/dynamic.{type Dynamic}
 import gleam/int
 import gleam/string
+import lustre/component
 import lustre/effect.{type Effect}
 import lustre_ui/dom/element.{type HtmlElement}
+import lustre_ui/shortid
+
+//
+
+///
+///
+pub fn tabbable(component: HtmlElement, enabled: Bool) -> Nil {
+  element.set_attribute(component, "tabindex", case enabled {
+    True -> "0"
+    False -> "-1"
+  })
+}
+
+///
+///
+pub fn ensure_id(component: HtmlElement) -> Nil {
+  case element.attribute(component, "id") {
+    Ok("") | Error(_) -> element.set_attribute(component, "id", shortid.new(6))
+    Ok(_) -> Nil
+  }
+}
 
 // MANIPULATIONS ---------------------------------------------------------------
 
@@ -27,6 +49,12 @@ pub fn add_event_listener(
 ///
 pub fn aria_controls(component: HtmlElement, value: List(String)) -> Nil {
   element.set_attribute(component, "aria-controls", string.join(value, " "))
+}
+
+///
+///
+pub fn aria_describedby(component: HtmlElement, value: List(String)) -> Nil {
+  element.set_attribute(component, "aria-describedby", string.join(value, " "))
 }
 
 ///
@@ -76,6 +104,15 @@ pub fn aria_pressed(component: HtmlElement, value: Bool) -> Nil {
 
 ///
 ///
+pub fn aria_selected(component: HtmlElement, value: Bool) -> Nil {
+  element.set_attribute(component, "aria-selected", case value {
+    True -> "true"
+    False -> "false"
+  })
+}
+
+///
+///
 pub fn id(component: HtmlElement, value: String) -> Nil {
   element.set_attribute(component, "id", value)
 }
@@ -118,3 +155,12 @@ pub fn after_paint(
 
 @external(javascript, "./web_component.ffi.mjs", "getComponentElement")
 fn get_component_element(shadow_root: Dynamic) -> HtmlElement
+
+///
+///
+pub fn toggle_psuedo_state(name: String, on: Bool) -> Effect(message) {
+  case on {
+    True -> component.set_pseudo_state(name)
+    False -> component.remove_pseudo_state(name)
+  }
+}
