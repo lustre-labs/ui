@@ -11,6 +11,7 @@ import lustre/attribute.{type Attribute, attribute}
 import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
+import lustre/element/html
 import lustre/event
 import lustre/ui/accordion/heading
 import lustre/ui/accordion/panel
@@ -382,12 +383,22 @@ fn view(_) -> Element(Message) {
     }
   }
 
-  component.default_slot(
-    [
-      event.on("click", handle_click),
-      event.advanced("keydown", handle_keydown),
-      panel.on_identify(UserSetPanelId),
-    ],
-    [],
-  )
+  element.fragment([
+    html.style([], {
+      "
+      :host {
+        display: block;
+      }
+      "
+    }),
+
+    component.default_slot(
+      [
+        event.on("click", handle_click),
+        event.advanced("keydown", handle_keydown),
+        panel.on_identify(UserSetPanelId),
+      ],
+      [],
+    ),
+  ])
 }
