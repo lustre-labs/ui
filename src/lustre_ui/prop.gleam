@@ -32,8 +32,5 @@ pub fn control(prop: Prop(a), value: a) -> Prop(a) {
 ///
 ///
 pub fn touch(prop: Prop(a), value: a) -> Prop(a) {
-  case prop.controlled {
-    True -> prop
-    False -> Prop(..prop, value:, touched: True)
-  }
+  Prop(..prop, value:, touched: True)
 }
