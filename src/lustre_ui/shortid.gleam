@@ -23,7 +23,7 @@ pub fn new(length: Int) -> String {
   let index = int.random(letters_size - 1)
   let character = string.slice(letters, index, 1)
 
-  do_new("lustre-ui-" <> character, length - 1)
+  do_new("lustre-" <> character, length - 1)
 }
 
 fn do_new(id: String, length: Int) -> String {
