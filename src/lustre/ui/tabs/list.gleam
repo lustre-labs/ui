@@ -45,6 +45,13 @@ pub fn mode(value: ActivationMode) -> Attribute(message) {
   })
 }
 
+pub fn loop(enabled: Bool) -> Attribute(message) {
+  case enabled {
+    True -> attribute("loop", "")
+    False -> attribute.none()
+  }
+}
+
 // EVENTS ----------------------------------------------------------------------
 
 pub fn on_select(handler: fn(String) -> message) -> Attribute(message) {

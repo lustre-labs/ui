@@ -185,7 +185,8 @@ pub fn register() -> Result(Nil, lustre.Error) {
 /// #### Attributes
 ///
 /// [`automatic_activation`](#automatic_activation), [`default_value`](#default_value),
-/// [`horizontal`](#horizontal), [`value`](#value), [`vertical`](#vertical).
+/// [`horizontal`](#horizontal), [`loop`](#loop, [`value`](#value),
+/// [`vertical`](#vertical).
 ///
 /// #### Events
 ///
@@ -258,7 +259,7 @@ pub fn view(
 /// #### Attributes
 ///
 /// [`automatic_activation`](#automatic_activation), [`horizontal`](#horizontal),
-/// [`vertical`](#vertical).
+/// [`loop`](#loop), [`vertical`](#vertical).
 ///
 /// On attributes that are valid for both this element and the [root tabs](#view)
 /// element, attributes set directly on this element will take precedence.
@@ -508,6 +509,13 @@ pub fn automatic_activation(enabled: Bool) -> Attribute(message) {
     True -> tabslist.Automatic
     False -> tabslist.Manual
   })
+}
+
+/// Controls whether keyboard navigation in a [tabs list](#list) loops from the
+/// last tab back to the first and vice versa.
+///
+pub fn loop(enabled: Bool) -> Attribute(message) {
+  tabslist.loop(enabled)
 }
 
 // EVENTS ----------------------------------------------------------------------
