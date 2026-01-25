@@ -91,6 +91,8 @@
 ////   : document.addEventListener("DOMContentLoaded", callback, { once: true })
 //// </script>
 ////
+//// <!--- ----------------------------------------------------------------- -->
+////
 //// An accordion is made up of one or more collapsible sections with content.
 //// Each accordion item is made up of a header and a trigger button, and the
 //// panel that contains the collapsible content.
@@ -293,6 +295,14 @@ pub fn main() -> Result(Nil, lustre.Error) {
 /// components at once. Typically this is called just before starting your Lustre
 /// application.
 ///
+/// The following custom elements will be registered:
+///
+/// - `<lustre-accordion>`
+/// - `<lustre-accordion-item>`
+/// - `<lustre-accordion-heading>`
+/// - `<lustre-accordion-trigger>`
+/// - `<lustre-accordion-panel>`
+///
 pub fn register() -> Result(Nil, lustre.Error) {
   use _ <- result.try(root.register())
   use _ <- result.try(item.register())
@@ -320,6 +330,10 @@ pub fn register() -> Result(Nil, lustre.Error) {
 /// #### Events
 ///
 /// [`on_value_change`](#on_value_change)
+///
+/// #### Styling
+///
+/// This element has a default display of `block`.
 ///
 /// #### Accessibility notes
 ///
@@ -380,7 +394,11 @@ pub fn view(
 ///
 /// [`on_hide`](#on_hide), [`on_open_change`](#on_open_change), [`on_show`](#on_show).
 ///
-/// #### CSS states
+/// #### Styling
+///
+/// This element has a default display of `block`.
+///
+/// The following CSS custom states can be used to style this element:
 ///
 /// - `:state(open)` is applied when the accordion item is expanded.
 ///
@@ -406,7 +424,11 @@ pub fn item(
 ///
 /// [`level`](#level).
 ///
-/// #### CSS states
+/// #### Styling
+///
+/// This element has a default display of `block`.
+///
+/// The following CSS custom states can be used to style this element:
 ///
 /// - `:state(open)` is applied when the containing accordion item is expanded.
 ///
@@ -439,7 +461,9 @@ pub fn heading(
 ///
 /// [`label`](#label).
 ///
-/// #### CSS states
+/// #### Styling
+///
+/// The following CSS custom states can be used to style this element:
 ///
 /// - `:state(open)` is applied when the containing accordion item is expanded.
 ///
@@ -468,11 +492,16 @@ pub fn trigger(
 /// <lustre-accordion-panel>
 /// ```
 ///
-/// #### CSS states
+/// #### Styling
+///
+/// This element has a default display of `block`.
+///
+/// The following CSS custom states can be used to style this element:
 ///
 /// - `:state(open)` is applied when the containing accordion item is expanded.
 ///
-/// #### CSS variables
+/// The following CSS custom properties can be used to style this element or
+/// its children:
 ///
 /// - `--accordion-panel-width`
 /// - `--accordion-panel-height`
@@ -514,7 +543,11 @@ pub fn panel(
 ///
 /// [`label`](#label).
 ///
-/// #### CSS states
+/// #### Styling
+///
+/// This element has a default display of `inline`.
+///
+/// The following CSS custom states can be used to style this element:
 ///
 /// - `:state(open)` is applied when the containing accordion item is expanded.
 ///
@@ -660,7 +693,7 @@ pub fn level(value: Int) -> Attribute(message) {
 /// prevent the open state of the accordion from changing.
 ///
 /// In an uncontrolled accordion, this event can be used to respond to changes
-/// in the accordion's open state, for example by load ingcontent dynamically when
+/// in the accordion's open state, for example by loading content dynamically when
 /// an item is opened.
 ///
 pub fn on_value_change(
