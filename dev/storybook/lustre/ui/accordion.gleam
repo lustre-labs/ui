@@ -54,12 +54,11 @@ pub fn basic_story() {
     accordion.item(
       name: "item-" <> int.to_string(index),
       attributes: [attribute.class(accordion_item)],
-      heading: accordion.heading(
-        [],
+      heading: accordion.heading([], {
         accordion.trigger([attribute.class(accordion_trigger)], [
           html.text(question),
-        ]),
-      ),
+        ])
+      }),
       panel: accordion.panel([attribute.class(accordion_panel)], [
         html.p([attribute.class("p-2")], [
           html.text(answer),
