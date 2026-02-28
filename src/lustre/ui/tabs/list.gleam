@@ -189,21 +189,6 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 // VIEW ------------------------------------------------------------------------
 
 fn view(model: Model) -> Element(Message) {
-  let handle_click = {
-    use target <- decode.field("target", html_element.decoder())
-    let result = {
-      use trigger <- result.try(html_element.closest(target, trigger.tag))
-      use name <- result.try(html_element.attribute(trigger, "name"))
-
-      Ok(name)
-    }
-
-    case result {
-      Ok(trigger) -> UserActivatedTrigger(name: trigger) |> decode.success
-      Error(_) -> decode.failure(UserActivatedTrigger(""), "")
-    }
-  }
-
   let handle_focusin = {
     use target <- decode.field("target", html_element.decoder())
     let result = {
@@ -215,7 +200,7 @@ fn view(model: Model) -> Element(Message) {
 
     case result {
       Ok(trigger) if model.mode == Automatic ->
-        UserActivatedTrigger(name: trigger) |> decode.success
+        decode.success(UserActivatedTrigger(name: trigger))
 
       Ok(_) | Error(_) -> decode.failure(UserActivatedTrigger(""), "")
     }
@@ -233,7 +218,7 @@ fn view(model: Model) -> Element(Message) {
 
   component.default_slot(
     [
-      event.on("click", handle_click),
+      trigger.on_activate(UserActivatedTrigger),
       event.on("focusin", handle_focusin),
       event.advanced("keydown", {
         handle_keydown(model.orientation.value, model.loop)
@@ -274,10 +259,6 @@ fn handle_keydown(
   }
 
   let result = case key, orientation {
-    "Enter", _ | " ", _ ->
-      html_element.attribute(trigger, "name")
-      |> result.map(UserActivatedTrigger)
-
     "Home", _ ->
       find.first_descendant(of: tabs_list, pierce: False, matching: selector)
       |> result.map(UserNavigatedFocus)

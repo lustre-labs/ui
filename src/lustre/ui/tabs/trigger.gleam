@@ -12,6 +12,7 @@ import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/tabs/context.{type Context, type Tab}
+import lustre_ui/dom/event as html_event
 import lustre_ui/dom/web_component
 
 // ELEMENTS --------------------------------------------------------------------
@@ -62,6 +63,22 @@ fn emit_identify(
   })
 }
 
+pub fn on_activate(handler: fn(String) -> message) -> Attribute(message) {
+  event.on("tabs/trigger:activate", {
+    use name <- decode.subfield(["detail", "name"], decode.string)
+
+    decode.success(handler(name))
+  })
+}
+
+fn emit_activate(name: String) -> Effect(Message) {
+  event.emit("tabs/trigger:activate", {
+    json.object([
+      #("name", json.string(name)),
+    ])
+  })
+}
+
 // COMPONENT -------------------------------------------------------------------
 
 pub const tag: String = "lustre-tabs-trigger"
@@ -98,10 +115,25 @@ type Model {
 fn init(_) -> #(Model, Effect(Message)) {
   let model = Model(name: "", id: "", active: None)
   let effect =
-    web_component.before_paint(fn(_, _, component) {
+    web_component.before_paint(fn(dispatch, _, component) {
       web_component.role(component, "tab")
       web_component.ensure_id(component)
       web_component.tabbable(component, False)
+
+      web_component.add_event_listener(component, "click", fn(_) {
+        dispatch(UserActivatedTrigger)
+      })
+
+      web_component.add_event_listener(component, "keydown", fn(event) {
+        case decode.run(event, decode.at(["key"], decode.string)) {
+          Ok("Enter") | Ok(" ") -> {
+            html_event.prevent_default(event)
+            dispatch(UserActivatedTrigger)
+          }
+
+          Ok(_) | Error(_) -> Nil
+        }
+      })
     })
 
   #(model, effect)
@@ -115,6 +147,7 @@ type Message {
   ParentSetId(value: String)
   ParentSetName(value: String)
   TabsProvidedContext(value: Context)
+  UserActivatedTrigger
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
@@ -182,6 +215,8 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
       #(model, effect)
     }
+
+    UserActivatedTrigger -> #(model, emit_activate(model.name))
   }
 }
 
