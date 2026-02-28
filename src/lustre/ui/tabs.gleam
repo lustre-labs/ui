@@ -1,3 +1,93 @@
+//// <script>
+//// const docs = [
+////   {
+////     header: "Elements",
+////     functions: [
+////       "register",
+////       "view",
+////       "list",
+////       "trigger",
+////       "indicator",
+////       "content",
+////       "panel",
+////     ]
+////   },
+////   {
+////     header: "Attributes",
+////     sort: true,
+////     functions: [
+////       "value",
+////       "default_value",
+////       "horizontal",
+////       "vertical",
+////       "automatic_activation",
+////       "loop",
+////     ]
+////   },
+////   {
+////     header: "Events",
+////     sort: true,
+////     functions: [
+////       "on_value_change",
+////       "on_select",
+////       "on_open",
+////       "on_close",
+////     ]
+////   },
+//// ]
+////
+//// const callback = () => {
+////   const list = document.querySelector(".sidebar > ul:last-of-type")
+////   const sortedLists = document.createDocumentFragment()
+////   const sortedMembers = document.createDocumentFragment()
+////
+////   for (const section of docs) {
+////     sortedLists.append((() => {
+////       const node = document.createElement("h3")
+////       node.append(section.header)
+////       return node
+////     })())
+////
+////     sortedMembers.append((() => {
+////       const node = document.createElement("h2")
+////       node.append(section.header)
+////       return node
+////     })())
+////
+////     const sortedList = document.createElement("ul")
+////     sortedLists.append(sortedList)
+////
+////     if (section.sort) {
+////       section.functions.sort()
+////     }
+////
+////     for (const funcName of section.functions) {
+////       const href = `#${funcName}`
+////       const member = document.querySelector(
+////         `.member:has(h2 > a[href="${href}"])`
+////       )
+////       const sidebar = list.querySelector(`li:has(a[href="${href}"])`)
+////       sortedList.append(sidebar)
+////       sortedMembers.append(member)
+////     }
+////   }
+////
+////   document.querySelector(".sidebar").insertBefore(sortedLists, list)
+////   document
+////     .querySelector(".module-members:has(#module-values)")
+////     .insertBefore(
+////       sortedMembers,
+////       document.querySelector("#module-values").nextSibling
+////     )
+//// }
+////
+//// document.readyState !== "loading"
+////   ? callback()
+////   : document.addEventListener("DOMContentLoaded", callback, { once: true })
+//// </script>
+////
+//// <!--- ----------------------------------------------------------------- -->
+////
 //// Tabs are made up of one or more panels of content each with an associated
 //// trigger. Only one panel is visible at a time, and can be changed by selecting
 //// the associated trigger.
