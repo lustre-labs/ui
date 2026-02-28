@@ -15,6 +15,7 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event.{type Handler}
+import lustre/ui/accordion/context
 import lustre/ui/accordion/heading
 import lustre/ui/accordion/item
 import lustre/ui/accordion/panel
@@ -163,7 +164,7 @@ fn init(_) -> #(Model, Effect(Message)) {
 
   let effect =
     effect.batch([
-      provide(model.open.value),
+      context.provide(model.open.value),
       web_component.before_paint(fn(dispatch, _, component) {
         // If the parent hasn't explicitly set the `aria-orientation` attribute
         // then we manually sprout it with the default value of "vertical". We
@@ -225,7 +226,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
         False -> {
           let open = Prop(..model.open, value: set.from_list(value))
           let model = Model(..model, open:)
-          let effect = provide(open.value)
+          let effect = context.provide(open.value)
 
           #(model, effect)
         }
@@ -268,7 +269,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
       let open =
         Prop(..model.open, value: set.from_list(value), controlled: True)
       let model = Model(..model, open:)
-      let effect = provide(open.value)
+      let effect = context.provide(open.value)
 
       #(model, effect)
     }
@@ -305,19 +306,11 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
       let open = Prop(..model.open, value: next, touched: True)
       let model = Model(..model, open:)
-      let effect = effect.batch([provide(next), emit_change(next)])
+      let effect = effect.batch([context.provide(next), emit_change(next)])
 
       #(model, effect)
     }
   }
-}
-
-fn provide(open: Set(String)) -> Effect(message) {
-  effect.provide("accordion", {
-    json.object([
-      #("open", open |> set.to_list |> json.array(json.string)),
-    ])
-  })
 }
 
 // VIEW ------------------------------------------------------------------------

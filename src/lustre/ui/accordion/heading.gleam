@@ -1,12 +1,12 @@
 // IMPORTS ---------------------------------------------------------------------
 
-import gleam/dynamic/decode
 import lustre
 import lustre/attribute.{type Attribute}
 import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
+import lustre/ui/accordion/context.{type ItemContext}
 import lustre_ui/dom/element as html_element
 import lustre_ui/dom/web_component
 
@@ -27,11 +27,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      component.on_context_change("accordion/item", {
-        use open <- decode.field("open", decode.bool)
-
-        decode.success(AccordionItemProvidedContext(open:))
-      }),
+      context.on_item_change(AccordionItemProvidedContext),
     ])
 
   lustre.register(component, tag)
@@ -61,14 +57,14 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
-  AccordionItemProvidedContext(open: Bool)
+  AccordionItemProvidedContext(ItemContext)
 }
 
 fn update(_, message: Message) -> #(Model, Effect(Message)) {
   case message {
-    AccordionItemProvidedContext(open:) -> {
-      let model = Model(open:)
-      let effect = case open {
+    AccordionItemProvidedContext(context) -> {
+      let model = Model(open: context.open)
+      let effect = case context.open {
         True -> component.set_pseudo_state("open")
         False -> component.remove_pseudo_state("open")
       }

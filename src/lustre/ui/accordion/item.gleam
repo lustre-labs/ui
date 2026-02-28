@@ -13,6 +13,7 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
+import lustre/ui/accordion/context
 import lustre/ui/accordion/heading
 import lustre/ui/accordion/panel
 import lustre/ui/accordion/trigger
@@ -144,7 +145,7 @@ fn init(_) -> #(Model, Effect(Message)) {
   let model = Model(name: "", panel: "", accordion: None, open:)
   let effect =
     effect.batch([
-      provide(model.name, model.panel, False),
+      context.provide_item(model.name, model.panel, False),
       // If the user has explicitly set an id on the panel, we'll miss the event
       // emit because we haven't had a chance to render and attach event listeners
       // so instead we can query the DOM directly.
@@ -182,34 +183,30 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
       #(model, effect.none())
     }
 
-    AccordionProvidedContext(all:) ->
-      case model.open.controlled {
-        True -> #(Model(..model, accordion: Some(all)), effect.none())
-        False -> {
-          let open =
-            Prop(..model.open, touched: True, value: {
-              list.contains(all, model.name)
-            })
+    AccordionProvidedContext(all:) -> {
+      let open =
+        Prop(..model.open, touched: True, value: {
+          list.contains(all, model.name)
+        })
 
-          let model = Model(..model, accordion: Some(all), open:)
-          let effect = case model.open.value {
-            True ->
-              effect.batch([
-                provide(model.name, model.panel, open.value),
-                component.set_pseudo_state("open"),
-              ])
+      let model = Model(..model, accordion: Some(all), open:)
+      let effect = case model.open.value {
+        True ->
+          effect.batch([
+            context.provide_item(model.name, model.panel, open.value),
+            component.set_pseudo_state("open"),
+          ])
 
-            False ->
-              effect.batch([
-                provide(model.name, model.panel, open.value),
-                component.remove_pseudo_state("open"),
-                divert_focus(),
-              ])
-          }
-
-          #(model, effect)
-        }
+        False ->
+          effect.batch([
+            context.provide_item(model.name, model.panel, open.value),
+            component.remove_pseudo_state("open"),
+            divert_focus(),
+          ])
       }
+
+      #(model, effect)
+    }
 
     ParentSetDefaultOpen(value:) ->
       case model.open.controlled || model.open.touched {
@@ -220,13 +217,13 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
           let effect = case model.open.value {
             True ->
               effect.batch([
-                provide(model.name, model.panel, open.value),
+                context.provide_item(model.name, model.panel, open.value),
                 component.set_pseudo_state("open"),
               ])
 
             False ->
               effect.batch([
-                provide(model.name, model.panel, open.value),
+                context.provide_item(model.name, model.panel, open.value),
                 component.remove_pseudo_state("open"),
                 divert_focus(),
               ])
@@ -237,7 +234,8 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
     ParentSetName(value:) -> {
       let model = Model(..model, name: value)
-      let effect = provide(model.name, model.panel, model.open.value)
+      let effect =
+        context.provide_item(model.name, model.panel, model.open.value)
 
       #(model, effect)
     }
@@ -248,13 +246,13 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
       let effect = case model.open.value {
         True ->
           effect.batch([
-            provide(model.name, model.panel, open.value),
+            context.provide_item(model.name, model.panel, open.value),
             component.set_pseudo_state("open"),
           ])
 
         False ->
           effect.batch([
-            provide(model.name, model.panel, open.value),
+            context.provide_item(model.name, model.panel, open.value),
             component.remove_pseudo_state("open"),
             divert_focus(),
           ])
@@ -272,13 +270,13 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
           let effect = case model.open.value {
             True ->
               effect.batch([
-                provide(model.name, model.panel, open.value),
+                context.provide_item(model.name, model.panel, open.value),
                 component.set_pseudo_state("open"),
               ])
 
             False ->
               effect.batch([
-                provide(model.name, model.panel, open.value),
+                context.provide_item(model.name, model.panel, open.value),
                 component.remove_pseudo_state("open"),
                 divert_focus(),
               ])
@@ -304,14 +302,14 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
             True ->
               effect.batch([
                 emit_change(model.name, model.open.value),
-                provide(model.name, model.panel, model.open.value),
+                context.provide_item(model.name, model.panel, model.open.value),
                 component.set_pseudo_state("open"),
               ])
 
             False ->
               effect.batch([
                 emit_change(model.name, model.open.value),
-                provide(model.name, model.panel, model.open.value),
+                context.provide_item(model.name, model.panel, model.open.value),
                 component.remove_pseudo_state("open"),
                 divert_focus(),
               ])
@@ -323,21 +321,12 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
     UserSetPanelId(value:) -> {
       let model = Model(..model, panel: value)
-      let effect = provide(model.name, model.panel, model.open.value)
+      let effect =
+        context.provide_item(model.name, model.panel, model.open.value)
 
       #(model, effect)
     }
   }
-}
-
-fn provide(name: String, panel: String, open: Bool) -> Effect(Message) {
-  effect.provide("accordion/item", {
-    json.object([
-      #("name", json.string(name)),
-      #("panel", json.string(panel)),
-      #("open", json.bool(open)),
-    ])
-  })
 }
 
 fn divert_focus() -> Effect(message) {
@@ -361,28 +350,6 @@ fn divert_focus() -> Effect(message) {
 // VIEW ------------------------------------------------------------------------
 
 fn view(_) -> Element(Message) {
-  let handle_click = {
-    use target <- decode.field("target", html_element.decoder())
-
-    case html_element.closest(target, trigger.tag) {
-      Ok(_) -> decode.success(UserPressedTrigger)
-      Error(_) -> decode.failure(UserPressedTrigger, "")
-    }
-  }
-
-  let handle_keydown = {
-    use target <- decode.field("target", html_element.decoder())
-    use key <- decode.field("key", decode.string)
-
-    case key, html_element.closest(target, trigger.tag) {
-      "Enter", Ok(_) | " ", Ok(_) ->
-        decode.success(event.handler(UserPressedTrigger, True, False))
-
-      _, _ ->
-        decode.failure(event.handler(UserPressedTrigger, False, False), "")
-    }
-  }
-
   element.fragment([
     html.style([], {
       "
@@ -394,9 +361,8 @@ fn view(_) -> Element(Message) {
 
     component.default_slot(
       [
-        event.on("click", handle_click),
-        event.advanced("keydown", handle_keydown),
         panel.on_identify(UserSetPanelId),
+        trigger.on_activate(UserPressedTrigger),
       ],
       [],
     ),

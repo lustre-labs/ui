@@ -11,7 +11,7 @@ import lustre/ui/accordion
 
 const accordion = "w-lg"
 
-const accordion_item = "border-b"
+const accordion_item = "border-b border-gray-100"
 
 const accordion_trigger = "block w-full bg-gray-50 p-2 text-left
   hover:bg-gray-100
@@ -62,7 +62,7 @@ pub fn basic_story() {
       panel: accordion.panel([attribute.class(accordion_panel)], [
         html.p([attribute.class("p-2")], [
           html.text(answer),
-          html.button([attribute.tabindex(0)], [html.text("wibble")]),
+          accordion.close([], [html.text("wibble")]),
         ]),
       ]),
     )

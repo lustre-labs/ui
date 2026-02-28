@@ -1,12 +1,16 @@
 // IMPORTS ---------------------------------------------------------------------
 
 import gleam/dynamic/decode
+import gleam/json
 import lustre
 import lustre/attribute.{type Attribute}
 import lustre/component
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
+import lustre/event
+import lustre/ui/accordion/context.{type ItemContext}
+import lustre_ui/dom/event as html_event
 import lustre_ui/dom/web_component
 
 // COMPONENT -------------------------------------------------------------------
@@ -17,13 +21,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      component.on_context_change("accordion/item", {
-        use name <- decode.field("name", decode.string)
-        use panel <- decode.field("panel", decode.string)
-        use open <- decode.field("open", decode.bool)
-
-        decode.success(AccordionItemProvidedContext(name:, panel:, open:))
-      }),
+      context.on_item_change(AccordionItemProvidedContext),
     ])
 
   lustre.register(component, tag)
@@ -38,6 +36,16 @@ pub fn element(
   element.element(tag, attributes, children)
 }
 
+// EVENTS ----------------------------------------------------------------------
+
+pub fn on_activate(handler: message) -> Attribute(message) {
+  event.on("accordion/trigger:activate", decode.success(handler))
+}
+
+fn emit_activate() -> Effect(message) {
+  event.emit("accordion/trigger:activate", json.object([]))
+}
+
 // MODEL -----------------------------------------------------------------------
 
 type Model {
@@ -47,9 +55,24 @@ type Model {
 fn init(_) -> #(Model, Effect(Message)) {
   let model = Model
   let effect =
-    web_component.before_paint(fn(_, _, element) {
-      web_component.role(element, "button")
-      web_component.tabindex(element, 0)
+    web_component.before_paint(fn(dispatch, _, component) {
+      web_component.role(component, "button")
+      web_component.tabindex(component, 0)
+
+      web_component.add_event_listener(component, "click", fn(_) {
+        dispatch(UserActivatedTrigger)
+      })
+
+      web_component.add_event_listener(component, "keydown", fn(event) {
+        case decode.run(event, decode.at(["key"], decode.string)) {
+          Ok("Enter") | Ok(" ") -> {
+            html_event.prevent_default(event)
+            dispatch(UserActivatedTrigger)
+          }
+
+          Ok(_) | Error(_) -> Nil
+        }
+      })
     })
 
   #(model, effect)
@@ -58,27 +81,27 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
-  AccordionItemProvidedContext(name: String, panel: String, open: Bool)
+  AccordionItemProvidedContext(ItemContext)
+  UserActivatedTrigger
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
-  case message {
-    AccordionItemProvidedContext(name: _, panel:, open:) -> {
+  case echo message {
+    AccordionItemProvidedContext(context) -> {
       let effect =
         effect.batch([
           web_component.before_paint(fn(_, _, element) {
-            web_component.aria_controls(element, [panel])
-            web_component.aria_expanded(element, open)
+            web_component.aria_controls(element, [context.panel])
+            web_component.aria_expanded(element, context.open)
           }),
 
-          case open {
-            True -> component.set_pseudo_state("open")
-            False -> component.remove_pseudo_state("open")
-          },
+          web_component.toggle_psuedo_state("open", context.open),
         ])
 
       #(model, effect)
     }
+
+    UserActivatedTrigger -> #(model, emit_activate())
   }
 }
 
