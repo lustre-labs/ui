@@ -1,8 +1,10 @@
 // IMPORTS ---------------------------------------------------------------------
 
+import gleam/bool
 import gleam/dynamic.{type Dynamic}
 import gleam/dynamic/decode
 import gleam/json
+import gleam/result
 import gleam/string
 import lustre
 import lustre/attribute.{type Attribute}
@@ -11,6 +13,9 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
+import lustre/ui/accordion/context.{type ItemContext, ItemContext}
+import lustre/ui/accordion/trigger
+import lustre_ui/dom/document
 import lustre_ui/dom/element as html_element
 import lustre_ui/dom/web_component
 import lustre_ui/shortid
@@ -23,12 +28,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      component.on_context_change("accordion/item", {
-        use name <- decode.field("name", decode.string)
-        use open <- decode.field("open", decode.bool)
-
-        decode.success(AccordionItemProvidedContext(name:, open:))
-      }),
+      context.on_item_change(AccordionItemProvidedContext),
 
       component.on_attribute_change("id", fn(value) { Ok(ParentSetId(value:)) }),
     ])
@@ -110,14 +110,14 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
-  AccordionItemProvidedContext(name: String, open: Bool)
+  AccordionItemProvidedContext(ItemContext)
   PanelMeasuredDimensions(width: String, height: String)
   ParentSetId(value: String)
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
-    AccordionItemProvidedContext(name: _, open: True) ->
+    AccordionItemProvidedContext(ItemContext(open: True, ..)) ->
       case model.open {
         Collapsed -> {
           let model = Model(..model, open: Expanded)
@@ -133,6 +133,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
         Indeterminate -> {
           let model =
             Model(..model, open: Expanded, width: "auto", height: "auto")
+
           let effect = component.set_pseudo_state("open")
 
           #(model, effect)
@@ -141,7 +142,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
         Expanded -> #(model, effect.none())
       }
 
-    AccordionItemProvidedContext(name: _, open: False) ->
+    AccordionItemProvidedContext(ItemContext(open: False, ..)) ->
       case model.open {
         Expanded -> {
           let model = Model(..model, open: Collapsed)
@@ -149,6 +150,7 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
             effect.batch([
               component.remove_pseudo_state("open"),
               animate(False),
+              redirect_focus(),
             ])
 
           #(model, effect)
@@ -157,7 +159,12 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
         Indeterminate -> {
           let model =
             Model(..model, open: Collapsed, width: "0px", height: "0px")
-          let effect = component.remove_pseudo_state("open")
+
+          let effect =
+            effect.batch([
+              component.remove_pseudo_state("open"),
+              redirect_focus(),
+            ])
 
           #(model, effect)
         }
@@ -194,6 +201,23 @@ fn do_animate(
   open: Bool,
   dispatch: fn(#(String, String)) -> Nil,
 ) -> Nil
+
+fn redirect_focus() -> Effect(message) {
+  use _, _, component <- web_component.before_paint
+  let result = {
+    use active <- result.try(document.active_element())
+    use <- bool.guard(!html_element.contains(component, active), Error(Nil))
+    use root <- result.try(html_element.closest(component, "lustre-accordion"))
+    use trigger <- result.try(html_element.query_selector(root, trigger.tag))
+
+    Ok(trigger)
+  }
+
+  case result {
+    Ok(trigger) -> html_element.do_focus(trigger)
+    Error(_) -> Nil
+  }
+}
 
 // VIEW ------------------------------------------------------------------------
 
