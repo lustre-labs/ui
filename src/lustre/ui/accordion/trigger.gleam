@@ -86,7 +86,7 @@ type Message {
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
-  case echo message {
+  case message {
     AccordionItemProvidedContext(context) -> {
       let effect =
         effect.batch([
