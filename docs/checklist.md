@@ -7,7 +7,7 @@
 - [ ] switch
 - [x] tabs
 - [ ] toast
-- [ ] toggle
+- [x] toggle
 - [ ] toolbar
 - [ ] tooltip
 
