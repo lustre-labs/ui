@@ -57,6 +57,13 @@ pub fn attribute(element: HtmlElement, name: String) -> Result(String, Nil)
 
 ///
 ///
+@external(javascript, "./element.ffi.mjs", "boundingClientRect")
+pub fn bounding_client_rect(
+  element: HtmlElement,
+) -> #(Float, Float, Float, Float)
+
+///
+///
 @external(javascript, "./element.ffi.mjs", "closest")
 pub fn closest(
   element: HtmlElement,

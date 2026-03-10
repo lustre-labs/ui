@@ -33,6 +33,12 @@ export function attribute(element, name) {
   }
 }
 
+export function boundingClientRect(element) {
+  const rect = element.getBoundingClientRect();
+
+  return [rect.left, rect.top, rect.width, rect.height];
+}
+
 export function closest(element, selector) {
   const result = element.closest(selector);
 

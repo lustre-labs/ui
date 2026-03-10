@@ -2,6 +2,7 @@ import lustre/dev/fable
 import storybook/lustre/ui/accordion
 import storybook/lustre/ui/tabs
 import storybook/lustre/ui/toggle
+import storybook/lustre/ui/tooltip
 
 pub fn main() {
   let assert Ok(_) =
@@ -21,6 +22,10 @@ pub fn main() {
         toggle.basic_story(),
         toggle.group_story(),
         toggle.form_story(),
+      ]),
+
+      fable.chapter("tooltip", [
+        tooltip.basic_story(),
       ]),
     ])
     |> fable.start
