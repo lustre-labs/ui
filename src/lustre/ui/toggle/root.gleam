@@ -4,7 +4,6 @@ import gleam/bool
 import gleam/dynamic/decode
 import gleam/json
 import gleam/option.{None, Some}
-import gleam/result
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/component
@@ -13,7 +12,6 @@ import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
 import lustre/ui/toggle/context.{type GroupContext}
-import lustre/ui/toggle/group
 import lustre_ui/dom/event as html_event
 import lustre_ui/dom/web_component
 import lustre_ui/prop.{type Prop}
@@ -113,10 +111,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
       }),
     ])
 
-  use _ <- result.try(group.register())
-  use _ <- result.try(lustre.register(component, tag))
-
-  Ok(Nil)
+  lustre.register(component, tag)
 }
 
 // MODEL -----------------------------------------------------------------------
