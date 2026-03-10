@@ -5,7 +5,6 @@ import gleam/dynamic/decode.{type Decoder}
 import gleam/json
 import gleam/list
 import gleam/option.{type Option, None}
-import gleam/result
 import gleam/set.{type Set}
 import gleam/string
 import lustre
@@ -16,7 +15,6 @@ import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event.{type Handler}
 import lustre/ui/accordion/context
-import lustre/ui/accordion/heading
 import lustre/ui/accordion/item
 import lustre/ui/accordion/panel
 import lustre/ui/accordion/trigger
@@ -126,13 +124,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
       }),
     ])
 
-  use _ <- result.try(lustre.register(component, tag))
-  use _ <- result.try(item.register())
-  use _ <- result.try(heading.register())
-  use _ <- result.try(trigger.register())
-  use _ <- result.try(panel.register())
-
-  Ok(Nil)
+  lustre.register(component, tag)
 }
 
 // MODEL -----------------------------------------------------------------------
