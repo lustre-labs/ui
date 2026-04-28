@@ -8,7 +8,7 @@ import lustre/ui/tooltip/popover
 
 // CONSTANTS -------------------------------------------------------------------
 
-const button = "inline-flex justify-center items-center rounded size-32
+const button = "inline-flex justify-center items-center rounded size-8
   hover:bg-gray-100
   focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500
 "
