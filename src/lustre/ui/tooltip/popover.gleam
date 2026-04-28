@@ -433,10 +433,16 @@ fn view(model: Model) -> Element(Message) {
       :host {
         --tooltip-popover-x: ${x}px;
         --tooltip-popover-y: ${y}px;
+
+        display: ${display};
       }
       "
       |> string.replace("${x}", float.to_string(model.x))
       |> string.replace("${y}", float.to_string(model.y))
+      |> string.replace("${display}", case model.open.value {
+        True -> "inline"
+        False -> "none"
+      })
     }),
 
     component.default_slot([attribute.inert(True)], []),
