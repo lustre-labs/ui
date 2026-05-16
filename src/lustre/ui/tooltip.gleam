@@ -21,6 +21,15 @@
 ////       "side",
 ////     ]
 ////   },
+////   {
+////     header: "Events",
+////     sort: true,
+////     functions: [
+////       "on_open_change",
+////       "on_activate",
+////       "on_dismiss",
+////     ]
+////   },
 //// ]
 ////
 //// const callback = () => {
@@ -403,4 +412,38 @@ pub fn open(value: Bool) -> Attribute(message) {
 ///
 pub fn default_open(value: Bool) -> Attribute(message) {
   popover.default_open(value)
+}
+
+// EVENTS ---------------------------------------------------------------------
+
+/// An event emitted by the [tooltip](#view) when its open state changes.  In a
+/// controlled tooltip, this event should be used to update your application
+/// state with the new open state. Your application may ignore this event to
+/// prevent the open state of the tooltip from changing.
+///
+/// In an uncontrolled tooltip, this event can be used to respond to changes
+/// in the tooltip's open state.
+///
+pub fn on_open_change(handler: fn(Bool) -> message) -> Attribute(message) {
+  root.on_open_change(handler)
+}
+
+/// An event emitted by the [trigger](#trigger) when the tooltip is activated,
+/// i.e. the trigger is hovered or focused.
+///
+/// > **Note**: like other DOM events, this event bubbles and can be listened
+/// > for on the containing tooltip.
+///
+pub fn on_activate(handler: message) -> Attribute(message) {
+  trigger.on_activate(handler)
+}
+
+/// An event emitted by the [trigger](#trigger) when the tooltip is dismissed,
+/// i.e. the trigger loses hover or focus.
+///
+/// > **Note**: like other DOM events, this event bubbles and can be listened
+/// > for on the containing tooltip.
+///
+pub fn on_dismiss(handler: message) -> Attribute(message) {
+  trigger.on_dismiss(handler)
 }
