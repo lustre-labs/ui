@@ -73,6 +73,7 @@ pub const tag: String = "lustre-tabs-list"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
+      component.adopt_styles(False),
       component.on_attribute_change("orientation", fn(value) {
         case value {
           "vertical" -> Ok(ParentSetOrientation(value: Vertical))

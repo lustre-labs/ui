@@ -76,7 +76,9 @@ pub fn register() -> Result(Nil, lustre.Error) {
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
       component.form_associated(),
-      context.on_group_change(ToggleGroupProvidedContext),
+
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
 
       component.on_attribute_change("disabled", fn(value) {
         case value {
@@ -152,6 +154,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   ParentRemovedTabindex
   ParentSetDefaultPressed(value: Bool)
   ParentSetDisabled
@@ -165,6 +169,18 @@ type Message {
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_group_change(ToggleGroupProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.group)
+
+      #(model, effect)
+    }
+
     ParentRemovedTabindex -> {
       let effect =
         web_component.before_paint(fn(_, _, component) {

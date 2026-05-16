@@ -27,7 +27,8 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      context.on_item_change(AccordionItemProvidedContext),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
     ])
 
   lustre.register(component, tag)
@@ -41,15 +42,7 @@ type Model {
 
 fn init(_) -> #(Model, Effect(Message)) {
   let model = Model(open: False)
-  let effect =
-    web_component.before_paint(fn(_, _, component) {
-      web_component.role(component, "heading")
-
-      case html_element.attribute(component, "aria-level") {
-        Ok("") | Error(_) -> web_component.aria_level(component, 3)
-        Ok(_) -> Nil
-      }
-    })
+  let effect = effect.none()
 
   #(model, effect)
 }
@@ -58,9 +51,11 @@ fn init(_) -> #(Model, Effect(Message)) {
 
 type Message {
   AccordionItemProvidedContext(ItemContext)
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
 }
 
-fn update(_, message: Message) -> #(Model, Effect(Message)) {
+fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
     AccordionItemProvidedContext(context) -> {
       let model = Model(open: context.open)
@@ -68,6 +63,29 @@ fn update(_, message: Message) -> #(Model, Effect(Message)) {
         True -> component.set_pseudo_state("open")
         False -> component.remove_pseudo_state("open")
       }
+
+      #(model, effect)
+    }
+
+    ComponentConnectedToDom -> {
+      let effect =
+        effect.batch([
+          context.on_item_change(AccordionItemProvidedContext),
+          web_component.before_paint(fn(_, _, component) {
+            web_component.role(component, "heading")
+
+            case html_element.attribute(component, "aria-level") {
+              Ok("") | Error(_) -> web_component.aria_level(component, 3)
+              Ok(_) -> Nil
+            }
+          }),
+        ])
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.item)
 
       #(model, effect)
     }

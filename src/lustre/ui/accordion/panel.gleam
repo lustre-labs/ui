@@ -28,7 +28,8 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      context.on_item_change(AccordionItemProvidedContext),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
 
       component.on_attribute_change("id", fn(value) { Ok(ParentSetId(value:)) }),
     ])
@@ -111,6 +112,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 
 type Message {
   AccordionItemProvidedContext(ItemContext)
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   PanelMeasuredDimensions(width: String, height: String)
   ParentSetId(value: String)
 }
@@ -171,6 +174,18 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
         Collapsed -> #(model, effect.none())
       }
+
+    ComponentConnectedToDom -> {
+      let effect = context.on_item_change(AccordionItemProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.item)
+
+      #(model, effect)
+    }
 
     PanelMeasuredDimensions(width:, height:) -> {
       let model = Model(..model, width:, height:)

@@ -33,7 +33,9 @@ pub const tag: String = "lustre-tabs-indicator"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
-      context.on_change(TabsProvidedContext),
+      component.adopt_styles(False),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
     ])
 
   lustre.register(component, tag)
@@ -58,12 +60,26 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   TabsProvidedContext(Context)
   TriggerProvidedBounds(left: Float, top: Float, width: Float, height: Float)
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(TabsProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.tabs)
+
+      #(model, effect)
+    }
+
     TabsProvidedContext(context.Context(active: option.None, ..)) -> {
       let model = Model(x: 0.0, y: 0.0, width: 0.0, height: 0.0)
       let effect = effect.none()

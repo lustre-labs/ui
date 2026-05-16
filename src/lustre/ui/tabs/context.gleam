@@ -5,7 +5,6 @@ import gleam/dynamic/decode.{type Decoder}
 import gleam/function
 import gleam/json.{type Json}
 import gleam/option.{None, Some}
-import lustre/component
 import lustre/effect.{type Effect}
 
 // TYPES -----------------------------------------------------------------------
@@ -27,6 +26,10 @@ pub type Tab {
   Tab(name: String, trigger: String, panel: String)
 }
 
+// CONSTANTS -------------------------------------------------------------------
+
+pub const tabs = "tabs"
+
 // CONSTRUCTORS ----------------------------------------------------------------
 
 pub fn new() -> Context {
@@ -35,8 +38,8 @@ pub fn new() -> Context {
 
 // COMPONENT OPTIONS -----------------------------------------------------------
 
-pub fn on_change(handler: fn(Context) -> message) -> component.Option(message) {
-  component.on_context_change("tabs", {
+pub fn on_change(handler: fn(Context) -> message) -> Effect(message) {
+  effect.subscribe(tabs, {
     use orientation <- decode.field("orientation", {
       decode.then(decode.string, fn(value) {
         case value {
@@ -64,7 +67,7 @@ fn tab_decoder() -> Decoder(Tab) {
 // EFFECTS ---------------------------------------------------------------------
 
 pub fn provide(context: Context) -> Effect(message) {
-  effect.provide("tabs", {
+  effect.provide(tabs, {
     json.object([
       #("orientation", orientation_to_json(context.orientation)),
       #("active", case context.active {

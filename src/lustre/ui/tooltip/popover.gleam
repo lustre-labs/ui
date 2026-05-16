@@ -83,7 +83,9 @@ pub const tag: String = "lustre-tooltip-popover"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
-      context.on_change(TooltipProvidedContext),
+      component.adopt_styles(False),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
       component.on_attribute_change("id", fn(value) { Ok(ParentSetId(value:)) }),
       component.on_attribute_change("offset", fn(value) {
         let number =
@@ -169,6 +171,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   DomCalculatedPosition(x: Float, y: Float)
   ParentResetAlign
   ParentResetOffset
@@ -185,6 +189,18 @@ type Message {
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(TooltipProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.tooltip)
+
+      #(model, effect)
+    }
+
     DomCalculatedPosition(x:, y:) -> {
       echo #(x, y)
       let model = Model(..model, x:, y:)
