@@ -89,7 +89,10 @@ pub const tag: String = "lustre-tabs-panel"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
-      context.on_change(TabsProvidedContext),
+      component.adopt_styles(False),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
+
       component.on_attribute_change("id", fn(value) {
         case value {
           "" -> Ok(ParentRemovedId)
@@ -128,6 +131,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   ParentRemovedId
   ParentRemovedName
   ParentSetId(value: String)
@@ -137,6 +142,18 @@ type Message {
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(TabsProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.tabs)
+
+      #(model, effect)
+    }
+
     ParentRemovedId -> {
       let model = Model(..model, id: "")
       let effect =

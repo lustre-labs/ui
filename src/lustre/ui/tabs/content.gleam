@@ -25,7 +25,9 @@ pub const tag: String = "lustre-tabs-content"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
-      context.on_change(TabsProvidedContext),
+      component.adopt_styles(False),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
     ])
 
   lustre.register(component, tag)
@@ -47,11 +49,25 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   TabsProvidedContext(value: Context)
 }
 
-fn update(_, message: Message) -> #(Model, Effect(Message)) {
+fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(TabsProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.tabs)
+
+      #(model, effect)
+    }
+
     TabsProvidedContext(value) -> {
       let model = Model(active: value.active)
       let effect = effect.none()

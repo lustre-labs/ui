@@ -60,7 +60,9 @@ pub const tag: String = "lustre-tooltip-trigger"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
-      context.on_change(TooltipProvidedContext),
+      component.adopt_styles(False),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
     ])
 
   lustre.register(component, tag)
@@ -99,6 +101,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   TooltipProvidedContext(value: Context)
   UserActivatedTrigger
   UserDismissedTrigger
@@ -110,6 +114,18 @@ type Message {
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
   case message {
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(TooltipProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.tooltip)
+
+      #(model, effect)
+    }
+
     TooltipProvidedContext(value: context) -> {
       let delay = prop.default(model.delay, context.delay)
       let model = Model(..model, delay:, open: context.open)

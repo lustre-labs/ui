@@ -68,6 +68,7 @@ pub const tag: String = "lustre-tooltip"
 pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
+      component.adopt_styles(False),
       component.on_attribute_change("delay", fn(value) {
         case int.parse(value) {
           Ok(number) if number < 0 -> Ok(ParentSetDelay(0))

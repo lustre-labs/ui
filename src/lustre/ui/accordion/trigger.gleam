@@ -21,7 +21,8 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      context.on_item_change(AccordionItemProvidedContext),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
     ])
 
   lustre.register(component, tag)
@@ -82,6 +83,8 @@ fn init(_) -> #(Model, Effect(Message)) {
 
 type Message {
   AccordionItemProvidedContext(ItemContext)
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   UserActivatedTrigger
 }
 
@@ -97,6 +100,18 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
 
           web_component.toggle_psuedo_state("open", context.open),
         ])
+
+      #(model, effect)
+    }
+
+    ComponentConnectedToDom -> {
+      let effect = context.on_item_change(AccordionItemProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe(context.item)
 
       #(model, effect)
     }

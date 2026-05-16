@@ -3,9 +3,8 @@
 import gleam/bool
 import gleam/dynamic/decode
 import gleam/json
-import gleam/list
-import gleam/option.{type Option, None, Some}
 import gleam/result
+import gleam/set
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/component
@@ -13,7 +12,7 @@ import lustre/effect.{type Effect}
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
-import lustre/ui/accordion/context
+import lustre/ui/accordion/context.{type Context}
 import lustre/ui/accordion/heading
 import lustre/ui/accordion/panel
 import lustre/ui/accordion/trigger
@@ -100,11 +99,9 @@ pub fn register() -> Result(Nil, lustre.Error) {
   let component =
     lustre.component(init:, update:, view:, options: [
       component.adopt_styles(False),
-      component.on_context_change("accordion", {
-        use all <- decode.field("open", decode.list(decode.string))
 
-        decode.success(AccordionProvidedContext(all:))
-      }),
+      component.on_connect(ComponentConnectedToDom),
+      component.on_disconnect(ComponentDisconnectedFromDom),
 
       component.on_attribute_change("name", fn(value) {
         Ok(ParentSetName(value))
@@ -131,18 +128,13 @@ pub fn register() -> Result(Nil, lustre.Error) {
 // MODEL -----------------------------------------------------------------------
 
 type Model {
-  Model(
-    name: String,
-    panel: String,
-    accordion: Option(List(String)),
-    open: Prop(Bool),
-  )
+  Model(name: String, panel: String, open: Prop(Bool))
 }
 
 fn init(_) -> #(Model, Effect(Message)) {
   let open = Prop(value: False, controlled: False, touched: False)
 
-  let model = Model(name: "", panel: "", accordion: None, open:)
+  let model = Model(name: "", panel: "", open:)
   let effect =
     effect.batch([
       context.provide_item(model.name, model.panel, False),
@@ -168,7 +160,9 @@ fn init(_) -> #(Model, Effect(Message)) {
 // UPDATE ----------------------------------------------------------------------
 
 type Message {
-  AccordionProvidedContext(all: List(String))
+  AccordionProvidedContext(context: Context)
+  ComponentConnectedToDom
+  ComponentDisconnectedFromDom
   ParentSetDefaultOpen(value: Bool)
   ParentSetName(value: String)
   ParentSetOpen(value: Bool)
@@ -178,18 +172,18 @@ type Message {
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
-  case message {
+  case echo message {
     AccordionProvidedContext(..) if model.open.controlled -> {
       #(model, effect.none())
     }
 
-    AccordionProvidedContext(all:) -> {
+    AccordionProvidedContext(context) -> {
       let open =
         Prop(..model.open, touched: True, value: {
-          list.contains(all, model.name)
+          set.contains(context.open, model.name)
         })
 
-      let model = Model(..model, accordion: Some(all), open:)
+      let model = Model(..model, open:)
       let effect = case model.open.value {
         True ->
           effect.batch([
@@ -204,6 +198,18 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
             divert_focus(),
           ])
       }
+
+      #(model, effect)
+    }
+
+    ComponentConnectedToDom -> {
+      let effect = context.on_change(AccordionProvidedContext)
+
+      #(model, effect)
+    }
+
+    ComponentDisconnectedFromDom -> {
+      let effect = effect.unsubscribe("accordion")
 
       #(model, effect)
     }
