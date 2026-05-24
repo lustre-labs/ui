@@ -172,7 +172,7 @@ type Message {
 }
 
 fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
-  case echo message {
+  case message {
     AccordionProvidedContext(..) if model.open.controlled -> {
       #(model, effect.none())
     }

@@ -202,7 +202,6 @@ fn update(model: Model, message: Message) -> #(Model, Effect(Message)) {
     }
 
     DomCalculatedPosition(x:, y:) -> {
-      echo #(x, y)
       let model = Model(..model, x:, y:)
       let effect = case model.open.value {
         True -> component.set_pseudo_state("open")
