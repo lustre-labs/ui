@@ -3,7 +3,6 @@
 import gleam/dynamic/decode
 import gleam/int
 import gleam/json
-
 import lustre
 import lustre/attribute.{type Attribute, attribute}
 import lustre/component
