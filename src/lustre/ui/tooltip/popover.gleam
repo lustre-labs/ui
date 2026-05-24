@@ -48,8 +48,8 @@ pub fn align(value: String) -> Attribute(message) {
 
 pub fn default_open(value: Bool) -> Attribute(message) {
   case value {
-    True -> attribute("value", "true")
-    False -> attribute("value", "false")
+    True -> attribute("open", "")
+    False -> attribute.none()
   }
 }
 
