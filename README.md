@@ -1,7 +1,7 @@
-<h1 align="center">Lustre UI</h1>
+<h1 align="center">lustre/ui</h1>
 
 <div align="center">
-  A thoughtfully designed UI library for Lustre.
+  An accessible headless UI library for Lustre.
 </div>
 
 <br />
@@ -27,34 +27,34 @@
 
 <div align="center">
   <sub>Built with ❤︎ by
-  <a href="https://twitter.com/hayleighdotdev">Hayleigh Thompson</a>
+  <a href="https://bsky.app/profile/hayleigh.dev">Hayleigh Thompson</a>
 </div>
 
 ---
 
 ## Features
 
-- A set of **thoughtfully designed** and **accessible** components that have been
-  written with idiomatic Gleam and CSS in mind.
+- A set of **accessible** and **unstyled** components built for design systems
+  and rich interfaces.
 
-- A customisable **theme system** to tweak colours, spacing, and typography to
-  fit your brand.
+- Usable in server-rendered applications and Lustre server components, as well as
+  client-rendered apps.
 
 ## Philosophy
 
-Many of Lustre's users are backend or fullstack developers with less interest or
-experience in frontend development. Lustre UI is primarily designed with those
-folks in mind, and has two main goals:
+How an interface or component works and how it looks are two challenging but
+distinct aspects of a design system that are often conflated in ui libraries. We
+think it's better for everyone if these two things are decoupled, so lustre/ui is
+a "headless" library focused on _functionality_ that leaves styling up to application
+and design system authors.
 
-- Make it easy to build good-looking, accessible UIs without needing to know
-  much about CSS or design.
+We've designed lustre/ui with a few goals in mind:
 
-- Encourage well-structured semantic HTML and avoid div soup.
+- Make it easy to build accessible interfaces.
 
-To achieve this, Lustre UI is _opinionated_ on many aspects of the visual design.
-For folks that don't want to worry about design, this is a feature not a bug, but
-for users looking for a flexible "headless" UI library you will find that many
-aspects of each component's styles are customisable through CSS variables.
+- Provide a primitive HTML-like API that more-opinionated abstractions can be
+  built on top of.
+
 
 ## Installation
 
