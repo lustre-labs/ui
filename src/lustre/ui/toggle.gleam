@@ -130,8 +130,8 @@
 ////
 //// ## Recipes
 ////
-//// You can use these recipes as starting points to build common types of
-//// accordions. Copy and paste them into your apps and adapt them as needed!
+//// You can use these recipes as starting points for common uses of toggled inputs
+//// and toggle groups. Copy and paste them into your apps and adapt them as needed!
 ////
 //// ### Basic use
 ////
