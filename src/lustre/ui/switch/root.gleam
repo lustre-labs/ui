@@ -127,7 +127,8 @@ fn init(_) -> #(Model, Effect(Message)) {
       web_component.role(component, "switch")
       web_component.tabindex(component, 0)
 
-      web_component.add_event_listener(component, "click", fn(_) {
+      web_component.add_event_listener(component, "click", fn(event) {
+        html_event.prevent_default(event)
         dispatch(UserToggledSwitch)
       })
 
