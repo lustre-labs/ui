@@ -16,9 +16,9 @@ internal_modules = ["lustre_ui/*", "lustre/ui/*/*"]
 gleam_json = ">= 3.0.0 and < 4.0.0"
 gleam_stdlib = ">= 1.0.0 and < 2.0.0"
 lustre = ">= 5.7.0 and < 6.0.0"
-lustre_dev_tools = ">= 2.3.4 and < 3.0.0"
 
 [dev-dependencies]
+lustre_dev_tools = ">= 2.3.4 and < 3.0.0"
 lustre_fable = { git = "https://github.com/lustre-labs/fable.git", ref = "main" }
 
 [tools.lustre.dev]
