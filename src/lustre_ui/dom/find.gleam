@@ -22,54 +22,23 @@ const not_neg_tabindex = ":not([tabindex^=\"-\"])"
 const not_disabled = ":not(:disabled)"
 
 const tabbable = [
-  "a[href]"
-    <> not_inert
-    <> not_neg_tabindex,
-  "area[href]"
-    <> not_inert
-    <> not_neg_tabindex,
+  "a[href]" <> not_inert <> not_neg_tabindex,
+  "area[href]" <> not_inert <> not_neg_tabindex,
   "input:not([type=\"hidden\"]):not([type=\"radio\"])"
     <> not_inert
     <> not_neg_tabindex
     <> not_disabled,
-  "input[type=\"radio\"]"
-    <> not_inert
-    <> not_neg_tabindex
-    <> not_disabled,
-  "select"
-    <> not_inert
-    <> not_neg_tabindex
-    <> not_disabled,
-  "textarea"
-    <> not_inert
-    <> not_neg_tabindex
-    <> not_disabled,
-  "button"
-    <> not_inert
-    <> not_neg_tabindex
-    <> not_disabled,
-  "details"
-    <> not_inert
-    <> " > summary:first-of-type"
-    <> not_neg_tabindex,
-  "details:not(:has(> summary))"
-    <> not_inert
-    <> not_neg_tabindex,
-  "iframe"
-    <> not_inert
-    <> not_neg_tabindex,
-  "audio[controls]"
-    <> not_inert
-    <> not_neg_tabindex,
-  "video[controls]"
-    <> not_inert
-    <> not_neg_tabindex,
-  "[contenteditable]"
-    <> not_inert
-    <> not_neg_tabindex,
-  "[tabindex]"
-    <> not_inert
-    <> not_neg_tabindex,
+  "input[type=\"radio\"]" <> not_inert <> not_neg_tabindex <> not_disabled,
+  "select" <> not_inert <> not_neg_tabindex <> not_disabled,
+  "textarea" <> not_inert <> not_neg_tabindex <> not_disabled,
+  "button" <> not_inert <> not_neg_tabindex <> not_disabled,
+  "details" <> not_inert <> " > summary:first-of-type" <> not_neg_tabindex,
+  "details:not(:has(> summary))" <> not_inert <> not_neg_tabindex,
+  "iframe" <> not_inert <> not_neg_tabindex,
+  "audio[controls]" <> not_inert <> not_neg_tabindex,
+  "video[controls]" <> not_inert <> not_neg_tabindex,
+  "[contenteditable]" <> not_inert <> not_neg_tabindex,
+  "[tabindex]" <> not_inert <> not_neg_tabindex,
 ]
 
 // QUERIES ---------------------------------------------------------------------

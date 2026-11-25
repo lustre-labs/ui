@@ -11,7 +11,8 @@ import lustre/ui/toggle
 
 // CONSTANTS -------------------------------------------------------------------
 
-const toggle = "
+const toggle =
+  "
   inline-flex justify-center items-center rounded size-8
   hover:bg-gray-100
   [:state(pressed)]:bg-blue-50 [:state(pressed)]:text-blue-500
@@ -19,7 +20,8 @@ const toggle = "
   focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500
 "
 
-const group = "
+const group =
+  "
   flex border border-gray-300 rounded
   *:rounded-none *:first:rounded-l *:last:rounded-r *:focus:z-10
 "

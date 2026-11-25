@@ -13,11 +13,13 @@ const accordion = "w-lg"
 
 const accordion_item = "border-b border-gray-100"
 
-const accordion_trigger = "block w-full bg-gray-50 p-2 text-left
+const accordion_trigger =
+  "block w-full bg-gray-50 p-2 text-left
   hover:bg-gray-100
   focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-800"
 
-const accordion_panel = "h-(--accordion-panel-height) overflow-hidden transition-[height] ease-out"
+const accordion_panel =
+  "h-(--accordion-panel-height) overflow-hidden transition-[height] ease-out"
 
 const items = [
   #(
