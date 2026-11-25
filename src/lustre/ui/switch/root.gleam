@@ -36,7 +36,7 @@ pub fn disabled(value: Bool) -> Attribute(message) {
 
 pub fn default_checked(value: Bool) -> Attribute(message) {
   case value {
-    True -> attribute("checked", "")
+    True -> attribute("default-checked", "")
     False -> attribute.none()
   }
 }
@@ -75,7 +75,7 @@ pub fn register() -> Result(Nil, lustre.Error) {
       component.adopt_styles(False),
       component.form_associated(),
 
-      component.on_attribute_change("checked", fn(value) {
+      component.on_attribute_change("default-checked", fn(value) {
         case value {
           "" -> Ok(ParentToggledDefaultChecked)
           _ -> Ok(ParentSetDefaultChecked(value: True))
