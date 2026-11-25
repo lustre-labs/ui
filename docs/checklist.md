@@ -4,7 +4,7 @@
 - [ ] combobox
 - [ ] dropdown
 - [ ] popover
-- [ ] switch
+- [x] switch
 - [x] tabs
 - [ ] toast
 - [x] toggle

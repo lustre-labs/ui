@@ -47,6 +47,15 @@ pub fn add_event_listener(
 
 ///
 ///
+pub fn aria_checked(component: HtmlElement, value: Bool) -> Nil {
+  element.set_attribute(component, "aria-checked", case value {
+    True -> "true"
+    False -> "false"
+  })
+}
+
+///
+///
 pub fn aria_controls(component: HtmlElement, value: List(String)) -> Nil {
   element.set_attribute(component, "aria-controls", string.join(value, " "))
 }

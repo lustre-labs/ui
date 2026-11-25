@@ -1,5 +1,6 @@
 import lustre/dev/fable
 import storybook/lustre/ui/accordion
+import storybook/lustre/ui/switch
 import storybook/lustre/ui/tabs
 import storybook/lustre/ui/toggle
 import storybook/lustre/ui/tooltip
@@ -12,6 +13,12 @@ pub fn main() {
         accordion.basic_story(),
         accordion.default_open_story(),
         accordion.playground_story(),
+      ]),
+
+      fable.chapter("switch", [
+        switch.basic_story(),
+        switch.disabled_story(),
+        switch.form_story(),
       ]),
 
       fable.chapter("tabs", [
